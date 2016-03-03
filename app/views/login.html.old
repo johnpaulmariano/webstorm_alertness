@@ -1,0 +1,66 @@
+<div class="container" ng-controller="LoginController">
+    <div class="row">
+        <div class="col-md-6" style="margin-bottom:5px; margin-top:15px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showLogin()">Sign In</button></div>
+        <div class="col-md-6" style="margin-bottom:5px; margin-top:15px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showRegister()">New User</button></div>
+    </div>
+    <br /><br />
+    <div class="row" style class="loginForm" ng-show="isShowLogin">
+        <div ng-show="error" class="alert alert-danger">{{error}}</div>
+        <div ng-show="message" class="alert alert-info">{{message}}</div>
+        <form name="loginForm" ng-submit="login()" role="form" id="loginForm"  style="margin-left:15px; margin-right:15px;">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <i class="fa fa-key"></i>
+                <input type="text" autocorrect="off" name="username" id="username" class="form-control" ng-model="username" required />
+                <span ng-show="loginForm.username.$dirty && loginForm.username.$error.required" class="help-block">Username is required</span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <i class="fa fa-lock"></i>
+                <input type="password" autocorrect="off" name="password" id="password" class="form-control" ng-model="password" required />
+                <span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" class="help-block">Password is required</span>
+            </div>
+        <fieldset class="tasks-list">    
+        <label class="tasks-list-item">
+        <input type="checkbox" name="rememberMe" value="1"  ng-model="rememberMe" ng-checked="rememberMe" class="tasks-list-cb" checked>
+        <span class="tasks-list-mark"></span>
+        <span class="tasks-list-desc">Remember Me</span>
+      </label></fieldset>
+      
+      
+            <div class="form-actions">
+                <button type="submit" ng-disabled="loginForm.$invalid || dataLoading" class="btn btn-primary btn-lg btn-block">Login</button>
+                <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </div>
+        </form>
+    </div>
+    
+    <div class="row" class="registerForm" ng-show="isShowRegister">
+        <div ng-show="error" class="alert alert-danger">{{error}}</div>
+        <form name="registerForm" ng-submit="register()" role="form" id="registerForm" style="margin-left:15px; margin-right:15px;">
+        
+            <div class="form-group">
+                <label for="username">Username</label>
+                <i class="fa fa-key"></i>
+                <input type="text" autocorrect="off" name="username" id="username" class="form-control" ng-model="username" required />
+                <span ng-show="registerForm.username.$dirty && registerForm.username.$error.required" class="help-block">Username is required</span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password 1</label>
+                <i class="fa fa-lock"></i>
+                <input type="password" autocorrect="off" name="password" id="password" class="form-control" ng-model="password" required />
+                <span ng-show="registerForm.password.$dirty && registerForm.password.$error.required" class="help-block">Password is required</span>
+            </div>
+            <div class="form-group">
+                <label for="password2">Password 2</label>
+                <i class="fa fa-lock"></i>
+                <input type="password" autocorrect="off" name="password2" id="password2" class="form-control" ng-model="password2" required />
+                <span ng-show="registerForm.password2.$dirty && registerForm.password2.$error.required" class="help-block">Password is required</span>
+            </div>
+            <div class="form-actions">
+                <button type="submit" ng-disabled="registerForm.$invalid || dataLoading || password != password2" class="btn btn-primary btn-lg btn-block">Register</button>
+                <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </div>
+        </form>
+    </div>
+</div>
