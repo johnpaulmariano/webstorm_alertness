@@ -1,0 +1,69 @@
+<div class="container">
+   
+    <h4 class="row text-center" style="background-color:#f4b234; padding-top:5px; padding-bottom:5px; border-radius:5px;">Profile For: {{username}}</h4>
+    <div class="alert alert-info" ng-show="message != ''">
+       {{message}}
+    </div>
+    <div class="row" style="margin-left:5px; margin-right:5px;">
+        <div ng-show="error" class="alert alert-danger">{{error}}</div>
+        
+        
+      
+     
+       
+      
+      <label class="tasks-list-item">
+        <input type="checkbox" name="resetPassword" ng-model="showPasswordForm" class="tasks-list-cb" /> <span class="tasks-list-mark"></span>
+        <span class="tasks-list-desc">Reset Password</span>
+      </label>
+        <form name="form1" ng-submit="changePassword()" role="form" ng-show="showPasswordForm">
+            <input type="hidden" name="username" id="username" value="{{username}}" />
+            <div class="form-group">
+                <label for="password">Password</label>
+                <i class="fa fa-lock"></i>
+                <input type="password" name="password1" id="password1" class="form-control" ng-model="password1" required />
+                <span ng-show="form1.password1.$dirty && form1.password1.$error.required" class="help-block">Password is required</span>
+            </div>
+            <div class="form-group">
+                <label for="password2">Password</label>
+                <i class="fa fa-lock"></i>
+                <input type="password" name="password2" id="password2" class="form-control" ng-model="password2" required />
+                <span ng-show="form1.password2.$dirty && form1.password2.$error.required" class="help-block">Password is required</span>
+            </div>
+            <div class="form-actions">
+                <button type="submit" ng-disabled="form1.$invalid || !passwordMatched" class="btn btn-primary btn-lg btn-block">Change</button>
+            </div>
+        </form>
+        
+        <hr />
+        
+        <p>Chronotype Settings</p>
+        <div class="alert alert-info">
+            You are a <strong>{{chronoType}}</strong> person
+        </div>
+         <label class="tasks-list-item">
+        <input type="checkbox" name="resetChronotype" ng-model="showChronotypeForm" class="tasks-list-cb"  /> <span class="tasks-list-mark"></span><span class="tasks-list-desc">Update the Chronotype Settings</span>
+        </label>
+        <form name="form2" ng-submit="setChrono()" role="form" ng-show="showChronotypeForm">
+        <div id="chronotypeDiv">
+            <div class="form-group">
+                <label for="optionsMorning">In General, how is your energy level in the <strong>morning?</strong></label>
+                <div class="radio-list" ng-repeat="sel in chronoMorning">
+                    <input type="radio" name="optionsMorning" ng-model="$parent.chronoMorningSel" value="{{sel.value}}" ng-checked="sel.isChecked"> {{sel.text}} <br />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="optionsEvening">In General, how is your energy level in the <strong>evening?</strong></label>
+                <div class="radio-list" ng-repeat="sel2 in chronoEvening">
+                    <input type="radio" name="optionsEvening" ng-model="$parent.chronoEveningSel" value="{{sel2.value}}" ng-checked="sel2.isChecked"> {{sel2.text}} <br />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Set My Chronotype</button>
+            </div>
+        </div>
+            <!--
+        <tt>Morning = {{chronoMorningSel}}, Evening = {{chronoEveningSel}}</tt><br/>
+        -->
+    </div>
+</div>

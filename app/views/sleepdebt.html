@@ -1,0 +1,117 @@
+<div ng-include="'views/navbar.html'"></div>
+<div class="container">
+    <h4 class="row text-center fatigue-header">Defining Your Sleep Balance</h4>
+    <img class="header-image" style="margin-bottom:-50px;" src="images/debt@2x.png" alt="Sleep Debt">
+    <h5>What is Sleep Balance?</h5>
+    <p>Sleep balance is the difference between your individual daily sleep need and the actual amount of sleep you receive each night.  If your sleep need is eight hours, but you only achieve six hours, then your sleep balance would be a negative two hours.  You are carrying what fatigue scientists call a "sleep debt."  </p>
+    <p>A sleep debt can hinder decision-making, leave you feeling groggy, and slow your reaction times.  Also, sleep debt can build from day to day to where your daily performance can really suffer.  Catching up on sleep is the only way to reduce your sleep debt and boost performance.</p>
+    <h5>Follow These Steps To Calculate Your Sleep Balance:</h5>
+    <p>1. Over the next five workdays, insert the amount of sleep you achieved each night.</p>
+    <p>2. The App will total your sleep hours from the five days to calculate your actual weekly sleep.</p>
+    <p>3. The App will take your "Individual Daily Sleep Need" (or use eight hours if you have not calculated your individual sleep need), and multiply that number by five.  This defines your "Target Weekly Sleep Need".</p> 
+    <p style="margin-bottom:22px;">4. The App will subtract your Target Weekly Sleep Need (step 3) from your Actual Weekly Sleep (step 2).  The answer is your "Sleep Balance."</p>
+    
+    <div>
+        <form class="form-horizontal" ng-submit="saveSleepDebt()">
+            <div class="form-group">
+                <label for="sleepneed" class="col-sm-4 control-label">Individual Daily Sleep Need</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" readonly ng-model="sleepNeed" name="sleepNeed" id="sleepNeed" />
+                </div>
+            </div>
+            <div class="form-group">
+               <div class="col-xs-6"><label for="dayselecthours" class="col-sm-2 control-label no-wrap">Day 1: Hours</label></div>
+               <div class="col-xs-6"><label for="dayselectminutes" class="col-sm-2 control-label">Minutes</label></div><br>
+               <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day1selecthours" ng-options="h for h in day1hours" ng-model="day1selectedhours" ng-change="calculateSleepDebt()">
+               </select>
+               </div>
+                <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day1selectminutes" ng-options="k for k in day1minutes" ng-disabled="day1minDis" ng-model="day1selectedminutes" ng-change="calculateSleepDebt()"><option value="0" selected="selected" label="0">0</option><option value="1" label="15">15</option><option value="2" label="30">30</option><option value="3" label="45">45</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+               <div class="col-xs-6"><label for="dayselecthours" class="col-sm-2 control-label no-wrap">Day 2: Hours</label></div>
+               <div class="col-xs-6"><label for="dayselectminutes" class="col-sm-2 control-label">Minutes</label></div><br>
+               <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day2selecthours" ng-options="h for h in day2hours" ng-model="day2selectedhours" ng-change="calculateSleepDebt()">
+               </select>
+               </div>
+                <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day2selectminutes" ng-options="k for k in day2minutes" ng-disabled="day2minDis" ng-model="day2selectedminutes" ng-change="calculateSleepDebt()"><option value="0" selected="selected" label="0">0</option><option value="2" label="25">25</option><option value="2" label="30">30</option><option value="3" label="45">45</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+               <div class="col-xs-6"><label for="dayselecthours" class="col-sm-2 control-label no-wrap">Day 3: Hours</label></div>
+               <div class="col-xs-6"><label for="dayselectminutes" class="col-sm-2 control-label">Minutes</label></div><br>
+               <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day3selecthours" ng-options="h for h in day3hours" ng-model="day3selectedhours" ng-change="calculateSleepDebt()">
+               </select>
+               </div>
+                <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day3selectminutes" ng-options="k for k in day3minutes" ng-disabled="day3minDis" ng-model="day3selectedminutes" ng-change="calculateSleepDebt()"><option value="0" selected="selected" label="0">0</option><option value="3" label="35">35</option><option value="3" label="30">30</option><option value="3" label="45">45</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+               <div class="col-xs-6"><label for="dayselecthours" class="col-sm-2 control-label no-wrap">Day 4: Hours</label></div>
+               <div class="col-xs-6"><label for="dayselectminutes" class="col-sm-2 control-label">Minutes</label></div><br>
+               <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day4selecthours" ng-options="h for h in day4hours" ng-model="day4selectedhours" ng-change="calculateSleepDebt()">
+               </select>
+               </div>
+                <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day4selectminutes" ng-options="k for k in day4minutes" ng-disabled="day4minDis" ng-model="day4selectedminutes" ng-change="calculateSleepDebt()"><option value="0" selected="selected" label="0">0</option><option value="4" label="45">45</option><option value="4" label="40">40</option><option value="4" label="45">45</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+               <div class="col-xs-6"><label for="dayselecthours" class="col-sm-2 control-label no-wrap">Day 5: Hours</label></div>
+               <div class="col-xs-6"><label for="dayselectminutes" class="col-sm-2 control-label">Minutes</label></div><br>
+               <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day5selecthours" ng-options="h for h in day5hours" ng-model="day5selectedhours" ng-change="calculateSleepDebt()">
+               </select>
+               </div>
+                <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day5selectminutes" ng-options="k for k in day5minutes" ng-disabled="day5minDis" ng-model="day5selectedminutes" ng-change="calculateSleepDebt()"><option value="0" selected="selected" label="0">0</option><option value="5" label="55">55</option><option value="5" label="50">50</option><option value="5" label="45">45</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+               <div class="col-xs-6"><label for="dayselecthours" class="col-sm-2 control-label no-wrap">Day 6: Hours</label></div>
+               <div class="col-xs-6"><label for="dayselectminutes" class="col-sm-2 control-label">Minutes</label></div><br>
+               <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day6selecthours" ng-options="h for h in day6hours" ng-model="day6selectedhours" ng-change="calculateSleepDebt()">
+               </select>
+               </div>
+                <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day6selectminutes" ng-options="k for k in day6minutes" ng-disabled="day6minDis" ng-model="day6selectedminutes" ng-change="calculateSleepDebt()"><option value="0" selected="selected" label="0">0</option><option value="6" label="65">65</option><option value="6" label="60">60</option><option value="6" label="45">45</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+               <div class="col-xs-6"><label for="dayselecthours" class="col-sm-2 control-label no-wrap">Day 7: Hours</label></div>
+               <div class="col-xs-6"><label for="dayselectminutes" class="col-sm-2 control-label">Minutes</label></div><br>
+               <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day7selecthours" ng-options="h for h in day7hours" ng-model="day7selectedhours" ng-change="calculateSleepDebt()">
+               </select>
+               </div>
+                <div class="col-xs-6">
+                    <select class="form-control ng-pristine ng-valid" name="day7selectminutes" ng-options="k for k in day7minutes" ng-disabled="day7minDis" ng-model="day7selectedminutes" ng-change="calculateSleepDebt()"><option value="0" selected="selected" label="0">0</option><option value="7" label="75">75</option><option value="7" label="70">70</option><option value="7" label="45">45</option></select>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label for="sleepDebt" class="col-sm-4 control-label">Sleep Balance</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" readonly ng-model="sleepDebt" name="sleepDebt" />
+                </div>
+            </div>
+            <div class="alert alert-success sleepdebt" role="alert" ng-show="dataReady" ng-if="sleepDebt >= 0 && !zeroEntry">Congratulations! Your sleep balance is "in the green."  Continue to strive for this quality sleep to maintain peak performance.</div>
+            <div class="alert alert-danger sleepdebt" role="alert" ng-show="dataReady" ng-if="sleepDebt < 0 || zeroEntry">Time to Act!  Your sleep balance is "in the red." You need to make some lifestyle changes to ensure additional sleep hours to reduce your sleep debt and restore your body and mind to full performance.</div>
+            <div class="form-actions" style="margin-bottom:30px; margin-top:30px;">
+                <div ng-show="error" class="alert alert-danger">{{error}}</div>
+                <div ng-show="message" class="alert alert-info">{{message}}</div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block form-control"  style="padding-bottom:35px;" ng-show="!$root.asGuest">Save Sleep Balance</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block form-control"  style="padding-bottom:35px;" ng-show="$root.asGuest">Set Sleep Balance *</button>
+                <div id="as-guest-disclaimer" ng-show="$root.asGuest">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div>
+            </div>
+        </form>
+    </div>
+</div>
