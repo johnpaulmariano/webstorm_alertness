@@ -166,7 +166,7 @@
                 <textarea placeholder="How can I improve?" class="form-control" rows="3"  name="stop_caffeine_text" ng-model="stop_caffeine_text" ng-show="stop_caffeine == 1">{{stop_caffeine_text}}</textarea>
             </div>
             <div class="form-group">
-                <label class="checklist-label" for="exercise_routine"><strong>8.I finish my exercise routine at least 3 hours before bedtime.</strong><br><br> 3 hours is a general rule of thumb to allow sufficient cool-down and wind-down time. Finish exercising more than 3 hours if you are having trouble falling asleep after exercising.</label>
+                <label class="checklist-label" for="exercise_routine"><strong>8. I finish my exercise routine at least 3 hours before bedtime.</strong><br><br> 3 hours is a general rule of thumb to allow sufficient cool-down and wind-down time. Finish exercising more than 3 hours if you are having trouble falling asleep after exercising.</label>
                 <div class="radio-list" ng-repeat="sel in checklistOpts">
                     <label class="tasks-list-item"><input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}"  name="exercise_routine" ng-model="$parent.exercise_routine" value="{{sel.value}}" ng-checked="(exercise_routine != null && exercise_routine == sel.value)" required> <span class="tasks-list-desc">{{sel.text}}</span> <br />
                     </label> </div>

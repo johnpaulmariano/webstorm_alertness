@@ -565,13 +565,18 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
             {text: 'Need Improvement', value: 1},
         ];
         
-        var questions = ['bedroom_temperature', 'bedroom_darkness', 'bedroom_quietness', 'bed_comfort', 'pets_in_bedroom',
+        /*var questions = ['bedroom_temperature', 'bedroom_darkness', 'bedroom_quietness', 'bed_comfort', 'pets_in_bedroom',
             'regulate_bedtimes', 'relax_nighttime_routine', 'fall_back_to_sleep', 'coordinate_family_members', 'electronic_devices', 
-            'exercises_and_caffeine', 'alcohol_nicotine_meals'];
+            'exercises_and_caffeine', 'alcohol_nicotine_meals'];*/
+
+        var questions = ['plan_sleeptime', 'room_temperature', 'bedroom_darkness', 'room_quiet', 'bedroom_only',
+            'regulate_waketimes', 'stop_caffeine', 'exercise_routine', 'no_alcohol', 'get_out_bed'];
+
 
         ChecklistService.getChecklist($scope.username, function(response){
             if(response.result == "success") {
                 var data = response.data;
+                console.log(data);
                 var countAction = 0;
                 //console.log(data);
                 if(angular.isObject(data) && !angular.equals({}, data)) {
@@ -628,7 +633,7 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
         
         $scope.setChecklist = function(){
             var $data = $scope.prepareData();
-            
+            console.log($data);
             ChecklistService.setChecklist($data, 
                 function(response){
                     if(response.success == "true") {
@@ -659,9 +664,12 @@ atoAlertnessControllers.controller('NavBarController', ['$scope', '$rootScope',
 atoAlertnessControllers.controller('ToDosController', ['$scope', 'AuthenticationService', 'ChecklistService', 
     function($scope, AuthenticationService, ChecklistService) {
         
-        $scope.questions = ['bedroom_temperature', 'bedroom_darkness', 'bedroom_quietness', 'bed_comfort', 'pets_in_bedroom',
+        /*$scope.questions = ['bedroom_temperature', 'bedroom_darkness', 'bedroom_quietness', 'bed_comfort', 'pets_in_bedroom',
             'regulate_bedtimes', 'relax_nighttime_routine', 'fall_back_to_sleep', 'coordinate_family_members', 'electronic_devices', 
-            'exercises_and_caffeine', 'alcohol_nicotine_meals'];
+            'exercises_and_caffeine', 'alcohol_nicotine_meals'];*/
+
+        $scope.questions = ['plan_sleeptime', 'room_temperature', 'bedroom_darkness', 'room_quiet', 'bedroom_only',
+            'regulate_waketimes', 'stop_caffeine', 'exercise_routine', 'no_alcohol', 'get_out_bed'];
         
         //initiate xxx_check variables
         for(var i = 0; i < $scope.questions.length; i++) {
@@ -972,5 +980,88 @@ atoAlertnessControllers.controller('DashboardController', ['$rootScope', '$scope
                 }
             }
         });
+    }
+]);
+
+atoAlertnessControllers.controller('GaugeController', ['$window', '$rootScope', '$scope', '$location',
+    function($window, $rootScope, $scope, $location) {
+        $scope.hourRange = 24;
+        $scope.tickInterval = 4;
+        $scope.step = 1;
+        $scope.defaultTick = $scope.hourRange * $scope.tickInterval;
+        $scope.minRange = 0;
+        $scope.maxRange = $scope.hourRange * $scope.tickInterval * 2 + 1;
+        $scope.sliderVal = null;
+        $scope.sliderValText = "0";
+
+        if($scope.sliderVal == null) {
+            $scope.sliderVal = $scope.defaultTick;
+        }
+
+        /*$scope.tickLabels = [];
+        var leftTicks = [], rightTicks = [];
+
+        for(var i = 0; i < $scope.hourRange; i++) {
+            leftTicks.push("- " + ($scope.hourRange - i) + " hour");
+            leftTicks.push("");
+            leftTicks.push("");
+            leftTicks.push("");
+
+            rightTicks.push("");
+            rightTicks.push("");
+            rightTicks.push("");
+            rightTicks.push((i + 1) + " hour");
+
+        }
+
+        for(var i = 0; i < leftTicks.length; i++) {
+            $scope.tickLabels.push(leftTicks[i]);
+        }
+
+        $scope.tickLabels.push("0");
+
+        for(var i = 0; i < rightTicks.length; i++) {
+            $scope.tickLabels.push(rightTicks[i]);
+        }
+        console.log($scope.tickLabels);*/
+
+        $scope.$watch("sliderVal", function(oldValue, newValue){
+            if(oldValue != newValue) {
+                $scope.getTimeVal();
+            }
+
+        });
+        $scope.getTimeVal = function(){
+            var remainder = Math.abs(parseInt($scope.sliderVal) - $scope.defaultTick) % $scope.tickInterval;
+            var minutes = remainder * 15;   // 15 minutes
+            var hours = (Math.abs(parseInt($scope.sliderVal) - $scope.defaultTick) - remainder) / $scope.tickInterval;
+
+            var valString = hours + " hours and " + minutes + " minutes";;
+            if($scope.sliderVal < $scope.hourRange * $scope.tickInterval) {
+                valString = " - " + valString;
+            }
+            console.log(valString);
+            $scope.sliderValText = valString;
+
+            $window.updateGauges();
+        };
+
+        // Slider options with event handlers
+        //don't need it now
+        /*$scope.slider = {
+            'options': {
+                start: function(event, ui) {
+                    console.log('Event: Slider start - set with slider options', event);
+                    //$scope.sliderValText = "0";
+                    //$scope.getTimeVal();
+                },
+                stop: function(event, ui) {
+                    console.log('Event: Slider stop - set with slider options', event);
+                    //$scope.getTimeVal();
+
+                }
+            }
+        };*/
+
     }
 ]);

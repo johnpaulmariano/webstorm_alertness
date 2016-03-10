@@ -8,10 +8,13 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
   -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/jquery.ui.labeledslider.css" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="css/jumbotron.css" rel="stylesheet">
   <link rel="stylesheet" href="css/sitefix.css">
-
+  <link rel="stylesheet" href="css/slider.css">
 
 </head>
 <body ng-app="AtoAlertnessApp" style="padding-top:15px;" ng-controller="ApplicationController">
@@ -19,16 +22,31 @@
   <div ng-view ng-cloak class="ng-cloak"></div>
 </div>
 <script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="bower_components/highcharts/highcharts.js"></script>
-<script src="bower_components/highcharts/modules/exporting.js"></script>
-<script src="js/highcharts_theme.js"></script>
+
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-ui-slider/src/slider.js"></script>
+
+<script src="bower_components/highcharts/highcharts.js"></script>
+<script src="bower_components/highcharts/modules/exporting.js"></script>
+<script src="js/highcharts_theme.js"></script>
+
+<script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+<script src="js/liquidFillGauge.js"></script>
+
+
+<!--
+<script src = "js/jquery.ui.labeledslider.js"></script>
+-->
+
 <script src="js/services.js"></script>
 <script src="js/controllers.js"></script>
 <script src="js/app.js"></script>
+
+
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

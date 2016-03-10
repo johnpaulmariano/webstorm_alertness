@@ -9,6 +9,7 @@ var myApp = angular.module('AtoAlertnessApp', [
     //'Home',
     'ngRoute',
     'ngCookies',
+    'ui.slider',
     'atoAlertnessControllers',
     'atoAlertnessServices'
 ]);
@@ -71,6 +72,9 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         })
         .when('/charts', {
             templateUrl: 'views/charts.html'
+        })
+        .when('/gauge', {
+            templateUrl: 'views/gauge.html'
         })
         .otherwise({ redirectTo: '/login' });
 }]);
