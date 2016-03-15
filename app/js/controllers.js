@@ -332,8 +332,8 @@ atoAlertnessControllers.controller('SleepNeedController', ['$scope', '$location'
         
         $scope.convertTime2Block = function(inTime) {
             var outTime = {
-                'hours': null,
-                'minutes': null
+                'hours': undefined,
+                'minutes': undefined
             };
             
             if(inTime)
@@ -500,7 +500,7 @@ atoAlertnessControllers.controller('SleepDebtController', ['$scope', '$rootScope
                 var sleepNeed = 0;
                 var dayCount = 0;
                 angular.forEach(response.data, function(v, k){
-                    if(v != null) {
+                    if(v != undefined && v != null) {
                         dayCount ++;
                         sleepNeed += v;
                     }
@@ -518,8 +518,8 @@ atoAlertnessControllers.controller('SleepDebtController', ['$scope', '$rootScope
         
         $scope.convertTime2Block = function(inTime) {
             var outTime = {
-                'hours': null,
-                'minutes': null
+                'hours': undefined,
+                'minutes': undefined
             };
             
             if(inTime)
@@ -597,17 +597,17 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
                 }
                 else {
                     for(var i = 0; i < questions.length; i++) {
-                        $scope[questions[i]] = null;
+                        $scope[questions[i]] = undefined;
                         var text_name = questions[i] + '_text';
-                        $scope[text_name] = null;
+                        $scope[text_name] = undefined;
                     }
                 }
             }
             else {
                  for(var i = 0; i < questions.length; i++) {
-                    $scope[questions[i]] = null;
+                    $scope[questions[i]] = undefined;
                     var text_name = questions[i] + '_text';
-                    $scope[text_name] = null;
+                    $scope[text_name] = undefined;
                 }
             }
         });
@@ -690,17 +690,17 @@ atoAlertnessControllers.controller('ToDosController', ['$scope', 'Authentication
                 }
                 else {
                     for(var i = 0; i < $scope.questions.length; i++) {
-                        $scope[$scope.questions[i]] = null;
+                        $scope[$scope.questions[i]] = undefined;
                         var text_name = $scope.questions[i] + '_text';
-                        $scope[text_name] = null;
+                        $scope[text_name] = undefined;
                     }
                 }
             }
             else {
                  for(var i = 0; i < $scope.questions.length; i++) {
-                    $scope[$scope.questions[i]] = null;
+                    $scope[$scope.questions[i]] = undefined;
                     var text_name = $scope.questions[i] + '_text';
-                    $scope[text_name] = null;
+                    $scope[text_name] = undefined;
                 }
                 
                 //console.log($scope);
@@ -901,8 +901,6 @@ atoAlertnessControllers.controller('DashboardController', ['$rootScope', '$scope
         
         for(var i = 1; i <= $scope.numOfDays; i++) {
             var namePrefix = 'day' + i;
-            //$scope[namePrefix + 'hours'] = ['-', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 18, 19, 20, 21, 22, 23, 24];
-            //$scope[namePrefix + 'minutes'] = [0, 15, 30, 45];
             $scope[namePrefix + 'selectedhours'] = 0;
             $scope[namePrefix + 'selectedminutes'] = 0;
             $scope[namePrefix + 'minDis'] = true;
@@ -941,7 +939,7 @@ atoAlertnessControllers.controller('DashboardController', ['$rootScope', '$scope
                 var sleepNeed = 0;
                 var dayCount = 0;
                 angular.forEach(response.data, function(v, k){
-                    if(v != null) {
+                    if(v != undefined && v != null) {
                         dayCount ++;
                         sleepNeed += v;
                     }
@@ -983,85 +981,150 @@ atoAlertnessControllers.controller('DashboardController', ['$rootScope', '$scope
     }
 ]);
 
-atoAlertnessControllers.controller('GaugeController', ['$window', '$rootScope', '$scope', '$location',
-    function($window, $rootScope, $scope, $location) {
+atoAlertnessControllers.controller('GaugeController', ['$window', '$scope', '$location',
+    function($window, $scope, $location) {
         $scope.hourRange = 24;
         $scope.tickInterval = 4;
         $scope.step = 1;
         $scope.defaultTick = $scope.hourRange * $scope.tickInterval;
         $scope.minRange = 0;
-        $scope.maxRange = $scope.hourRange * $scope.tickInterval * 2 + 1;
-        $scope.sliderVal = null;
+        $scope.maxRange = $scope.hourRange * $scope.tickInterval * 2;
+        $scope.sliderVal = undefined;
         $scope.sliderValText = "0";
 
-        if($scope.sliderVal == null) {
+        if($scope.sliderVal == undefined) {
             $scope.sliderVal = $scope.defaultTick;
         }
 
-        /*$scope.tickLabels = [];
-        var leftTicks = [], rightTicks = [];
+        //slider config
+        $scope.minSlider = {
+            minValue: $scope.minRange,
+            maxValue: $scope.maxRange,
+            //step: $scope.step,
+            value: $scope.defaultTick,
+            options: {
+                floor: $scope.minRange,
+                ceil: $scope.maxRange,
+                step: $scope.step,
+                translate: function(value){
+                    return $scope.getSlideVal(parseInt(value));
+                },
+                onEnd: function(){
+                    console.log('end');
+                    console.log($scope.minSlider.value);
+                    $scope.sliderValText = $scope.minSlider.value;
+                    $window.updateGauges();
+                }
 
-        for(var i = 0; i < $scope.hourRange; i++) {
-            leftTicks.push("- " + ($scope.hourRange - i) + " hour");
-            leftTicks.push("");
-            leftTicks.push("");
-            leftTicks.push("");
-
-            rightTicks.push("");
-            rightTicks.push("");
-            rightTicks.push("");
-            rightTicks.push((i + 1) + " hour");
-
-        }
-
-        for(var i = 0; i < leftTicks.length; i++) {
-            $scope.tickLabels.push(leftTicks[i]);
-        }
-
-        $scope.tickLabels.push("0");
-
-        for(var i = 0; i < rightTicks.length; i++) {
-            $scope.tickLabels.push(rightTicks[i]);
-        }
-        console.log($scope.tickLabels);*/
-
-        $scope.$watch("sliderVal", function(oldValue, newValue){
-            if(oldValue != newValue) {
-                $scope.getTimeVal();
             }
-
-        });
-        $scope.getTimeVal = function(){
-            var remainder = Math.abs(parseInt($scope.sliderVal) - $scope.defaultTick) % $scope.tickInterval;
-            var minutes = remainder * 15;   // 15 minutes
-            var hours = (Math.abs(parseInt($scope.sliderVal) - $scope.defaultTick) - remainder) / $scope.tickInterval;
-
-            var valString = hours + " hours and " + minutes + " minutes";;
-            if($scope.sliderVal < $scope.hourRange * $scope.tickInterval) {
-                valString = " - " + valString;
-            }
-            console.log(valString);
-            $scope.sliderValText = valString;
-
-            $window.updateGauges();
         };
 
-        // Slider options with event handlers
-        //don't need it now
-        /*$scope.slider = {
-            'options': {
-                start: function(event, ui) {
-                    console.log('Event: Slider start - set with slider options', event);
-                    //$scope.sliderValText = "0";
-                    //$scope.getTimeVal();
-                },
-                stop: function(event, ui) {
-                    console.log('Event: Slider stop - set with slider options', event);
-                    //$scope.getTimeVal();
+        $scope.getSlideVal = function(v){
+            var remainder = Math.abs(v - $scope.defaultTick) % $scope.tickInterval;
+            var minutes = remainder * 15;   // 15 minutes
+            var hours = (Math.abs(parseInt(v) - $scope.defaultTick) - remainder) / $scope.tickInterval;
 
-                }
+            var valString = hours + " hours and " + minutes + " minutes";
+            if(v < $scope.hourRange * $scope.tickInterval) {
+                valString = " - " + valString;
             }
-        };*/
 
+            return valString;
+        };
+    }
+]);
+
+atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$scope', '$location',
+    function($window, $scope, $location) {
+        //initiate vars for sliders
+        $scope.hourRange = 24;
+        $scope.tickInterval = 4;
+        $scope.step = 1;
+        $scope.defaultTick = $scope.hourRange * $scope.tickInterval;
+        $scope.minRange = 0;
+        $scope.maxRange = $scope.hourRange * $scope.tickInterval * 2;
+        $scope.sliderVal = undefined;
+        $scope.sliderValText = "0";
+
+        if($scope.sliderVal == undefined) {
+            $scope.sliderVal = $scope.defaultTick;
+        }
+
+        //initiate vars for gauge
+        $scope.gauge = {};
+        $scope.gauge.value = 50;
+        $scope.gauge.upperLimit = 100;
+        $scope.gauge.lowerLimit = 0;
+        $scope.gauge.unit = "%";
+        $scope.gauge.precision = 2;
+        $scope.gauge.ranges = [
+            {
+                min: 0,
+                max: 20,
+                color: '#bc1705'
+            },
+            {
+                min: 20,
+                max: 40,
+                color: '#ae4c0f'
+            },
+            {
+                min: 40,
+                max: 60,
+                color: '#a07e1a'
+            },
+            {
+                min: 60,
+                max: 80,
+                color: ' #95ab23'
+            },
+            {
+                min: 80,
+                max: 100,
+                color: '#8ec929'
+            }
+        ];
+
+        //slider config
+        $scope.minSlider = {
+            minValue: $scope.minRange,
+            maxValue: $scope.maxRange,
+            //step: $scope.step,
+            value: $scope.defaultTick,
+            options: {
+                floor: $scope.minRange,
+                ceil: $scope.maxRange,
+                step: $scope.step,
+                translate: function(value){
+                    return $scope.getSlideVal(parseInt(value));
+                },
+                onEnd: function() {
+                    // user finished sliding a handle
+                    console.log('end');
+                    console.log($scope.minSlider.value);
+                    $scope.sliderValText = $scope.minSlider.value;
+
+                    var hVal = Math.random() * 100;
+
+                    console.log(hVal);
+
+                    $scope.gauge.value = hVal;
+                }
+
+            }
+        };
+
+        $scope.getSlideVal = function(v){
+            var remainder = Math.abs(v - $scope.defaultTick) % $scope.tickInterval;
+            var minutes = remainder * 15;   // 15 minutes
+            var hours = (Math.abs(parseInt(v) - $scope.defaultTick) - remainder) / $scope.tickInterval;
+
+            var valString = hours + " hours and " + minutes + " minutes";
+            if(v < $scope.hourRange * $scope.tickInterval) {
+                valString = " - " + valString;
+            }
+
+            return valString;
+        };
     }
 ]);
