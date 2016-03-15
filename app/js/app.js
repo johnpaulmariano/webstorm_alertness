@@ -9,6 +9,8 @@ var myApp = angular.module('AtoAlertnessApp', [
     //'Home',
     'ngRoute',
     'ngCookies',
+    'rzModule',
+    'ngRadialGauge',
     'atoAlertnessControllers',
     'atoAlertnessServices'
 ]);
@@ -50,11 +52,11 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/insomnia', {
             templateUrl: 'views/insomnia.html'
         })
-	.when('/rls', {
-            templateUrl: 'views/rls.html'
+        .when('/rls', {
+                templateUrl: 'views/rls.html'
         })
-	.when('/plm', {
-            templateUrl: 'views/plm.html'
+        .when('/plm', {
+                templateUrl: 'views/plm.html'
         })
         .when('/apnea', {
             templateUrl: 'views/apnea.html'
@@ -71,6 +73,14 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         })
         .when('/charts', {
             templateUrl: 'views/charts.html'
+        })
+        .when('/gauge', {
+            controller: 'GaugeController',
+            templateUrl: 'views/gauge.html'
+        })
+        .when('/gauge2', {
+            controller: 'Gauge2Controller',
+            templateUrl: 'views/gauge2.html'
         })
         .otherwise({ redirectTo: '/login' });
 }]);

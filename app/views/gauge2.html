@@ -1,0 +1,20 @@
+<div ng-include="'views/navbar.html'"></div>
+<div class="container" ng-controller="Gauge2Controller">
+    <h4 class="row text-center fatigue-header">What's My Charge?</h4>
+    <p>This tool provides an estimate of mental speed based on <strong>sleep amounts</strong>, <strong>time of day</strong>, and <strong>caffeine consumed</strong>.</p>
+    <p>The needle on the gauge points to predicted mental speed at the time and date shown. Use the slide bar below the gauge to scroll <strong>forward by 2 days or backward by 2 days and see how mental speed varies.</strong></p>
+    <p><strong>To see how different sleep amounts or caffeine affects mental speed, click the button below the gauge to input your personal sleep schedule or caffeine intake.</strong></p>
+
+    <div width="100%" ng-radial-gauge ranges="gauge.ranges" value="gauge.value" value-unit="gauge.unit" precision="gauge.precision" lower-limit="gauge.lowerLimit" upper-limit="gauge.upperLimit"></div>
+    <!--
+    <h2>Slide me more, plz</h2>
+    -->
+    <!--
+    Model value:
+    <input type="text" style="border:0; color:#f6931f; font-weight:bold;" ng-model="minSlider.value" />
+    -->
+    <br/><br />
+    <rzslider rz-slider-model="minSlider.value" rz-slider-options="minSlider.options"></rzslider>
+    <br />
+    <br />
+</div>

@@ -3,103 +3,103 @@
     <h4 class="row text-center fatigue-header">To Do's</h4>
     
     <form class="form-horizontal" name="todosForm" role="form" ng-submit="setToDosList()">
-	<div ng-show="bedroom_temperature_text">
+	<div ng-show="plan_sleeptime_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="bedroom_temperature" id="bedroom_temperature" value="1" ng_model="bedroom_temperature_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="plan_sleeptime" id="plan_sleeptime" value="1" ng_model="plan_sleeptime_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-      			<div class="todos-text {{bedroom_temperature_check?'strike-though':''}}">Keep your bedroom cool (around 65 degrees) for best sleep as our body temperature drops when we sleep.</div>
-                <span class="todos-action {{bedroom_temperature_check?'strike-though':''}}">{{bedroom_temperature_text}}</span>
+      			<div class="todos-text {{plan_sleeptime_check?'strike-though':''}}">I plan for – and protect – my sleep time.</div>
+                <span class="todos-action {{plan_sleeptime_check?'strike-though':''}}">{{plan_sleeptime_text}}</span>
             </label>       
    </div> 
+
+    <div ng-show="room_temperature_text">
+    <label class="tasks-list-item reset-pw">
+    			<input type="checkbox" name="room_temperature" id="room_temperature" value="1" ng_model="room_temperature_check" class="todos-check tasks-list-cb">
+                <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
+      			<div class="todos-text {{room_temperature_check?'strike-though':''}}">I keep my room temperature comfortable for my sleep.</div>
+                <span class="todos-action {{room_temperature_check?'strike-though':''}}">{{room_temperature_text}}</span>
+            </label> 
+     </div>        
 
     <div ng-show="bedroom_darkness_text">
     <label class="tasks-list-item reset-pw">
     			<input type="checkbox" name="bedroom_darkness" id="bedroom_darkness" value="1" ng_model="bedroom_darkness_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-      			<div class="todos-text {{bedroom_darkness_check?'strike-though':''}}">Keep your bedroom dark (blackout curtains) or use an eye mask.</div>
+      			<div class="todos-text {{bedroom_darkness_check?'strike-though':''}}">I keep my room dark when I am trying to sleep.</div>
                 <span class="todos-action {{bedroom_darkness_check?'strike-though':''}}">{{bedroom_darkness_text}}</span>
-            </label> 
-     </div>        
-
-    <div ng-show="bedroom_quietness_text">
-    <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="bedroom_quietness" id="bedroom_quietness" value="1" ng_model="bedroom_quietness_check" class="todos-check tasks-list-cb">
-                <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-      			<div class="todos-text {{bedroom_quietness_check?'strike-though':''}}">Keep your bedroom quiet, or use ear plugs or white noise to reduce background sounds.</div>
-                <span class="todos-action {{bedroom_quietness_check?'strike-though':''}}">{{bedroom_quietness_text}}</span>
             </label> 
       </div>       
     
 
-    <div ng-show="bed_comfort_text">
+    <div ng-show="room_quiet_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="bed_comfort" id="bed_comfort" value="1" ng_model="bed_comfort_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="room_quiet" id="room_quiet" value="1" ng_model="room_quiet_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-      			<div class="todos-text {{bed_comfort_check?'strike-though':''}}">Ensure that your bed, pillow and sheets are comfortable so that you sleep well and don't awaken stiff and sore.</div>
-                <span class="todos-action {{bed_comfort_check?'strike-though':''}}">{{bed_comfort_text}}</span>
+      			<div class="todos-text {{room_quiet_check?'strike-though':''}}">I keep my room quiet when I am trying to sleep.</div>
+                <span class="todos-action {{room_quiet_check?'strike-though':''}}">{{room_quiet_text}}</span>
             </label> 
       </div>       
             
             
 
-    <div ng-show="pets_in_bedroom_text">
+    <div ng-show="bedroom_only_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="pets_in_bedroom" id="pets_in_bedroom" value="1" ng_model="pets_in_bedroom_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="bedroom_only" id="bedroom_only" value="1" ng_model="bedroom_only_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-                 <div class="todos-text {{pets_in_bedroom_check?'strike-though':''}}">Keep pets off the bed. We love our pets, but they can disrupt your sleep.</div>
-                <span class="todos-action {{pets_in_bedroom_check?'strike-though':''}}">{{pets_in_bedroom_text}}</span>
-            </label> 
-      </div>       
-               
-   
-    <div ng-show="regulate_bedtimes_text">
+                 <div class="todos-text {{bedroom_only_check?'strike-though':''}}">I use my bedroom only for sleep and intimacy.</div>
+                <span class="todos-action {{bedroom_only_check?'strike-though':''}}">{{bedroom_only_text}}</span>
+            </label>
+      </div>
+
+
+    <div ng-show="regulate_waketimes_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="regulate_bedtimes" id="regulate_bedtimes" value="1" ng_model="regulate_bedtimes_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="regulate_waketimes" id="regulate_waketimes" value="1" ng_model="regulate_waketimes_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-                <div class="todos-text {{regulate_bedtimes_check?'strike-though':''}}">Stick to the same bedtime and wake time each day to help regulate your circadian rhythms so when you fall asleep, you stay asleep.</div>
-                <span class="todos-action {{regulate_bedtimes_check?'strike-though':''}}">{{regulate_bedtimes_text}}</span>
+                <div class="todos-text {{regulate_waketimes_check?'strike-though':''}}">I wake up at the same time every day.</div>
+                <span class="todos-action {{regulate_waketimes_check?'strike-though':''}}">{{regulate_waketimes_text}}</span>
             </label> 
     </div>         
             
              
-    <div ng-show="relax_nighttime_routine_text">
+    <div ng-show="stop_caffeine_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="relax_nighttime_routine" id="relax_nighttime_routine" value="1" ng_model="relax_nighttime_routine_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="stop_caffeine" id="stop_caffeine" value="1" ng_model="stop_caffeine_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-                <div class="todos-text {{relax_nighttime_routine_check?'strike-though':''}}">Establish a relaxing nighttime routine to relieve the stress from your day before you try to fall asleep.</div>
-                <span class="todos-action {{relax_nighttime_routine_check?'strike-though':''}}">{{relax_nighttime_routine_text}}</span>
+                <div class="todos-text {{stop_caffeine_check?'strike-though':''}}">I stop using anything with caffeine at least 6 hours before bedtime.</div>
+                <span class="todos-action {{stop_caffeine_check?'strike-though':''}}">{{stop_caffeine_text}}</span>
             </label>         
     </div> 
     
         
-    <div ng-show="fall_back_to_sleep_text">
+    <div ng-show="exercise_routine_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="fall_back_to_sleep" id="fall_back_to_sleep" value="1" ng_model="fall_back_to_sleep_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="exercise_routine" id="exercise_routine" value="1" ng_model="exercise_routine_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-                <div class="todos-text {{fall_back_to_sleep_check?'strike-though':''}}">Get out of bed, go to another room, and do something relaxing until you feel tired if you wake and have trouble falling back to sleep.</div>
-                <span class="todos-action {{fall_back_to_sleep_check?'strike-though':''}}">{{fall_back_to_sleep_text}}</span>
+                <div class="todos-text {{exercise_routine_check?'strike-though':''}}">I finish my exercise routine at least 3 hours before bedtime.</div>
+                <span class="todos-action {{exercise_routine_check?'strike-though':''}}">{{exercise_routine_text}}</span>
             </label>   
     </div> 
     
     
-    <div ng-show="coordinate_family_members_text">
+    <div ng-show="no_alcohol_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="coordinate_family_members" id="coordinate_family_members" value="1" ng_model="coordinate_family_members_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="no_alcohol" id="no_alcohol" value="1" ng_model="no_alcohol_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-                 <div class="todos-text {{coordinate_family_members_check?'strike-though':''}}">Protect your sleep time from family disturbances by coordinating with family members ahead of time.</div>
-                <span class="todos-action {{coordinate_family_members_check?'strike-though':''}}">{{coordinate_family_members_text}}</span>
+                 <div class="todos-text {{no_alcohol_check?'strike-though':''}}">I do not use alcohol to help me fall asleep.</div>
+                <span class="todos-action {{no_alcohol_check?'strike-though':''}}">{{no_alcohol_text}}</span>
             </label>  
     </div> 
     
-    <div ng-show="electronic_devices_text">
+    <div ng-show="get_out_bed_text">
     <label class="tasks-list-item reset-pw">
-    			<input type="checkbox" name="electronic_devices" id="electronic_devices" value="1" ng_model="electronic_devices_check" class="todos-check tasks-list-cb">
+    			<input type="checkbox" name="get_out_bed" id="get_out_bed" value="1" ng_model="get_out_bed_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-                 <div class="todos-text {{electronic_devices_check?'strike-though':''}}">Avoid bright light and the blue light from electronic devices close to bedtime, as this sends alerting signals to our brains when we are trying to wind down.</div>
-                <span class="todos-action {{electronic_devices_check?'strike-though':''}}">{{electronic_devices_text}}</span>
+                 <div class="todos-text {{get_out_bed_check?'strike-though':''}}">I get out of bed if I cannot fall asleep or stay asleep.</div>
+                <span class="todos-action {{get_out_bed_check?'strike-though':''}}">{{get_out_bed_text}}</span>
             </label>
     </div> 
-    
+    <!--
     <div ng-show="exercises_and_caffeine_text">
     <label class="tasks-list-item reset-pw">
     			<input type="checkbox" name="exercises_and_caffeine" id="exercises_and_caffeine" value="1" ng_model="exercises_and_caffeine_check" class="todos-check tasks-list-cb">
@@ -118,6 +118,7 @@
                 <span class="tasks-list-desc todos-action {{alcohol_nicotine_meals_check?'strike-though':''}}">{{alcohol_nicotine_meals_text}}</span>
             </label>
     </div>
+    -->
     <div class="form-actions" style="margin-top:10px;">
         <div ng-show="error" class="alert alert-danger">{{error}}</div>
         <div ng-show="message" class="alert alert-info">{{message}}</div>

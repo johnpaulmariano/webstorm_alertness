@@ -237,7 +237,7 @@ h5 {
 }
 @media (min-width:767px){
 
-#Image2,#Image3,#Image4,#Image5,#Image6,#Image7,#Image8 {
+#Image2,#Image3,#Image4,#Image5,#Image6,#Image7,#Image8, #dashboard {
 		display:none;
 		
 }
@@ -249,7 +249,7 @@ h5 {
 }
 }
 
-@media (min-width:767px) and (max-width:991px) {
+@media (min-width:767px) and (max-width:1250px) {
 .navText {
 	/*font-size:12px;*/
 }
@@ -344,8 +344,17 @@ form#loginForm {
 }
 .chrono-label, .checklist-label {
   margin:0 0 20px 0;
+  font-weight:normal;
+  font-size:14px;
 }
-
+#appContainer > div > div.container.ng-scope > div > form > div > label > strong {
+	font-size:16px;
+}
+ol.lower-alpha 
+{
+	list-style-type: lower-alpha;
+	padding-left:15px;
+	}
 @media (min-width:370px){
 	
 .no-wrap {
@@ -371,7 +380,7 @@ form#loginForm {
 }
 .header-image {
     width: 100%;
-    margin-top: -75px;
+    margin-top: -65px;
     margin-bottom: -25px;
 	max-width:600px;
 }
@@ -406,3 +415,54 @@ form#loginForm {
 }
 
 /* --- end of Trieu's new css '*/
+
+@media (max-width:350px){
+#appContainer > div > div > nav > div > a > img {
+    margin-left: 20px;
+    margin-top: 12px;
+	
+} 
+nav > div > a.navbar-brand > img{
+    width: 130px;
+    margin-top: -5px !important;
+}
+img#dashboard {
+	max-width:55px;
+}
+.container-fluid {
+	padding-top:5px;
+}
+.container {
+	margin-top:25px;
+}
+.navbar-header {
+    min-height: 70px;
+}
+
+}
+@media (min-width:350px){
+	.glyphicon {
+    font-size:35px !important;
+}
+}
+.navbar-brand {
+	padding-left:10px;
+}
+#as-guest-disclaimer {
+	font-style:italic;
+	text-align:left;
+}
+.glyphicon {
+    top: 10px;
+}
+.navbar-toggle {
+	margin-right:0px;
+}
+img#dashboard {
+    float: right;
+    position: relative;
+    margin-top: 18px;
+}
+#appContainer > div > div > nav > div > div.navbar-header > div > button {
+	margin-top:1px;
+}
