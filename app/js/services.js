@@ -96,7 +96,7 @@ myServices.factory('AuthenticationService',
         service.ClearCredentials = function () {
             $rootScope.globals = {};
             $cookieStore.remove('globals');
-            $http.defaults.headers.common.Authorization = 'Basic ';
+            $http.defaults.headers.common.Authorization = 'Basic';
             //delete $http.defaults.headers.common.Authorization;
         };
         
