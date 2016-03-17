@@ -1,0 +1,25 @@
+<div ng-include="'views/navbar.html'"></div>
+<div class="container" ng-controller="MyChargeController">
+    <h4 class="row text-center fatigue-header">What's My Charge Input</h4>
+    <div class="form-group">
+        <uib-accordion close-others="oneAtATime" template-url="./bower_components/angular-ui-bootstrap/template/accordion/accordion.html">
+
+            <uib-accordion-group ng-repeat="item in items" heading="{{item.name}}" template-url="./templates/accordion-group-template.html">
+                <div ng-repeat="d in item.data">
+                    Start time {{$index + 1}}<br/>
+                    Hour: <select class="form-control" name="day{{item.id}}_starthour" ng-options="n for n in hoursRange" ng-model="d.starthour"></select>
+                    Minute: <select class="form-control" name="day{{item.id}}_startminute" ng-options="n for n in minutesRange" ng-model="d.startminute"></select>
+                    <br />
+                    Duration {{$index + 1}}<br />
+                    Hour: <select class="form-control" name="day{{item.id}}_durationhour" ng-options="n for n in hoursRange" ng-model="d.durationhour"></select>
+                    Minute: <select class="form-control" name="day{{item.id}}_durationminute" ng-options="n for n in minutesRange" ng-model="d.durationminute"></select>
+                </div>
+                <br />
+                <button type="button" class="btn btn-default btn-sm" ng-click="addSleep(item.id)">Add Sleep</button>
+            </uib-accordion-group>
+        </uib-accordion>
+        <button type="button" class="btn btn-default btn-sm" ng-click="addDay()">Add Day</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="save()">Submit</button>
+    </div>
+
+ </div>

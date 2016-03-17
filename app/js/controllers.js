@@ -24,7 +24,7 @@ atoAlertnessControllers.controller('ApplicationController', ['$scope', '$rootSco
 ]);
 
 atoAlertnessControllers.controller('LoginController',
-    ['$scope', '$rootScope', '$location', 'AuthenticationService', 'RememberMeService', 'TokenService', '$cookieStore', '$http', 
+    ['$scope', '$rootScope', '$location', 'AuthenticationService', 'RememberMeService', 'TokenService', '$cookieStore', '$http',
     function ($scope, $rootScope, $location, AuthenticationService, RememberMeService, TokenService, $cookieStore, $http) {
         
         AuthenticationService.ClearCredentials(); // reset login status
@@ -139,7 +139,7 @@ atoAlertnessControllers.controller('LoginController',
         $scope.loginAsGuest = function()
         {
             $rootScope.asGuest = true;
-            $cookieStore.put('asGuestCookies', true);            
+            $cookieStore.put('asGuestCookies', true);
             $location.path('/home');
         }
     }
@@ -1126,5 +1126,60 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$scope', '$l
 
             return valString;
         };
+    }
+]);
+
+atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '$location',
+    function($window, $scope, $location) {
+
+        $scope.numberOfDays = 14;
+        $scope.hoursRange = [];
+
+        for(var i = 0; i < 24; i++) {
+            $scope.hoursRange.push(i);
+        }
+
+        $scope.minutesRange = [];
+
+        for(var i = 0; i < 60; i++) {
+            $scope.minutesRange.push(i);
+        }
+
+        $scope.items = [];
+
+        for(var i = 0; i < $scope.numberOfDays; i++) {
+            $scope.items.push(
+                {
+                    id: i + 1,
+                    name: 'Day ' + (i + 1),
+                    data: [
+                        {starthour: 23, startminute: 0, durationhour: 8, durationminute: 0}
+                    ]
+                }
+            );
+        }
+
+
+
+        $scope.addDay = function() {
+            $scope.numberOfDays ++;
+            $scope.items.push(
+                {
+                    id: $scope.numberOfDays,
+                    name: 'Day ' + $scope.numberOfDays,
+                    data: [
+                        {starthour: 23, startminute: 0, durationhour: 8, durationminute: 0}
+                    ]
+                }
+            );
+        };
+
+        $scope.addSleep = function(day){
+            $scope.items[parseInt(day) - 1].data.push({starthour: 23, startminute: 0, durationhour: 8, durationminute: 0});
+        }
+
+        $scope.save = function() {
+            console.log($scope.items);
+        }
     }
 ]);
