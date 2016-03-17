@@ -11,6 +11,8 @@ var myApp = angular.module('AtoAlertnessApp', [
     'ngCookies',
     'rzModule',
     'ngRadialGauge',
+    'ui.bootstrap.collapse',
+    'ui.bootstrap.accordion',
     'atoAlertnessControllers',
     'atoAlertnessServices'
 ]);
@@ -81,6 +83,10 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/gauge2', {
             controller: 'Gauge2Controller',
             templateUrl: 'views/gauge2.html'
+        })
+        .when('/mycharge', {
+            controller: 'MyChargeController',
+            templateUrl: 'views/mycharge.html'
         })
         .otherwise({ redirectTo: '/login' });
 }]);
@@ -169,9 +175,12 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
             else if (($location.path() !== '/login' && $location.path() !== '/resetpassword') && !$rootScope.globals.currentUser) { // redirect to login page if not logged in
                 $location.path('/login');
             }
-            
+            console.log("after if");
             if ($rootScope.globals.currentUser) {
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
+            }
+            else {
+                $http.defaults.headers.common['Authorization'] = 'Basic';
             }
         });
         
@@ -198,7 +207,7 @@ myApp.config(['$httpProvider',
         //$httpProvider.defaults.useXDomain = true;
         //delete $httpProvider.defaults.headers.common['X-Requested-With'];
         // Use x-www-form-urlencoded Content-Type
-        $httpProvider.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
         /**
          * The workhorse; converts an object to x-www-form-urlencoded serialization.
          * @param {Object} obj
