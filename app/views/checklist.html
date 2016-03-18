@@ -113,7 +113,7 @@
         <form class="form-horizontal" name="checklistForm" role="form" ng-submit="setChecklist()">
             <h5>Your Bedroom</h5>
             <div class="form-group">
-                <label class="checklist-label" for="plan_sleeptime"><strong>1. I plan for – and protect – my sleep time.</strong><br><br> Especially if you have to sleep during the day, tell your family exactly when you will be sleeping and ensure that they understand that you are not to be disturbed during your sleep time.</label>
+                <label class="checklist-label" for="plan_sleeptime"><strong>1. I plan for - and protect - my sleep time.</strong><br><br> Especially if you have to sleep during the day, tell your family exactly when you will be sleeping and ensure that they understand that you are not to be disturbed during your sleep time.</label>
                 <div class="radio-list" ng-repeat="sel in checklistOpts">
                     <label class="tasks-list-item"><input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}"  name="plan_sleeptime" ng-model="$parent.plan_sleeptime" value="{{sel.value}}" ng-checked="(plan_sleeptime != null && plan_sleeptime == sel.value)" required><span class="tasks-list-desc">{{sel.text}}</span><br />
                     </label></div>

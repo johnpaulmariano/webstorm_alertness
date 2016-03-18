@@ -1148,18 +1148,66 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '
         $scope.items = [];
 
         for(var i = 0; i < $scope.numberOfDays; i++) {
+            var isOpen = 0;
+
+            if(i == 0) {
+                isOpen = 1;
+            }
+
             $scope.items.push(
                 {
                     id: i + 1,
                     name: 'Day ' + (i + 1),
                     data: [
                         {starthour: 23, startminute: 0, durationhour: 8, durationminute: 0}
+                    ],
+                    isOpen: isOpen,
+                    caffeine: [
+                        {caffeineSource: null, quantity: null, hour: null, minute: null}
                     ]
                 }
             );
         }
 
+        $scope.dropdownItems = [
+            {
+                id: 1,
+                name: "STARBUCKS COFFEE VENTI",
+                value: "410"
+            },
+            {
+                id: 2,
+                name: "STARBUCKS COFFEE GRANDE",
+                value: "330"
+            },
+            {
+                id: 3,
+                name: "STARBUCKS COFFEE TALL",
+                value: "260"
+            },
+            {
+                id: 4,
+                name: "STARBUCKS COFFEE SHORT",
+                value: "175"
+            },
+            {
+                id: 5,
+                name: "5-HOUR ENERGY SHOT REGULAR STRENGTH",
+                value: "200"
+            },
+            {
+                id: 6,
+                name: "5-HOUR ENERGY SHOT EXTRA STRENGTH",
+                value: "230"
+            }
+        ];
+        $scope.caffeineQuantity = [];
 
+        for(var i = 1; i < 10; i++) {
+            $scope.caffeineQuantity.push(i);
+        }
+
+        $scope.showCaffeineForm = false;
 
         $scope.addDay = function() {
             $scope.numberOfDays ++;
@@ -1169,6 +1217,10 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '
                     name: 'Day ' + $scope.numberOfDays,
                     data: [
                         {starthour: 23, startminute: 0, durationhour: 8, durationminute: 0}
+                    ],
+                    isOpen: false,
+                    caffeine: [
+                        {caffeineSource: null, quantity: null, hour: null, minute: null}
                     ]
                 }
             );
@@ -1180,6 +1232,94 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '
 
         $scope.save = function() {
             console.log($scope.items);
+            /*expecting data format
+            * {
+             “sleepStartTime”: 23,
+             “sleepWakeSchedule”:[ 8.0,40.0,8.0,12.0],
+             “caffeineDoses”:[ 100.0,200.0,100.0],
+             “caffeineTimes”:[ 32.0,48.0,51.0]
+             }*/
+            var jsonData = {};
+
+            /*if($scope.items[0].data) {
+                jsonData.sleepStartTime = parseFloat($scope.items[0].data[0].starthour + "." + $scope.items[0].data[0].startminute);
+            }*/
+            var data = [];
+            var sortByStartTime = function(arr) {
+
+            };
+
+            for(var i = 0; i < $scope.items.length; i++) {
+                var day = $scope.items[i].data;
+                var dataDay = [];
+                for(var j = 0; j < day.length; j++) {
+                    var sleep = {};
+                    sleep.startTime = parseFloat(day[j].starthour) + day[j].startminute/60;
+                    //sleep.wakeTime1 =
+                    sleep.sleepDuration = parseFloat(day[j].durationhour) + day[j].durationminute/60;
+                    sleep.endTime = sleep.startTime + sleep.sleepDuration;
+                    //sleep.wakeTime = 24 - sleep.endTime;
+                    dataDay.push(sleep);
+                }
+
+                //to do sort dataDay by startTime
+                dataDay.sort(function(a, b){
+                    a = parseInt(a.startTime);
+                    b = parseInt(b.startTime);
+                    return a - b;
+                });
+
+                for(var k = 0; k < dataDay.length - 1; k++) {
+                    if(dataDay[k].endTime <= 24) {
+                        dataDay[k+1].wakeDuration = dataDay[k+1].startTime - dataDay[k].endTime;
+                    }
+                    else {
+                        dataDay[k+1].wakeDuration = dataDay[k+1].startTime - (dataDay[k].endTime - 24);
+                    }
+                    //dataDay[k+1].wakeDuration = dataDay[k+1].startTime - (dataDay[k].endTime - 24);
+                    //console.log(k);
+                }
+
+                //catch overlapsed time maybe?
+
+                data.push(dataDay);
+            }
+
+            console.log(data);
         }
+
+        $scope.showCaffeine = function(){
+            $scope.showCaffeineForm = true;
+        };
+
+        $scope.addCaffeine = function(day) {
+            $scope.items[parseInt(day) - 1].caffeine.push({caffeineSource: null, quantity: null, hour: null, minute: null});
+        };
+
+        $scope.saveCaffeine = function(){
+
+        };
+
+        $scope.formatTime = function(h, m) {
+            if(!h) {
+                h = 0;
+            }
+            else if(h < 10) {
+                h = "0" + h;
+            }
+
+            if(!m) {
+                m = 0;
+            }
+            else if(m < 10) {
+                m = "0" + m;
+            }
+            if(h == 0 && m == 0) {
+                return "";
+            }
+            else {
+                return h + ":" + m;
+            }
+        };
     }
 ]);
