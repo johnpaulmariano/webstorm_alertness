@@ -4,8 +4,15 @@
     <p>This tool provides an estimate of mental speed based on <strong>sleep amounts</strong>, <strong>time of day</strong>, and <strong>caffeine consumed</strong>.</p>
     <p>The needle on the gauge points to predicted mental speed at the time and date shown. Use the slide bar below the gauge to scroll <strong>forward by 2 days or backward by 2 days and see how mental speed varies.</strong></p>
     <p><strong>To see how different sleep amounts or caffeine affects mental speed, click the button below the gauge to input your personal sleep schedule or caffeine intake.</strong></p>
-
-    <div width="100%" ng-radial-gauge ranges="gauge.ranges" value="gauge.value" value-unit="gauge.unit" precision="gauge.precision" lower-limit="gauge.lowerLimit" upper-limit="gauge.upperLimit"></div>
+    <div class="container" style="margin-top:0px;">
+      <div style="text-align:center; font-size:14px;">
+        Powered By: BHSAI/TATRC
+      </div></div>
+    <div width="100%" style="max-width:300px; text-align:center; margin:auto;" ng-radial-gauge ranges="gauge.ranges" value="gauge.value" value-unit="gauge.unit" precision="gauge.precision" lower-limit="gauge.lowerLimit" upper-limit="gauge.upperLimit"></div>
+    <div class="container" style="max-width:300px; margin-top:0px;">
+      <div class="slower-text">Slower</div>
+      <div class="faster-text">Faster</div>
+    </div>
     <!--
     <h2>Slide me more, plz</h2>
     -->
@@ -17,4 +24,6 @@
     <rzslider rz-slider-model="minSlider.value" rz-slider-options="minSlider.options"></rzslider>
     <br />
     <br />
+    <p style="margin-bottom:0px; text-align:center;">Click here to:</p>
+    <h4 class="row text-center fatigue-header"><a href="#mycharge" style="color:#FFF;">Change Sleep Schedule <br> or <br> Add Caffeine Event</a> </h4>
 </div>

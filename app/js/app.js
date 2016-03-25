@@ -88,6 +88,9 @@ myApp.config(['$routeProvider', function ($routeProvider) {
             controller: 'MyChargeController',
             templateUrl: 'views/mycharge.html'
         })
+        .when('/howmuchcaffeine', {
+            templateUrl: 'views/howmuchcaffeine.html'
+        })
         .otherwise({ redirectTo: '/login' });
 }]);
   

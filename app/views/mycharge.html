@@ -1,47 +1,46 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container" ng-controller="MyChargeController">
     <h4 class="row text-center fatigue-header">What's My Charge Input</h4>
+    <form name="userForm" novalidate>
     <div class="form-group">
         <uib-accordion close-others="true" template-url="./bower_components/angular-ui-bootstrap/template/accordion/accordion.html">
-
             <uib-accordion-group is-open="item.isOpen" ng-repeat="item in items" heading="{{item.name}}" template-url="./templates/accordion-group-template.html">
-                <div ng-repeat="d in item.data">
-                    Start time {{$index + 1}}<br/>
+                <div ng-repeat="d in item.data" class="mycharge-daybg {{d.error ? 'sleep_error' : ''}}">
+                    <div class="mycharge-start-header">Start Time ({{$index + 1}})</div>
                     Hour: <select class="form-control" name="day{{item.id}}_starthour" ng-options="n for n in hoursRange" ng-model="d.starthour"></select>
                     Minute: <select class="form-control" name="day{{item.id}}_startminute" ng-options="n for n in minutesRange" ng-model="d.startminute"></select>
-                    <br />
-                    Duration {{$index + 1}}<br />
+                    <div class="mycharge-start-header">Sleep Duration ({{$index + 1}})</div>
                     Hour: <select class="form-control" name="day{{item.id}}_durationhour" ng-options="n for n in hoursRange" ng-model="d.durationhour"></select>
                     Minute: <select class="form-control" name="day{{item.id}}_durationminute" ng-options="n for n in minutesRange" ng-model="d.durationminute"></select>
-
+                    <hr>
                 </div>
-                <br />
+                <div style="text-align:center; margin:auto 0;">
+                    <button type="button" class="btn btn-primary btn-med" ng-click="addSleep(item.id)">Add Sleep</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-primary btn-med" ng-click="showCaffeine()">Caffeine Input</button>
+                </div>
 
-                <button type="button" class="btn btn-primary btn-med" ng-click="addSleep(item.id)">Add Sleep</button>
-                &nbsp;
-                <button type="button" class="btn btn-primary btn-med" ng-click="showCaffeine()">Caffeine Input</button>
                 <div class="caffeine_div"  ng-if="showCaffeineForm" style="background-color: #546973;padding:10px;margin-top: 5px;" >
-                    <ol>
-                        <li ng-repeat="c in item.caffeine" ng-if="c.caffeineSource">{{c.caffeineSource.name}} | {{c.caffeineSource.value}}mg  x {{c.quantity}}  = {{c.caffeineSource.value * c.quantity}}mg | at {{formatTime(c.hour, c.minute)}}</li>
+                    <ol class="caffeine-list">
+                        <li style="border-bottom:5px solid #304148;" ng-repeat="c in item.caffeine" ng-if="c.caffeineSource">{{c.caffeineSource.name}} | {{c.caffeineSource.value}}mg  x {{c.quantity}}  =  {{c.caffeineSource.value * c.quantity}}mg | at {{formatTime(c.hour, c.minute)}}</li>
                     </ol>
                     <div class="caffeine_form"  ng-repeat="c in item.caffeine" style="background-color: #82A0AF;margin-top:10px; margin-bottom:10px;">
-                        Caffeine Source: <select class="form-control" name="day{{item.id}}_caffeinetype" ng-options="item as item.name for item in dropdownItems track by item.id" ng-model="c.caffeineSource"></select>
-                        <br />
-                        Quantity: <select class="form-control" name="day{{item.id}}_caffeinequantity" ng-options="k for k in caffeineQuantity" ng-model="c.quantity"></select>
-                        Hour: <select class="form-control" name="day{{item.id}}_caffeinehour" ng-options="n for n in hoursRange" ng-model="c.hour"></select>
-                        Minute: <select class="form-control" name="day{{item.id}}_caffeineminute" ng-options="n for n in minutesRange" ng-model="c.minute"></select>
-
+                        <div class="mycharge-start-header" style="padding-left:10px; color:#fff;">Caffeine Event</div>
+                        <div style="padding:10px;">
+                            Caffeine Source: <select class="form-control" name="day{{item.id}}_caffeinetype" ng-options="item as item.name for item in dropdownItems track by item.id" ng-model="c.caffeineSource"></select>
+                            Quantity: <select class="form-control" name="day{{item.id}}_caffeinequantity" ng-options="k for k in caffeineQuantity" ng-model="c.quantity"></select>
+                            Hour: <select class="form-control" name="day{{item.id}}_caffeinehour" ng-options="n for n in hoursRange" ng-model="c.hour"></select>
+                            Minute: <select class="form-control" name="day{{item.id}}_caffeineminute" ng-options="n for n in minutesRange" ng-model="c.minute"></select>
+                        </div>
                     </div>
                     <button type="button" class="btn btn-info btn-sm" ng-click="saveCaffeine(item.id)">Save</button>
                     &nbsp;
-                    <button type="button" class="btn btn-info btn-sm" ng-click="addCaffeine(item.id)">More</button>
-
+                    <button type="button" class="btn btn-primary" ng-click="addCaffeine(item.id)">More</button>
                 </div>
-                <br />
             </uib-accordion-group>
         </uib-accordion>
-        <button type="button" class="btn btn-default btn-sm" ng-click="addDay()">Add Day</button>
-        <button type="button" class="btn btn-default btn-sm" ng-click="save()">Submit</button>
+        <button type="button" class="btn btn-primary" ng-click="addDay()">Add Day</button>&nbsp;
+        <button type="button" class="btn btn-primary" ng-click="save()">Submit</button>
     </div>
-
+    </form>
  </div>
