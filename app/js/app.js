@@ -9,6 +9,7 @@ var myApp = angular.module('AtoAlertnessApp', [
     //'Home',
     'ngRoute',
     'ngCookies',
+    'LocalStorageModule',
     'rzModule',
     'ngRadialGauge',
     'ui.bootstrap.collapse',
@@ -16,6 +17,13 @@ var myApp = angular.module('AtoAlertnessApp', [
     'atoAlertnessControllers',
     'atoAlertnessServices'
 ]);
+
+myApp.value('DEBUG_MODE', true);
+
+myApp.config(function (localStorageServiceProvider) {
+    localStorageServiceProvider
+        .setPrefix('AtoAlertnessApp');
+});
 
 myApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -91,11 +99,14 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/howmuchcaffeine', {
             templateUrl: 'views/howmuchcaffeine.html'
         })
+        .when('/meq', {
+            templateUrl: 'views/m-e-questionnaire.html'
+        })
         .otherwise({ redirectTo: '/login' });
 }]);
   
-myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'TokenService', 'RememberMeService',
-    function ($rootScope, $location, $window, $cookieStore, $http, TokenService, RememberMeService) {
+myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'TokenService', 'RememberMeService', 'DEBUG_MODE',
+    function ($rootScope, $location, $window, $cookieStore, $http, TokenService, RememberMeService, DEBUG_MODE) {
         $rootScope.logout = false;
         $rootScope.csrfToken = $cookieStore.get('X-CSRF-TOKEN');
         $rootScope.location = $location.path();
@@ -175,14 +186,22 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
                 //doing nothing
                 console.log('as guest');
             }
-            else if (($location.path() !== '/login' && $location.path() !== '/resetpassword') && !$rootScope.globals.currentUser) { // redirect to login page if not logged in
-                $location.path('/login');
+            else if (($location.path() !== '/login' && $location.path() !== '/resetpassword')) { // redirect to login page if not logged in
+                if(DEBUG_MODE) {
+                    ;   // do nothing
+                }
+                else if(!$rootScope.globals.currentUser) {
+                    $location.path('/login');
+                }
             }
-            console.log("after if");
+
             if ($rootScope.globals.currentUser) {
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
             }
-            else {
+            else if(DEBUG_MODE){
+                $http.defaults.headers.common['Authorization'] = 'Basic debug';
+            }
+            else{
                 $http.defaults.headers.common['Authorization'] = 'Basic';
             }
         });
@@ -254,6 +273,11 @@ myApp.config(['$httpProvider',
         }];*/
     }
 ]);
+
+myApp.config(['$compileProvider', function ($compileProvider) {
+    // disable debug info
+    $compileProvider.debugInfoEnabled(false);
+}]);
 
 
 

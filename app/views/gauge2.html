@@ -1,5 +1,5 @@
 <div ng-include="'views/navbar.html'"></div>
-<div class="container" ng-controller="Gauge2Controller">
+<div class="container">
     <h4 class="row text-center fatigue-header">What's My Charge?</h4>
     <p>This tool provides an estimate of mental speed based on <strong>sleep amounts</strong>, <strong>time of day</strong>, and <strong>caffeine consumed</strong>.</p>
     <p>The needle on the gauge points to predicted mental speed at the time and date shown. Use the slide bar below the gauge to scroll <strong>forward by 2 days or backward by 2 days and see how mental speed varies.</strong></p>
@@ -8,7 +8,7 @@
       <div style="text-align:center; font-size:14px;">
         Powered By: BHSAI/TATRC
       </div></div>
-    <div width="100%" style="max-width:300px; text-align:center; margin:auto;" ng-radial-gauge ranges="gauge.ranges" value="gauge.value" value-unit="gauge.unit" precision="gauge.precision" lower-limit="gauge.lowerLimit" upper-limit="gauge.upperLimit"></div>
+    <div width="100%" style="max-width:300px; text-align:center; margin:auto;" ng-radial-gauge major-graduations="6" ranges="gauge.ranges" value="gauge.value" value-unit="gauge.unit" precision="gauge.precision" lower-limit="gauge.lowerLimit" upper-limit="gauge.upperLimit"></div>
     <div class="container" style="max-width:300px; margin-top:0px;">
       <div class="slower-text">Slower</div>
       <div class="faster-text">Faster</div>
@@ -21,6 +21,12 @@
     <input type="text" style="border:0; color:#f6931f; font-weight:bold;" ng-model="minSlider.value" />
     -->
     <br/><br />
+    <!--
+    Date format: <input ng-model="format"> <hr/>
+    -->
+    <div>Data submitted on {{dataTimeStamp}}</div>
+    <div>Current Time: <span alertness-current-time="format"></span></div>
+    <div>Generation Time: {{currentTime}}</div>
     <rzslider rz-slider-model="minSlider.value" rz-slider-options="minSlider.options"></rzslider>
     <br />
     <br />

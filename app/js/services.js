@@ -507,3 +507,212 @@ myServices.factory('ResetPasswordService', ['$http', 'BASE_API_URL', '$rootScope
         return service;
     }
 ]);
+
+myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStorageService', '$rootScope',
+    function($http, BASE_API_URL, localStorageService, $rootScope){
+        var service = {};
+        var storageKey = 'PredictionData';
+        var expiredStorage = 1000 * 60 * 60; // 60 minutes for testing
+        var fromLocal = false;
+
+        service.getData = function(data, callback) {
+            var numDays = parseInt(data.numDays);
+            /* ------will be removed ------*/
+            /*
+            var sleeps = [8.0,47.0,8.0, 71.0, 8.0, 95, 8, 119, 8, 143, 8, 167, 8, 191, 8, 215, 8, 239, 8, 263, 8, 287, 8, 311, 8, 335, 8];
+            var sleepWakeSchedule = [];
+
+            for(var i = 0; i < sleeps.length; i++) {
+                var lower = 24 * numDays -1;
+                var upper = 24 * numDays;
+                if(i == 0 || i == 1) {
+                    sleepWakeSchedule.push(sleeps[i]);
+                }
+                else if(i % 2 == 0) {
+                    sleepWakeSchedule.push(sleeps[i]);
+                }
+                else {
+                    if(sleeps[i] >= lower && sleeps[i] <= upper) {
+                        sleepWakeSchedule.push(sleeps[i]);
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }*/
+            /*----------------- */
+
+            console.log('get prediction');
+
+            //check with local storage
+            var localData = localStorageService.get(storageKey);
+            var currDate = new Date();
+            var currTime = currDate.getTime();
+
+            if(localData) {
+                if (currTime - localData.time < expiredStorage) {
+                    console.log("get data from local");
+                    fromLocal = true;
+                    callback(localData);
+                }
+            }
+
+            if(!fromLocal) {
+                $http.put(BASE_API_URL + 'data/prediction',
+                    {
+                        "sleepStartTime": 23,
+                        "sleepWakeSchedule":[8.0,47.0,8.0, 71.0, 8.0, 95, 8, 119, 8, 143, 8, 167, 8, 191, 8, 215, 8, 239, 8, 263, 8, 287, 8, 311, 8, 335, 8],
+                        //"sleepWakeSchedule":sleepWakeSchedule,
+                        "caffeineDoses":[],
+                        //"caffeineDoses":[ 100.0,200.0,100.0],
+                        //"caffeineTimes":[ 32.0,48.0,51.0]
+                        "caffeineTimes":[]
+                    })
+                    .success(function(response){
+                        var d = new Date();
+                        var t = d.getTime();
+
+                        var r = {
+                            numDays: numDays,
+                            time: t,
+                            data: response.message,
+                            success: response.success
+                        };
+
+                        //store in local storage
+                        localStorageService.set(storageKey, r);
+                        callback(r);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+        };
+
+        /*service.setData = function(data, callback) {
+
+        };*/
+
+        return service;
+    }
+]);
+
+myServices.factory('CaffeineService', ['$http', 'BASE_API_URL', '$rootScope',
+    function($http, BASE_API_URL, $rootScope){
+        var service = {};
+
+        service.getData = function(data, callback) {
+            /*$http.get(BASE_API_URL + 'blah blah')
+                .success(function(response){
+                    callback(response);
+                })
+                .error(function(data, status, headers, config){
+                    callback({success: false, message: 'Server connection error'});
+                });*/
+
+            var caffeineItems = [
+                {
+                    id: 1,
+                    name: "STARBUCKS COFFEE VENTI (20 oz.)",
+                    value: "410"
+                },
+                {
+                    id: 2,
+                    name: "STARBUCKS COFFEE GRANDE (16 oz.)",
+                    value: "330"
+                },
+                {
+                    id: 3,
+                    name: "STARBUCKS COFFEE TALL (12 oz.)",
+                    value: "260"
+                },
+                {
+                    id: 4,
+                    name: "STARBUCKS COFFEE SHORT (8 oz.)",
+                    value: "175"
+                },
+                {
+                    id: 5,
+                    name: "5-HOUR ENERGY SHOT REGULAR STRENGTH (1.93 oz.)",
+                    value: "200"
+                },
+                {
+                    id: 6,
+                    name: "5-HOUR ENERGY SHOT EXTRA STRENGTH (1.93 oz.)",
+                    value: "230"
+                },
+                {
+                    id: 7,
+                    name: "COCA-COLA 12-oz. CAN",
+                    value: "34"
+                },
+                {
+                    id:8,
+                    name: "COCA-COLA 16-oz. BOTTLE",
+                    value: "45"
+                },
+                {
+                    id: 9,
+                    name: "COCA-COLA 20-oz. BOTTLE",
+                    value: "57"
+                },
+                {
+                    id: 10,
+                    name: "LIPTON TEA REGULAR BLACK TEA (8 oz.)",
+                    value: "55"
+                },
+                {
+                    id: 11,
+                    name: "LIPTON TEA NATURAL ENERGY PREMIUM BLACK TEA (8 oz.)",
+                    value: "75"
+                },
+                {
+                    id: 12,
+                    name: "LIPTON TEA PURE GREEN TEA (8 oz.)",
+                    value: "35"
+                },
+                {
+                    id: 13,
+                    name: "LIPTON TEA COLD BREW TEA (8 oz.)",
+                    value: "10"
+                }
+
+            ];
+
+            return caffeineItems;
+        };
+
+        return service;
+    }
+]);
+
+myServices.factory('MyChargeService', ['$http', 'BASE_API_URL', '$rootScope',
+    function($http, BASE_API_URL, $rootScope){
+        var service = {};
+
+        service.getData = function(data, callback) {
+            console.log('get mycharge');
+            $http.get(BASE_API_URL + 'unknown')
+                .success(function(response){
+                    callback(response);
+                })
+                .error(function(data, status, headers, config){
+                    callback({success: false, message: 'Server connection error'});
+                });
+        };
+
+        service.setData = function(data, callback) {
+            console.log('get mycharge');
+            /*$http.put(BASE_API_URL + 'unknown', data)
+                .success(function(response){
+                    callback(response);
+                })
+                .error(function(data, status, headers, config){
+                    callback({success: false, message: 'Server connection error'});
+                });*/
+            callback({success: true});
+        };
+
+        return service;
+    }
+]);

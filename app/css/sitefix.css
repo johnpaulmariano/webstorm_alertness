@@ -13,7 +13,7 @@ body {
 }
 .navbar-header {
   min-height:80px;
-} 
+}
 .tasks {
   margin: 50px auto;
   width: 240px;
@@ -186,9 +186,9 @@ body {
 }
 .tasks-list-cb:checked ~ .tasks-list-desc {
   color: #34bf6e;
-}	
-	
-form-actions {
+}
+
+.form-actions {
 	margin-bottom:10px;
 }
 /*input.form-control.ng-pristine.ng-valid {
@@ -239,11 +239,11 @@ h5 {
 
 #Image2,#Image3,#Image4,#Image5,#Image6,#Image7,#Image8, #dashboard {
 		display:none;
-		
+
 }
 .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav > li > a:focus {
   color: #39ca74;
-}	
+}
 #navbar {
 	margin-top:30px;
 }
@@ -275,7 +275,7 @@ h5 {
 
 
 .container {
-  padding-right:10px; 		
+  padding-right:10px;
   padding-left:10px;
   width:inherit;
   margin-top:40px;
@@ -350,13 +350,13 @@ form#loginForm {
 #appContainer > div > div.container.ng-scope > div > form > div > label > strong {
 	font-size:16px;
 }
-ol.lower-alpha 
+ol.lower-alpha
 {
 	list-style-type: lower-alpha;
 	padding-left:15px;
 	}
 @media (min-width:370px){
-	
+
 .no-wrap {
     white-space: nowrap;
 }
@@ -420,8 +420,8 @@ ol.lower-alpha
 #appContainer > div > div > nav > div > a > img {
     margin-left: 20px;
     margin-top: 12px;
-	
-} 
+
+}
 nav > div > a.navbar-brand > img{
     width: 130px;
     margin-top: -5px !important;
@@ -466,3 +466,116 @@ img#dashboard {
 #appContainer > div > div > nav > div > div.navbar-header > div > button {
 	margin-top:1px;
 }
+
+rzslider .rz-pointer {
+  background: #ffffff;
+}
+rzslider .rz-pointer:hover :after {
+  background-color: #1F363D;
+}
+
+rzslider .rz-pointer.rz-active:after {
+  background-color: #fff;
+}
+
+rzslider .rz-bar {
+  background:#FFF;
+}
+
+.white-link-text {
+  color: #FFF;
+}
+.zebrabg {
+background: rgba(255,255,255,0.1);
+padding-left: 0px;
+font-size: 14px;
+  }
+  .zebrabgeven{
+  padding-left:0px;
+  font-size: 14px;
+    }
+.caffeineheaders {
+  margin-top: 0px;
+  font-size: 14px;
+}
+.mycharge-daybg {
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+}
+.mycharge-start-header {
+  font-weight: bold;
+  color: #FFF!important;
+  padding-bottom: 5px;
+}
+.mycharge-panel-title > a {
+    display: block;
+    width: 100%;
+    height: 20px;
+    color: #f4b234;
+}
+.mycharge-panel-heading  {
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    background-color: #2E3E45!important;
+}
+
+.caffeine_div {
+  margin-top: 20px!important;
+  background-color: #304148!important;
+}
+.caffeine_form {
+  background-color: #304148!important;
+}
+.caffeine-list {
+  list-style: none;
+padding-left: 0px;
+font-size: 10px;
+padding: 5px;
+}
+.slower-text {
+  float: left;
+}
+.faster-text {
+  text-align: right;
+}
+ div.col-xs-9.zebrabgeven > div.col-xs-8, div.col-xs-9.zebrabg > div.col-xs-8 {
+  padding-left:5px;
+  padding-right:0px;
+}
+div > div.col-xs-9.zebrabg {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+div > div.col-xs-4 {
+  padding-right: 0px;
+}
+.no-pad {
+  padding:0px!important;
+}
+
+/*Trieu's additional code*/
+.sleep_error {
+    background-color: red;
+}
+
+/*option:disabled, select[disabled] > option {
+  text-decoration: line-through!important;
+  color: #00b3ee!important;
+}*/
+.mycharge_error{
+  color: red!important;
+}
+
+.mycharge_none{
+  /*background-color: blue;*/
+}
+
+rzslider .rz-ticks .tick {
+  width: 1px;
+  height: 4px;
+  text-align: center;
+  cursor: pointer;
+  background: #d8e0f3;
+}
+

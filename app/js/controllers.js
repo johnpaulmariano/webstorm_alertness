@@ -576,7 +576,7 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
         ChecklistService.getChecklist($scope.username, function(response){
             if(response.result == "success") {
                 var data = response.data;
-                console.log(data);
+                //console.log(data);
                 var countAction = 0;
                 //console.log(data);
                 if(angular.isObject(data) && !angular.equals({}, data)) {
@@ -633,7 +633,7 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
         
         $scope.setChecklist = function(){
             var $data = $scope.prepareData();
-            console.log($data);
+            //console.log($data);
             ChecklistService.setChecklist($data, 
                 function(response){
                     if(response.success == "true") {
@@ -1010,8 +1010,8 @@ atoAlertnessControllers.controller('GaugeController', ['$window', '$scope', '$lo
                     return $scope.getSlideVal(parseInt(value));
                 },
                 onEnd: function(){
-                    console.log('end');
-                    console.log($scope.minSlider.value);
+                    //console.log('end');
+                    //console.log($scope.minSlider.value);
                     $scope.sliderValText = $scope.minSlider.value;
                     $window.updateGauges();
                 }
@@ -1034,173 +1034,403 @@ atoAlertnessControllers.controller('GaugeController', ['$window', '$scope', '$lo
     }
 ]);
 
-atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$scope', '$location',
-    function($window, $scope, $location) {
+atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$scope', '$location', 'DataPredictionService',
+    function($window, $scope, $location, DataPredictionService) {
         //initiate vars for sliders
         $scope.hourRange = 24;
         $scope.tickInterval = 4;
         $scope.step = 1;
-        $scope.defaultTick = $scope.hourRange * $scope.tickInterval;
+        $scope.defaultTick = 0;
         $scope.minRange = 0;
-        $scope.maxRange = $scope.hourRange * $scope.tickInterval * 2;
+        $scope.maxRange = 0;
         $scope.sliderVal = undefined;
         $scope.sliderValText = "0";
+        $scope.dataTimeStamp = null;
 
-        if($scope.sliderVal == undefined) {
-            $scope.sliderVal = $scope.defaultTick;
-        }
+        var d = new Date();
+        $scope.currentTime = d.toLocaleString();
+        $scope.format = 'M/d/yy h:mm:ss a';
 
-        //initiate vars for gauge
-        $scope.gauge = {};
-        $scope.gauge.value = 50;
-        $scope.gauge.upperLimit = 100;
-        $scope.gauge.lowerLimit = 0;
-        $scope.gauge.unit = "%";
-        $scope.gauge.precision = 2;
-        $scope.gauge.ranges = [
-            {
-                min: 0,
-                max: 20,
-                color: '#bc1705'
-            },
-            {
-                min: 20,
-                max: 40,
-                color: '#ae4c0f'
-            },
-            {
-                min: 40,
-                max: 60,
-                color: '#a07e1a'
-            },
-            {
-                min: 60,
-                max: 80,
-                color: ' #95ab23'
-            },
-            {
-                min: 80,
-                max: 100,
-                color: '#8ec929'
-            }
-        ];
+        $scope.initializeGauge = function() {
+            $scope.gauge = {};
+            $scope.gauge.value = 2;
+            $scope.gauge.upperLimit = 7;
+            $scope.gauge.lowerLimit = 2;
+            $scope.gauge.unit = "";
+            $scope.gauge.precision = 2;
 
-        //slider config
-        $scope.minSlider = {
-            minValue: $scope.minRange,
-            maxValue: $scope.maxRange,
-            //step: $scope.step,
-            value: $scope.defaultTick,
-            options: {
-                floor: $scope.minRange,
-                ceil: $scope.maxRange,
-                step: $scope.step,
-                translate: function(value){
-                    return $scope.getSlideVal(parseInt(value));
+            $scope.gauge.ranges = [
+                {
+                    min: 2,
+                    max: 3,
+                    color: '#bc1705'
                 },
-                onEnd: function() {
-                    // user finished sliding a handle
-                    console.log('end');
-                    console.log($scope.minSlider.value);
-                    $scope.sliderValText = $scope.minSlider.value;
-
-                    var hVal = Math.random() * 100;
-
-                    console.log(hVal);
-
-                    $scope.gauge.value = hVal;
+                {
+                    min: 3,
+                    max: 4,
+                    color: '#ae4c0f'
+                },
+                {
+                    min: 4,
+                    max: 5,
+                    color: '#a07e1a'
+                },
+                {
+                    min: 5,
+                    max: 6,
+                    color: ' #95ab23'
+                },
+                {
+                    min: 6,
+                    max: 7,
+                    color: '#8ec929'
                 }
-
-            }
+            ];
         };
 
-        $scope.getSlideVal = function(v){
-            var remainder = Math.abs(v - $scope.defaultTick) % $scope.tickInterval;
-            var minutes = remainder * 15;   // 15 minutes
-            var hours = (Math.abs(parseInt(v) - $scope.defaultTick) - remainder) / $scope.tickInterval;
+        $scope.settingSlider = function(){
+            $scope.minSlider = {
+                minValue: $scope.minRange,
+                maxValue: $scope.maxRange,
+                value: $scope.sliderVal,
+                options: {
+                    floor: $scope.minRange,
+                    ceil: $scope.maxRange,
+                    step: $scope.step,
+                    //showTicks: true,
+                    translate: function(value){
+                        return $scope.getSlideVal(parseInt(value));
+                    },
+                    onChange: function() {
+                        console.log('change');
+                        console.log($scope.minSlider.value);
+                        var idx = $scope.minSlider.value;
+                        if(idx == $scope.data.length) {
+                            idx = idx-1;
+                        }
 
-            var valString = hours + " hours and " + minutes + " minutes";
-            if(v < $scope.hourRange * $scope.tickInterval) {
-                valString = " - " + valString;
+                        $scope.gauge.value = 1/$scope.data[idx].value;
+                        console.log($scope.gauge.value);
+                    }
+
+                }
+            };
+        };
+
+        $scope.filterData = function(r){     // filter data with range from 48 hours before to 48 hours after
+                                            // the current time
+                                            // of the very last day of sleep data - ie. the very first day in prediction
+                                            //  (ie. = numDays + 1)
+
+            var daysInMilli = 1000 * 60 * 60 * 24;
+            var d = new Date();
+            var currTime = d.getTime();
+
+            var dataDate = new Date(r.time);
+            var dataTime = dataDate.getTime();
+            var dataTimeInDay = dataTime % daysInMilli;
+            var dataDay = (dataTime - dataTimeInDay) / daysInMilli;
+
+            /*console.log(' current ' + d.getHours(currTime) + " : " + d.getMinutes(currTime));
+            console.log('timestamp ' + dataDate.getHours(dataTime) + ":" + dataDate.getMinutes(dataTime));
+            console.log('day diff: ' + (currTime - dataTime) / daysInMilli);
+            console.log('time in day ' + dataTimeInDay);
+            console.log('day ' + dataDay);*/
+
+            //var midPoint = 0;
+            var midPointDay = r.numDays;
+
+            if(currTime >= (dataDay + 1) * daysInMilli ) {
+                console.log('to the next day');
+                midPointDay =  Math.ceil((currTime - dataTime) / daysInMilli);
+            }
+
+            //transform current time into slot number
+            var currMinutes = d.getMinutes(currTime);
+            var currHours = d.getHours(currTime);
+            var currHourFraction = 0;
+
+            if(currMinutes >= 0 && currMinutes < 7) {
+                currHourFraction = 0;
+            }
+            else if(currMinutes >= 7 && currMinutes < 22) {
+                currHourFraction = 0.25;
+            }
+            else if(currMinutes >= 22 && currMinutes < 37) {
+                currHourFraction = 0.5;
+            }
+            else if(currMinutes >= 37 && currMinutes < 52) {
+                currHourFraction = 0.75;
+            }
+            else {
+                currHourFraction = 1;
+            }
+
+            var timeSlot = (midPointDay + 1) * 24 + currHours + currHourFraction;
+            //console.log('t slot ' + timeSlot);
+            var midPoint = 0;
+            //console.log(timeSlot);
+            for(var i = 0; i < r.data.length; i++) {
+                if(r.data[i].time < timeSlot) {
+                    continue;
+                }
+                else {
+                    midPoint = i;
+                    break;
+                }
+            }
+
+            //console.log("i " + midPoint);
+            var startPoint = 0;
+            var endPoint = r.data.length;
+
+            if(midPoint - 2 * 24 * 4 > 0) {
+                startPoint = midPoint - 2 * 24 * 4;
+            }
+
+            if(midPoint + 2 * 24 * 4 < r.data.length) {
+                endPoint = midPoint + 2 * 24 * 4 + 1;
+            }
+
+            $scope.sliderVal = midPoint - startPoint;
+            $scope.defaultTick = $scope.sliderVal;
+
+            /*console.log("start " + startPoint);
+            console.log('mid ' + midPoint);
+            console.log("end " + endPoint);*/
+            var data = r.data.slice(startPoint, endPoint);
+
+            return data;
+        };
+
+        $scope.data = [];
+        DataPredictionService.getData({numDays: 14},
+            function(response){
+                console.log(response);
+                if(response.success == "true") {
+                    //var d = response.message;
+
+                    $scope.data = $scope.filterData(response);
+                    console.log($scope.data);
+
+                    if($scope.data.length > 0) {
+                        var ts = new Date(response.time);
+                        $scope.dataTimeStamp = ts.toLocaleString();
+                        //initiate vars for gauge
+                        $scope.initializeGauge();
+
+                        $scope.maxRange = $scope.data.length - 1;
+                        $scope.gauge.value = 1 / $scope.data[0].value;
+
+                        //slider config
+                        $scope.settingSlider();
+                    }
+                }
+                else {
+                    $scope.error = response.message;
+                }
+            }
+        );
+
+
+
+        $scope.getSlideVal = function(v){
+            var valString = '';
+            if(v == $scope.defaultTick) {
+                valString = 'Now';
+            }
+            else {
+                /*var nowTime = $scope.data[$scope.defaultTick].time;
+                var timeDiff = $scope.data[v].time - nowTime;
+                var min = timeDiff % 1;
+                var hour = timeDiff - min;
+                min = Math.abs(min);
+                console.log('v' + v);
+                console.log("min: " + min);
+                var minStr = '';
+                var hourStr = '';
+
+                if(min <= 0.15) {
+                    minStr = "00";
+                }
+                else if(min > 0.15 && min <= 0.37){
+                    minStr = "15";
+                }
+                else if(min > 0.37 && min <= 0.62){
+                    minStr = "30";
+                }
+                else if(min > 0.62 && min <= 0.87) {
+                    minStr = "45";
+                }
+                else {
+                    minStr = "00";
+                    hour = (timeDiff > 0 ? hour + 1 : hour - 1);
+                }
+                var hourStr = Math.abs(hour);
+
+                if(hourStr < 10) {
+                    hourStr = "0" + hourStr;
+                }*/
+                var diff = v - $scope.defaultTick;
+                var fraction = diff % 4;
+                var hour = (diff - fraction) /4;
+                var min = fraction * 15;
+                var minStr = Math.abs(min);
+
+                if(minStr < 10) {
+                    minStr = "0" + minStr;
+                }
+
+                valString = (diff > 0 ? "" : "-") + Math.abs(hour) + " hour(s) " + minStr + " min(s)";
             }
 
             return valString;
         };
+
+
+
+    }
+]).directive('alertnessCurrentTime',  ['$interval', 'dateFilter',
+    function($interval, dateFilter) {
+
+        function link(scope, element, attrs) {
+            var format,
+                timeoutId;
+
+            function updateTime() {
+                element.text(dateFilter(new Date(), format));
+            }
+
+            scope.$watch(attrs.alertnessCurrentTime, function(value) {
+                format = value;
+                updateTime();
+            });
+
+            element.on('$destroy', function() {
+                $interval.cancel(timeoutId);
+            });
+
+            // start the UI update process; save the timeoutId for canceling
+            timeoutId = $interval(function() {
+                updateTime(); // update DOM
+            }, 1000);
+        }
+
+        return {
+            link: link
+        };
     }
 ]);
 
-atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '$location',
-    function($window, $scope, $location) {
+atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '$location', 'MyChargeService', 'CaffeineService',
+    function($window, $scope, $location, MyChargeService, CaffeineService) {
 
         $scope.numberOfDays = 14;
-        $scope.hoursRange = [];
+        $scope.defaultStartSleepHour = 23;
+        $scope.defaultStartSleepMinute = 0;
+        $scope.defaultDurationHour = 8;
+        $scope.defaultDurationMinute = 0;
+        //$scope.sleepSlots = [];
+        $scope.dropdowns = {};
+        $scope.errorDays = [];
 
-        for(var i = 0; i < 24; i++) {
-            $scope.hoursRange.push(i);
-        }
+        $scope.convertSleepTime = function(startHour, startMinute, durationHour, durationMinute){
+            var startTime = startHour * 60 + startMinute;
+            var durationTime = (durationHour) * 60 + durationMinute;
+            //var endTime = startTime + durationTime;
 
-        $scope.minutesRange = [];
+            //return [startTime, endTime];
+            return [startTime, durationTime];
+        };
 
-        for(var i = 0; i < 60; i++) {
-            $scope.minutesRange.push(i);
-        }
-
-        $scope.items = [];
-
-        for(var i = 0; i < $scope.numberOfDays; i++) {
-            var isOpen = 0;
-
-            if(i == 0) {
-                isOpen = 1;
+        $scope.formatTwoDigits = function(digit){
+            if(digit < 10) {
+                return "0" + digit;
             }
+            else {
+                return digit;
+            }
+        };
 
-            $scope.items.push(
-                {
-                    id: i + 1,
-                    name: 'Day ' + (i + 1),
-                    data: [
-                        {starthour: 23, startminute: 0, durationhour: 8, durationminute: 0}
-                    ],
-                    isOpen: isOpen,
-                    caffeine: [
-                        {caffeineSource: null, quantity: null, hour: null, minute: null}
-                    ]
+        $scope.createTimeDropdown = function(day) {
+
+            var timeOptions = [];
+            for(var i = 0; i < 24; i++) {
+                for(var j = 0; j < 60; j = j + 15) {
+                    timeOptions.push(
+                        {
+                            val: 24 * 60 * day + (i * 60 + j),
+                            txt: $scope.formatTwoDigits(i) + ":" + $scope.formatTwoDigits(j)
+                        }
+                    );
                 }
-            );
+            }
+            //console.log(timeOptions);
+            return timeOptions;
+        };
+
+        //$scope.createTimeDropdown();
+        $scope.createSleepDropdown = function(day, sTime, dTime) {
+            console.log(sTime);
+            var sleepObj = {
+                selStartTime: {
+                    val: sTime
+                },
+                selDurationTime: {
+                    val: dTime
+                },
+                startOptions: $scope.createTimeDropdown(day),
+                durationOptions: $scope.createTimeDropdown(0)
+            };
+
+            return sleepObj;
+        };
+
+        $scope.initializer = function() {
+            for(var i = 0; i < $scope.numberOfDays; i++) {
+                var sleep = $scope.convertSleepTime((24 * i + $scope.defaultStartSleepHour), $scope.defaultStartSleepMinute,
+                    $scope.defaultDurationHour, $scope.defaultDurationMinute);
+
+                console.log(sleep);
+                //$scope.sleepSlots.push(sleep);
+                $scope.dropdowns["day" + (i+1)] = {
+                    sleep: [],
+                    caffeine: [],
+                    day: i+1
+                };
+
+                $scope.dropdowns["day" + (i+1)].sleep.push($scope.createSleepDropdown(i, sleep[0], sleep[1]));
+            }
+        };
+
+        $scope.initializer();
+
+        //console.log($scope.sleepSlots);
+        console.log($scope.dropdowns);
+
+        $scope.addDay = function() {
+            $scope.numberOfDays ++;
+            var sleep = $scope.convertSleepTime((24 * ($scope.numberOfDays - 1) + $scope.defaultStartSleepHour), $scope.defaultStartSleepMinute,
+                $scope.defaultDurationHour, $scope.defaultDurationMinute);
+            //$scope.sleepSlots.push(sleep);
+
+            $scope.dropdowns["day" + $scope.numberOfDays] = {
+                sleep: [],
+                caffeine: [],
+                day: $scope.numberOfDays
+            };
+            $scope.dropdowns["day" + $scope.numberOfDays].sleep.push($scope.createSleepDropdown($scope.numberOfDays - 1, sleep[0], sleep[1]));
+        };
+
+        $scope.addSleep = function(day){
+            var sleep = $scope.convertSleepTime((24 * (day - 1) + $scope.defaultStartSleepHour), $scope.defaultStartSleepMinute,
+                $scope.defaultDurationHour, $scope.defaultDurationMinute);
+            //$scope.sleepSlots.push(sleep);
+
+            $scope.dropdowns["day" + day].sleep.push($scope.createSleepDropdown(day - 1, sleep[0], sleep[1]));
         }
 
-        $scope.dropdownItems = [
-            {
-                id: 1,
-                name: "STARBUCKS COFFEE VENTI",
-                value: "410"
-            },
-            {
-                id: 2,
-                name: "STARBUCKS COFFEE GRANDE",
-                value: "330"
-            },
-            {
-                id: 3,
-                name: "STARBUCKS COFFEE TALL",
-                value: "260"
-            },
-            {
-                id: 4,
-                name: "STARBUCKS COFFEE SHORT",
-                value: "175"
-            },
-            {
-                id: 5,
-                name: "5-HOUR ENERGY SHOT REGULAR STRENGTH",
-                value: "200"
-            },
-            {
-                id: 6,
-                name: "5-HOUR ENERGY SHOT EXTRA STRENGTH",
-                value: "230"
-            }
-        ];
+        $scope.caffeineItems = CaffeineService.getData();
         $scope.caffeineQuantity = [];
 
         for(var i = 1; i < 10; i++) {
@@ -1209,29 +1439,188 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '
 
         $scope.showCaffeineForm = false;
 
-        $scope.addDay = function() {
-            $scope.numberOfDays ++;
-            $scope.items.push(
-                {
-                    id: $scope.numberOfDays,
-                    name: 'Day ' + $scope.numberOfDays,
-                    data: [
-                        {starthour: 23, startminute: 0, durationhour: 8, durationminute: 0}
-                    ],
-                    isOpen: false,
-                    caffeine: [
-                        {caffeineSource: null, quantity: null, hour: null, minute: null}
-                    ]
+        $scope.validateCaffeine = function(caffeineDay){
+            var coffeeData = [];
+            for(var i = 0; i < caffeineDay.length; i++) {
+                var caffeineObj = {};
+
+                //if any caffeine entry is missing, simply ignore that caffeine input entirely
+                if(angular.isObject(caffeineDay[i].caffeineSource) && angular.isObject(caffeineDay[i].caffeineTime) && caffeineDay[i].quantity) {
+                    caffeineObj.amount = parseInt(caffeineDay[i].caffeineSource.value);
+                    caffeineObj.quantity = caffeineDay[i].quantity;
+                    caffeineObj.time = parseInt(caffeineDay[i].caffeineTime.val);
+
+                    coffeeData.push(caffeineObj);
                 }
-            );
+            }
+
+            coffeeData.sort(function(a, b){
+                a = a.time;
+                b = b.time;
+
+                return a - b;
+            });
+
+            return coffeeData;
         };
 
-        $scope.addSleep = function(day){
-            $scope.items[parseInt(day) - 1].data.push({starthour: 23, startminute: 0, durationhour: 8, durationminute: 0});
-        }
+        $scope.validateSleep = function() {
+            var ok = false;
+            var errorDays = [];
+            var sleepData = [];
+            var caffeineData = [];
+            var timeline = {};
+
+            try {
+                angular.forEach($scope.dropdowns, function(day, k) {
+                    var dataDay = [];
+
+                    for(var j = 0; j < day.sleep.length; j++) {
+                        var sleepObj = {};
+                        sleepObj.start = day.sleep[j].selStartTime.val;
+                        sleepObj.duration = day.sleep[j].selDurationTime.val;
+                        sleepObj.end = day.sleep[j].selStartTime.val + day.sleep[j].selDurationTime.val;
+                        sleepObj.dayID = k;
+                        sleepObj.slotID = j;
+
+                        dataDay.push(sleepObj);
+                    }
+
+                    dataDay.sort(function(a, b){
+                        a = a.start;
+                        b = b.start;
+
+                        return a - b;
+                    });
+
+                    //console.log(dataDay);
+                    var err = false;
+                    //scan through dataday, if any overlapsed time, raise flag and bail out
+                    for(var i = 1; i < dataDay.length; i ++) {
+                        if(dataDay[i].start < dataDay[i-1].end) {
+                            if(errorDays.indexOf(dataDay[i].dayID) == -1) {
+                                console.log("error within a day");
+                                errorDays.push(dataDay[i].dayID);
+                                err = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(!err) {
+                        timeline[k] = dataDay;
+                    }
+
+                    if(err) {
+                        throw new Error("Invalid Entry in sleep", "day " + (k+1));
+                    }
+
+                    //validate caffeine here
+                    caffeineData.push($scope.validateCaffeine(day.caffeine));
+                });
+
+
+            } catch(e) {
+                //console.log("catching");
+                console.log(e.name+":  " + e.message);
+            }
+
+            console.log(timeline);
+            if(errorDays.length == 0) {
+                try {
+                    for(var k = 1; k < $scope.numberOfDays; k ++) {
+                        var prevLen = timeline["day" + k].length;
+                        //check the end of the last slot of previous day with the beginning of the first slot
+                        if(timeline["day" + k][prevLen - 1].end > timeline["day" + (k + 1)][0].start) {
+                            console.log("error big");
+                            if(errorDays.indexOf("day" + (k+1)) == -1) {
+                                errorDays.push("day" + (k+1));
+                            }
+                            throw new Error("Invalid Entry in day", "day " + (k +1));
+                        }
+                    }
+                } catch(e) {
+                    console.log(e.name+":  " + e.message);
+                }
+
+            }
+            console.log(errorDays);
+
+            //reset scope error array
+            for(var i = 0 ; i < $scope.numberOfDays; i++) {
+                $scope.errorDays[i] = false;
+            }
+
+            var output = {
+                sleepStartTime: null,
+                sleepWakeSchedule: [],
+                caffeineDoses: [],
+                caffeineTimes: []
+            };
+
+            if(errorDays.length == 0) {
+                //processing sleep data
+                angular.forEach(timeline, function(day, key) {
+                    for(var m = 0; m < day.length; m++) {
+                        sleepData.push(day[m].start/60);
+                        sleepData.push(day[m].duration/60);
+                    }
+                });
+
+                output.sleepStartTime = sleepData[0];
+                sleepData.shift();
+                output.sleepWakeSchedule = sleepData;
+
+                //processing caffeine data
+                angular.forEach(caffeineData, function(d, k){
+                    for(var n = 0; n < d.length; n++) {
+                        output.caffeineDoses.push(d[n].amount * d[n].quantity);
+                        output.caffeineTimes.push(d[n].time / 60);
+                    }
+                });
+
+                ok = true;
+            }
+            else {
+                for(var i = 0 ; i < $scope.numberOfDays; i++) {
+                    if(errorDays.indexOf("day" + (i + 1)) != -1) {
+                        $scope.errorDays[i] = true;
+                    }
+                    else {
+                        $scope.errorDays[i] = false;
+                    }
+                }
+            }
+
+            //console.log(sleepData);
+            console.log($scope.errorDays);
+
+            //not an ideal place to manipulate DOM here
+            for(var i = 0; i < $scope.errorDays.length; i++) {
+                if($scope.errorDays[i]) {
+                    angular.element(document.querySelector("#mycharge_day_" + i)).find(".mycharge-panel-title > a").addClass("mycharge_error");
+                }
+                else {
+                    angular.element(document.querySelector("#mycharge_day_" + i)).find(".mycharge-panel-title > a").removeClass("mycharge_error");
+                }
+            }
+
+            return {
+                data: output,
+                success: ok
+            };
+        };
+
+        /*$scope.$watch('dropdowns', function(newVal, oldVal){
+            //$scope.calculateChrono();
+            console.log("watching");
+        });*/
 
         $scope.save = function() {
-            console.log($scope.items);
+            console.log("save");
+            var result = $scope.validateSleep();
+            console.log(result);
+            //console.log($scope.items);
             /*expecting data format
             * {
              “sleepStartTime”: 23,
@@ -1239,87 +1628,39 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '
              “caffeineDoses”:[ 100.0,200.0,100.0],
              “caffeineTimes”:[ 32.0,48.0,51.0]
              }*/
-            var jsonData = {};
 
-            /*if($scope.items[0].data) {
-                jsonData.sleepStartTime = parseFloat($scope.items[0].data[0].starthour + "." + $scope.items[0].data[0].startminute);
-            }*/
-            var data = [];
-            var sortByStartTime = function(arr) {
-
-            };
-
-            for(var i = 0; i < $scope.items.length; i++) {
-                var day = $scope.items[i].data;
-                var dataDay = [];
-                for(var j = 0; j < day.length; j++) {
-                    var sleep = {};
-                    sleep.startTime = parseFloat(day[j].starthour) + day[j].startminute/60;
-                    //sleep.wakeTime1 =
-                    sleep.sleepDuration = parseFloat(day[j].durationhour) + day[j].durationminute/60;
-                    sleep.endTime = sleep.startTime + sleep.sleepDuration;
-                    //sleep.wakeTime = 24 - sleep.endTime;
-                    dataDay.push(sleep);
-                }
-
-                //to do sort dataDay by startTime
-                dataDay.sort(function(a, b){
-                    a = parseInt(a.startTime);
-                    b = parseInt(b.startTime);
-                    return a - b;
-                });
-
-                for(var k = 0; k < dataDay.length - 1; k++) {
-                    if(dataDay[k].endTime <= 24) {
-                        dataDay[k+1].wakeDuration = dataDay[k+1].startTime - dataDay[k].endTime;
+            if(result.success == true) {
+                MyChargeService.setData(result.data,
+                    function(response){
+                        //console.log(response);
+                        if(response.success == "true") {
+                            $scope.message = "My Charge saved";
+                        }
+                        else {
+                            $scope.error = response.message;
+                        }
                     }
-                    else {
-                        dataDay[k+1].wakeDuration = dataDay[k+1].startTime - (dataDay[k].endTime - 24);
-                    }
-                    //dataDay[k+1].wakeDuration = dataDay[k+1].startTime - (dataDay[k].endTime - 24);
-                    //console.log(k);
-                }
-
-                //catch overlapsed time maybe?
-
-                data.push(dataDay);
+                );
             }
-
-            console.log(data);
         }
 
-        $scope.showCaffeine = function(){
-            $scope.showCaffeineForm = true;
-        };
-
         $scope.addCaffeine = function(day) {
-            $scope.items[parseInt(day) - 1].caffeine.push({caffeineSource: null, quantity: null, hour: null, minute: null});
+            $scope.showCaffeineForm = true;
+            $scope.dropdowns["day" + day].caffeine.push({caffeineSource: null, quantity: null, caffeineTime: null, caffeineTimeOptions: $scope.createTimeDropdown(day -1)});
         };
 
         $scope.saveCaffeine = function(){
 
         };
 
-        $scope.formatTime = function(h, m) {
-            if(!h) {
-                h = 0;
-            }
-            else if(h < 10) {
-                h = "0" + h;
-            }
+        $scope.removeCaffeine = function(day, slot) {
+            $scope.dropdowns["day" + day].caffeine.splice(slot, 1);
 
-            if(!m) {
-                m = 0;
-            }
-            else if(m < 10) {
-                m = "0" + m;
-            }
-            if(h == 0 && m == 0) {
-                return "";
-            }
-            else {
-                return h + ":" + m;
-            }
+        };
+
+        $scope.removeSleep = function(day, slot) {
+            $scope.dropdowns["day" + day].sleep.splice(slot, 1);
+
         };
     }
 ]);
