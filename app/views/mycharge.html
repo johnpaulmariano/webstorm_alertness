@@ -6,6 +6,9 @@
         <uib-accordion close-others="true" template-url="./bower_components/angular-ui-bootstrap/template/accordion/accordion.html">
             <uib-accordion-group ng-init="isOpen = ($index == 0 ? true : false)" is-open="isOpen" id="mycharge_day_{{$index}}" ng-repeat="day in dropdowns" heading="Day {{$index+1}} {{errorDays[$index] == true ? '*Error': ''}}" template-url="./templates/accordion-group-template.html">
                 <!--
+                <button type="button" class="btn btn-danger btn-sm pull-right glyphicon glyphicon-remove-sign"  ng-click="removeDay(day)"></button>
+                -->
+                <!--
                 <div class="{{errorDays[$index] == true ? 'mycharge_error': 'mycharge_none'}}">
                 -->
                     <div ng-repeat="item in day.sleep" class="mycharge-daybg {{d.error ? 'sleep_error' : ''}}">
@@ -35,7 +38,9 @@
                             <li style="border-bottom:5px solid #304148;" ng-repeat="c in day.caffeine" ng-if="c.caffeineSource">{{c.caffeineSource.name}} | {{c.caffeineSource.value}}mg  x {{c.quantity}}  =  {{c.caffeineSource.value * c.quantity}}mg | at {{c.caffeineTime.txt}}</li>
                         </ol>
                         <div class="caffeine_form"  ng-repeat="c in day.caffeine" style="background-color: #82A0AF;margin-top:10px; margin-bottom:10px;">
-                            <div class="mycharge-start-header" style="padding-left:10px; color:#fff;">Caffeine Event {{$index+1}} <button type="button" class="btn btn-danger btn-sm pull-right glyphicon glyphicon-remove-sign"  ng-click="removeCaffeine(day.day, $index)"></button></div>
+                            <div class="mycharge-start-header" style="padding-left:10px; color:#fff;">Caffeine Event {{$index+1}}
+                                <button type="button" class="btn btn-danger btn-sm pull-right"  ng-click="removeCaffeine(day.day, $index)">Remove</button>
+                            </div>
                             <div style="padding:10px;">
                                 Caffeine Source: <select class="form-control" name="day{{$index+1}}_caffeinetype" ng-options="type as type.name for type in caffeineItems track by type.id" ng-model="c.caffeineSource"></select>
                                 Quantity: <select class="form-control" name="day{{$index+1}}_caffeinequantity" ng-options="k for k in caffeineQuantity" ng-model="c.quantity"></select>
@@ -50,7 +55,7 @@
                         <button type="button" class="btn btn-info btn-sm" ng-click="saveCaffeine($index+1)">Save</button>
                         &nbsp;
                         -->
-                        <button type="button" class="btn btn-primary btn-xs glyphicon glyphicon-plus-sign" ng-click="addCaffeine($index+1)"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="addCaffeine($index+1)">Add Caffeine</button>
                     </div>
                 <!--
                 </div>

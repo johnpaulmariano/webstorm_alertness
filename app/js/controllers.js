@@ -1388,6 +1388,13 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '
 
         $scope.initializer = function() {
             for(var i = 0; i < $scope.numberOfDays; i++) {
+                var dayObj = {
+                    beginning: 24 * 60 * i,
+                    dropdowns: [],
+                    id: i + 1,
+                    ord: i
+                };
+
                 var sleep = $scope.convertSleepTime((24 * i + $scope.defaultStartSleepHour), $scope.defaultStartSleepMinute,
                     $scope.defaultDurationHour, $scope.defaultDurationMinute);
 
@@ -1420,6 +1427,13 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$scope', '
                 day: $scope.numberOfDays
             };
             $scope.dropdowns["day" + $scope.numberOfDays].sleep.push($scope.createSleepDropdown($scope.numberOfDays - 1, sleep[0], sleep[1]));
+        };
+
+        $scope.removeDay = function(d) {
+            console.log(d);
+
+            //TO DOs
+            // restructuring dropdowns array
         };
 
         $scope.addSleep = function(day){
