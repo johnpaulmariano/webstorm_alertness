@@ -14,6 +14,7 @@ var myApp = angular.module('AtoAlertnessApp', [
     'ngRadialGauge',
     'ui.bootstrap.collapse',
     'ui.bootstrap.accordion',
+    'ui.bootstrap.modal',
     'atoAlertnessControllers',
     'atoAlertnessServices'
 ]);

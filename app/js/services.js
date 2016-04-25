@@ -515,72 +515,42 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
         var expiredStorage = 1000 * 60 * 60; // 60 minutes for testing
         var fromLocal = false;
 
-        service.getData = function(data, callback) {
-            var numDays = parseInt(data.numDays);
-            /* ------will be removed ------*/
-            /*
-            var sleeps = [8.0,47.0,8.0, 71.0, 8.0, 95, 8, 119, 8, 143, 8, 167, 8, 191, 8, 215, 8, 239, 8, 263, 8, 287, 8, 311, 8, 335, 8];
-            var sleepWakeSchedule = [];
-
-            for(var i = 0; i < sleeps.length; i++) {
-                var lower = 24 * numDays -1;
-                var upper = 24 * numDays;
-                if(i == 0 || i == 1) {
-                    sleepWakeSchedule.push(sleeps[i]);
-                }
-                else if(i % 2 == 0) {
-                    sleepWakeSchedule.push(sleeps[i]);
-                }
-                else {
-                    if(sleeps[i] >= lower && sleeps[i] <= upper) {
-                        sleepWakeSchedule.push(sleeps[i]);
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }*/
-            /*----------------- */
-
+        service.getData = function(data, checkLocal, callback) {
             console.log('get prediction');
 
             //check with local storage
-            var localData = localStorageService.get(storageKey);
-            var currDate = new Date();
-            var currTime = currDate.getTime();
+            if(checkLocal) {
+                var localData = localStorageService.get(storageKey);
+                var currDate = new Date();
+                var currTime = currDate.getTime();
 
-            if(localData) {
-                if (currTime - localData.time < expiredStorage) {
-                    console.log("get data from local");
-                    fromLocal = true;
-                    callback(localData);
+                if (localData) {
+                    if (currTime - localData.time < expiredStorage) {
+                        console.log("get data from local");
+                        fromLocal = true;
+                        callback(localData);
+                    }
                 }
             }
 
             if(!fromLocal) {
-                $http.put(BASE_API_URL + 'data/prediction',
-                    {
-                        "sleepStartTime": 23,
-                        "sleepWakeSchedule":[8.0,47.0,8.0, 71.0, 8.0, 95, 8, 119, 8, 143, 8, 167, 8, 191, 8, 215, 8, 239, 8, 263, 8, 287, 8, 311, 8, 335, 8],
-                        //"sleepWakeSchedule":sleepWakeSchedule,
-                        "caffeineDoses":[],
-                        //"caffeineDoses":[ 100.0,200.0,100.0],
-                        //"caffeineTimes":[ 32.0,48.0,51.0]
-                        "caffeineTimes":[]
-                    })
+                $http.put(BASE_API_URL + 'data/prediction',data)
                     .success(function(response){
                         var d = new Date();
                         var t = d.getTime();
 
                         var r = {
-                            numDays: numDays,
+                            numDays: data.numDays,
                             time: t,
                             data: response.message,
-                            success: response.success
                         };
 
                         //store in local storage
-                        localStorageService.set(storageKey, r);
+                        if(response.success == "true") {
+                            r.success = true;
+                            localStorageService.set(storageKey, r);
+                        }
+
                         callback(r);
                     })
                     .error(function(data, status, headers, config){
@@ -589,9 +559,6 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
             }
         };
 
-        /*service.setData = function(data, callback) {
-
-        };*/
 
         return service;
     }

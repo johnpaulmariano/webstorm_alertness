@@ -564,7 +564,8 @@ div > div.col-xs-4 {
   color: #00b3ee!important;
 }*/
 .mycharge_error{
-  color: red!important;
+  color: #FF6D22!important;
+  background-color: #5c9ccc;
 }
 
 .mycharge_none{
@@ -579,3 +580,48 @@ rzslider .rz-ticks .tick {
   background: #d8e0f3;
 }
 
+.modal-content {
+  color: #aaa;
+}
+
+.modal-content {
+  background-color: #15262f;
+}
+
+.mycharge-sleep-div {
+  border-bottom: solid 1px #ffffff;
+  padding-bottom: 5px;
+}
+
+.mycharge-sleep-text, .mycharge-caffeine-text {
+  font-size:0.8em;
+  clear: both;
+}
+
+.mycharge-remove {
+  clear: both;
+}
+
+.caffeine-background {
+  background-color: rgba(105, 175, 204, 0.14);
+  min-height: 40px;
+  padding: 5px;
+}
+.sleep-background {
+  background-color: rgba(84, 84, 84, 0.4);
+  min-height: 40px;
+  padding: 5px;
+}
+.sleep-btns{
+  background-color: rgba(49, 48, 48, 0.18);
+  padding: 2px 0 2px 0;
+  height: 39px;
+}
+
+.mycharge-message{
+  background-color: pink;
+  line-height: 1.5;
+  padding: 2px;
+  font-size: 0.8em;
+  float: right;
+}
