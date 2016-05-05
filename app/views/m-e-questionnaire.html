@@ -1,318 +1,704 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container">
-    <h4 class="row text-center fatigue-header">Lark or Owl?</h4>
-    <p>Do you prefer waking up early? Or are you more alert at night? Your preference for the morning or the evening (or somewhere in between) is called your chronotype. People who prefer waking up early and performing activities earlier in the day are called "Larks." People who prefer waking up closer to noon and staying up late at night are called "Owls."</p>
-    <p>Instructions for the MEQ</p>
-    <ul style="padding-left:20px;">
-        <li>This scale is the original Morningness-Eveningness Questionnaire or MEQ. The MEQ contains 19 items and takes about 5 minutes to complete.
-        </li>
-        <li>Answer each question without considering how you answered a previous question -- your answer to one question does not have to match your answer to another question. Also, if you already completed the 2-item CIRENS Scale, answer the MEQ without considering how you answered the CIRENS items.</li>
-        <li>If none of the available MEQ answers fits you exactly, please pick the answer that is closest.</li>
-        <li>In order to calculate your score, you must answer ALL 19 items. However, if you decide that you do not want to complete the MEQ, click at any time to erase your answers and return to the HOME MENU.
-        </li>
-    </ul>
-    <br>
-    <ol>
-        <li> Considering only your own "feeling best" rhythm, what time would you get up if you were entirely free to plan your day?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>5:00AM-6:30AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>6:30AM-7:45AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>7:45AM-9:45AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>9:45AM-11:00AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>11:00AM-12 noon</label>
-                </div>
-            </li>
+    <h4 class="row text-center fatigue-header">MEQ</h4>
+    <div id="meqquestionaire" ng-if="showForm">
+        <p>Instructions for the MEQ</p>
+        <ul style="padding-left:20px;">
+              <li>This scale is the original Morningness-Eveningness Questionnaire or MEQ. The MEQ contains 19 items and takes about 5 minutes to complete.</li>
+              <li>Answer each question without considering how you answered a previous question -- your answer to one question does not have to match your answer to another question. Also, if you already completed the 2-item CIRENS Scale, answer the MEQ without considering how you answered the CIRENS items.</li>
+              <li>If none of the available MEQ answers fits you exactly, please pick the answer that is closest.</li>
+              <li>In order to calculate your score, you must answer ALL 19 items. However, if you decide that you do not want to complete the MEQ, click at any time to erase your answers and return to the HOME MENU.</li>
         </ul>
-        <li> Considering only your own "feeling best" rhythm, what time would you go to bed if you were entirely free to plan your evening?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>8:00PM-9:00PM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>9:00PM-10:15PM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>10:15PM-12:30AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>12:30AM-1:45AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>1:45AM-3:00AM</label>
-                </div>
-            </li>
-        </ul>
-        <li> If there is a specific time that you have to get up in the morning, how dependent are you on being awakened by an alarm clock?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>Not at all dependent</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Slightly dependent</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly dependent</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Very Dependent</label>
-                </div>
-            </li>
-        </ul>
-        <li> How easy do you find getting up in the morning?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>Not at all easy</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Not very easy</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly easy</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Very easy</label>
-                </div>
-            </li>
-        </ul>
-        <li> How alert do you feel during the first half hour after awakening in the mornings?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>Not at all alert</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Slightly alert</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly alert</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Very alert</label>
-                </div>
-            </li>
-        </ul>
-        <li> How is your appetite during the first half hour after awakening in the mornings?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>Very poor</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly poor</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly good</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Very good</label>
-                </div>
-            </li>
-        </ul>
-        <li> During the first half hour after awakening in the morning how tired do you feel?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>Very tired</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly tired</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly refreshed</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Very refreshed</label>
-                </div>
-            </li>
-        </ul>
-        <li> When you had no commitments the next day, what time would you go to bed compared to your usual bedtime?
-        </li>
-        <ul>
-            <li>
-                <div>
-                    <label>Seldom or never later</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Less than 1 hour later</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>1-2 hours later</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>More than 2 hours later</label>
-                </div>
-            </li>
-        </ul>
-        <li> You have decided to engage in some physical exercise. A friend suggests that you do this for one hour twice
-            a week, and the best time for him/her is between 7:00-8:00AM. Bearing in mind nothing else but your own
-            "feeling best" rhythm, how do you think you would perform?
-        </li>
-        <ul>
-            <li>
-                <div>
-                    <label>Would be on good form</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Would be on reasonable form</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Would find it difficult</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Would find it very difficult</label>
-                </div>
-            </li>
-        </ul>
-        <li> At what time in the evening do you feel tired and as a result in need of sleep?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>8:00PM-9:00PM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>9:00PM-10:15PM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>10:15PM-12:45AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>12:45AM-2:00AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>2:00AM-3:00AM</label>
-                </div>
-            </li>
-        </ul>
-        <li> You want to be at your peak performance for a test that you know is going to be mentally exhausting and lasting for two hours. You are entirely free to plan your day and considering only your own "feelingbest" rhythm, which ONE of the four testing times would you choose?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>8:00AM-10:00AM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>11:00AM-1:00PM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>3:00PM-5:00PM</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>7:00PM-9:00PM</label>
-                </div>
-            </li>
-        </ul>
-        <li> If you went to bed at 11:00PM, what would your level of tiredness be?</li>
-        <ul>
-            <li>
-                <div>
-                    <label>Not at all tired</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>A little tired</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Fairly tired</label>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <label>Very tired</label>
-                </div>
-            </li>
-        </ul>
-    </ol>
-    <h4 class="row text-center fatigue-header"><a href="#chronotype">Complete the 2-item Circadian Energy Scale</a></h4>
-    <br>
-    <h4 class="row text-center fatigue-header"><a href="#m-e-questionnaire">Complete the 19-item Morningness-Eveningness
-        Questionnaire</a></h4>
-</div>
+        <br />
+
+        <!-- questionaire -->
+        <form name="meqForm" ng-submit="meqSubmit()" role="form">
+              <ol style="padding-left:20px;">
+        <!-- Q1 -->
+                  <li> Considering only your own "feeling best" rhythm, what time would you get up if you were entirely free to plan your day?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_1" value="5" ng-checked="data.meq_1 == 5"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5:00AM-6:30AM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_1" value="4" ng-checked="data.meq_1 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">6:30AM-7:45AM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_1" value="3" ng-checked="data.meq_1 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">7:45AM-9:45AM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_1" value="2" ng-checked="data.meq_1 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">9:45AM-11:00AM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_1" value="1" ng-checked="data.meq_1 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">11:00AM-12 noon</span>
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- Q2 -->
+                  <li> Considering only your own "feeling best" rhythm, what time would you go to bed if you were entirely free to plan your evening?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_2" value="5" ng-checked="data.meq_2 == 5"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">8:00PM-9:00PM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_2" value="4" ng-checked="data.meq_2 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">9:00PM-10:15PM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_2" value="3" ng-checked="data.meq_2 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">10:15PM-12:30AM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_2" value="2" ng-checked="data.meq_2 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">12:30AM-1:45AM</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_2" value="1" ng-checked="data.meq_2 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">1:45AM-3:00AM</span>
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- Q3 -->
+                  <li> If there is a specific time that you have to get up in the morning, how dependent are you on being awakened by an alarm clock?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_3" value="4" ng-checked="data.meq_3 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Not at all dependent</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_3" value="3" ng-checked="data.meq_3 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Slightly dependent</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_3" value="2" ng-checked="data.meq_3 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly dependent</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_3" value="1" ng-checked="data.meq_3 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very Dependent</span>
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- Q4 -->
+                  <li> How easy do you find getting up in the morning?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_4" value="1" ng-checked="data.meq_4 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Not at all easy</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_4" value="2" ng-checked="data.meq_4 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Not very easy</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_4" value="3" ng-checked="data.meq_4 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly easy</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_4" value="4" ng-checked="data.meq_4 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very easy</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q5 -->
+                  <li> How alert do you feel during the first half hour after awakening in the mornings?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_5" value="1" ng-checked="data.meq_5 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Not at all alert</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_5" value="2" ng-checked="data.meq_5 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Slightly alert</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_5" value="3" ng-checked="data.meq_5 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly alert</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_5" value="4" ng-checked="data.meq_1 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very alert</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q6 -->
+                  <li> How is your appetite during the first half hour after awakening in the mornings?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_6" value="1" ng-checked="data.meq_6 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very poor</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_6" value="2" ng-checked="data.meq_6 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly poor</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_6" value="3" ng-checked="data.meq_6 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly good</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_6" value="4" ng-checked="data.meq_6 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very good</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q7 -->
+                  <li> During the first half hour after awakening in the morning how tired do you feel?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_7" value="1" ng-checked="data.meq_7 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very tired</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_7" value="2" ng-checked="data.meq_7 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly tired</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_7" value="3" ng-checked="data.meq_7 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly refreshed</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_7" value="4" ng-checked="data.meq_7 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very refreshed</span></label>
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- Q8 -->
+                  <li> When you had no commitments the next day, what time would you go to bed compared to your usual bedtime?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_8" value="4" ng-checked="data.meq_8 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Seldom or never later</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_8" value="3" ng-checked="data.meq_8 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Less than 1 hour later</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_8" value="2" ng-checked="data.meq_8 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">1-2 hours later</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_8" value="1" ng-checked="data.meq_8 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">More than 2 hours later</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q9 -->
+                  <li> You have decided to engage in some physical exercise. A friend suggests that you do this for one hour twice a week, and the best time for him/her is between 7:00-8:00AM. Bearing in mind nothing else but your own "feeling best" rhythm, how do you think you would perform?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_9" value="4" ng-checked="data.meq_9 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would be on good form</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_9" value="3" ng-checked="data.meq_9 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would be on reasonable form</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_9" value="2" ng-checked="data.meq_9 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would find it difficult</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_9" value="1" ng-checked="data.meq_9 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would find it very difficult</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q10 -->
+                  <li> At what time in the evening do you feel tired and as a result in need of sleep?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_10" value="5" ng-checked="data.meq_10 == 5"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">8:00PM-9:00PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_10" value="4" ng-checked="data.meq_10 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">9:00PM-10:15PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_10" value="3" ng-checked="data.meq_10 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">10:15PM-12:45AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_10" value="2" ng-checked="data.meq_10 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">12:45AM-2:00AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_10" value="1" ng-checked="data.meq_10 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">2:00AM-3:00AM</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q11 -->
+                  <li> You want to be at your peak performance for a test that you know is going to be mentally exhausting and lasting for two hours. You are entirely free to plan your day and considering only your own "feelingbest" rhythm, which ONE of the four testing times would you choose?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_11" value="6" ng-checked="data.meq_11 == 6"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">8:00AM-10:00AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_11" value="4" ng-checked="data.meq_11 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">11:00AM-1:00PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_11" value="2" ng-checked="data.meq_11 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">3:00PM-5:00PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_11" value="0" ng-checked="data.meq_11 == 0"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">7:00PM-9:00PM</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q12 -->
+                  <li> If you went to bed at 11:00PM, what would your level of tiredness be?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_12" value="0" ng-checked="data.meq_12 == 0"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Not at all tired</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_12" value="2" ng-checked="data.meq_12 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">A little tired</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_12" value="3" ng-checked="data.meq_12 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Fairly tired</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_12" value="5" ng-checked="data.meq_12 == 5"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Very tired</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q13 -->
+                  <li> For some reason you have gone to bed several hours later than usual, but there is no need to get up at any particular time the next morning. Which ONE of the following are you most likely to experience?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_13" value="4" ng-checked="data.meq_13 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Will wake up at usual time and will NOT fall back asleep</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_13" value="3" ng-checked="data.meq_13 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Will wake up at usual time and will doze thereafter</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_13" value="2" ng-checked="data.meq_13 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Will wake up at usual time, but will fall asleep again</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_13" value="1" ng-checked="data.meq_13 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Will not wake up until later than usual</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q14 -->
+                  <li>One night you have to remain awake between 4:00-6:00 AM in order to carry out a night watch. You have no time commitments the next day. Which ONE of the following alternatives will suit you best?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_14" value="1" ng-checked="data.meq_14 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would NOT go to bed until watch was over</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_14" value="2" ng-checked="data.meq_14 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would take a nap before and sleep after</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_14" value="3" ng-checked="data.meq_14 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would take a good sleep before and nap after</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_14" value="4" ng-checked="data.meq_14 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would take ALL sleep before watch</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q15 -->
+                  <li>You have to do two hours of hard physical work. You are entirely free to plan your day and considering only your own "feeling best" rhythm which ONE of the following times would you choose?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_15" value="4" ng-checked="data.meq_15 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">8:00AM-10:00AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_15" value="3" ng-checked="data.meq_15 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">11:00AM-1:00PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_15" value="2" ng-checked="data.meq_15 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">3:00PM-5:00PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_15" value="1" ng-checked="data.meq_15 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">7:00PM-9:00PM</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q16 -->
+                  <li>You have decided to engage in hard physical exercise. A friend suggests that you do this for one hour twice a week and the best time for him/her is between 10:00 PM-11:00 PM. Bearing in mind only your own "feeling best" rhythm, how well do you think you would perform?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_16" value="1" ng-checked="data.meq_16 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would be on good form</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_16" value="2" ng-checked="data.meq_16 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would be on reasonable form</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_16" value="3" ng-checked="data.meq_16 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would find it difficult</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_16" value="4" ng-checked="data.meq_16 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Would find it very difficult</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q17 -->
+                  <li>Suppose that you can choose your own work hours. Assume that you worked a FIVE-hour day (including breaks) and that your job was I nteresting and paid by results.  Which FIVE CONSECUTIVE HOURS would you select?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_17" value="5" ng-checked="data.meq_17 == 5"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5 hours starting between 4:00 AM-8:00 AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_17" value="4" ng-checked="data.meq_17 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5 hours starting between 8:00 AM-9:00 AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_17" value="3" ng-checked="data.meq_17 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5 hours starting between 9:00 AM-2:00 PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_17" value="2" ng-checked="data.meq_17 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5 hours starting between 2:00 PM-5:00 PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_17" value="1" ng-checked="data.meq_17 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5 hours starting between 5:00 PM-4:00 AM</span></label>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- Q18 -->
+                  <li>At what time of day do you think that you reach your "feeling best" peak?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_18" value="5" ng-checked="data.meq_18 == 5"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5:00 AM-8:00 AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_18" value="4" ng-checked="data.meq_18 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">8:00 AM-10:00 AM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_18" value="3" ng-checked="data.meq_18 == 3"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">10:00 AM-5:00 PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_18" value="2" ng-checked="data.meq_18 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">5:00 PM-10:00 PM</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_18" value="1" ng-checked="data.meq_18 == 1"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">10:00 PM-5:00 AM</span></label>
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- Q19 -->
+                  <li>One hears about "morning" and "evening" types of people.  Which ONE of these types do you consider yourself to be?</li>
+                  <ul>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_19" value="6" ng-checked="data.meq_19 == 6"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Definitely a "morning" type</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_19" value="4" ng-checked="data.meq_19 == 4"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Rather more a "morning" than an "evening" type</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_19" value="2" ng-checked="data.meq_19 == 2"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Rather more an "evening" than a "morning" type</span></label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="radio-list">
+                        <label class="tasks-list-item">
+                          <input type="radio" ng-model="data.meq_19" value="0" ng-checked="data.meq_19 == 0"  class="tasks-list-mark">
+                          <span class="tasks-list-desc">Definitely an "evening" type</span></label>
+                      </div>
+                    </li>
+                  </ul>
+                </ol>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Click here to score MEQ</button>
+        </form>
+        <!-- end of questionaire-->
+        <div ng-show="message" class="alert alert-info">{{message}}</div>
+    </div>
+    <div id="meqresults" ng-if="!showForm">
+        <p class="alert alert-success center-block text-center"><strong>Your MEQ score is {{score}}.<br>
+        Your MEQ score indicates that you are "{{type}}".</strong></p>
+        <p class="text-center"><u>MEQ scores range from 16 to 86:</u></p>
+<p>Definitely Evening Type: <b>16 to 30</b><br>Moderately Evening Type: <b>31 to 41</b><br>Neither Type: <b>42 to 58</b><br>Moderately Morning Type: <b>59 to 69</b><br>Definitely Morning Type: <b>70 to 86</b></p>
+        <p>The MEQ was originally developed in 1976 by scientists James Horne and Olov Östberg to quantify a person’s time of day preference or "chronotype". The MEQ is still the most widely used chronotype assessment tool in scientific studies today.</p>
+        <a href="#meq-info">Click here to read more about the MEQ</a><br><br>
+          <a href="#larkorowl">Back to "Lark or Owl" page</a>
+    </div>
 </div>
 <p>&nbsp;</p>

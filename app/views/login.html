@@ -1,17 +1,24 @@
- <div class="container-fluid" style="margin-top: -37px; padding-top: 0px; padding-left: 15px;">
-        <a class="navbar-brand" href="#home"><img src="images/FullyCharged_cleanup_logo.gif" style="margin:-13px; max-height:70px;" alt=""/></a>
-        
+<div class="overlay" ng-if="showSplash">
+		<div class="overlay-inner">
+				<div class="message">
+						<p><img src="images/FC_FullyCharged_Logo.png" class="img-responsive" width="100%"></p>
+				</div>
+		</div>
+</div>
+ <div class="container-fluid" style="margin-top: -37px; padding-top: 0px; padding-left: 15px; background-color: inherit!important;">
+        <a class="navbar-brand" href="#home"><img src="images/FC_FullyCharged_Logo.png" style="margin-left:-7px; max-height:70px;" alt=""/></a>
+
     </div>
 
-<div ng-controller="LoginController">
-    <div class="row" style="margin-top:20px;">
+<div ng-controller="LoginController" style="height:583px;">
+    <div class="row" style="margin-top: 54px;padding-right: 10px;padding-left: 10px;">
         <div class="col-md-6" style="margin-bottom:5px; margin-top:15px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showLogin()">Sign In</button></div>
         <div class="col-md-6" style="margin-bottom:5px; margin-top:15px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showRegister()">New User</button></div>
-  		<div class="col-md-6" id="asGuestDiv" ng-click="loginAsGuest()" style="margin-bottom:5px; margin-top:15px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showRegister()">Continue as a Guest</button></div>	 
+  		<div class="col-md-6" id="asGuestDiv" ng-click="loginAsGuest()" style="margin-bottom:5px; margin-top:15px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showRegister()">Continue as a Guest*</button><div id="as-guest-disclaimer">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div></div>
     </div>
 
     <div class="row"  class="loginForm" ng-show="isShowLogin">
-        <form name="loginForm" ng-submit="login()" role="form" id="loginForm" >
+        <form name="loginForm" ng-submit="login()" role="form" id="loginForm" style="margin-left:25px; margin-right:25px;">
             <div class="form-group">
                 <label for="username">Username</label>
                 <i class="fa fa-key"></i>
@@ -24,7 +31,7 @@
                 <input type="password" autocorrect="off" autocapitalize="off" name="password" id="password" class="form-control" ng-model="password" required />
                 <span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" class="help-block">Password is required</span>
             </div>
-            <!-- <fieldset class="tasks-list">    
+            <!-- <fieldset class="tasks-list">
                 <label class="tasks-list-item">
                 <input type="checkbox" name="rememberMe" value="1"  ng-model="rememberMe" ng-checked="rememberMe" class="tasks-list-cb" checked>
                 <span class="tasks-list-mark"></span>
@@ -39,11 +46,11 @@
             </div>
         </form>
     </div>
-    
+
     <div class="row" class="registerForm" ng-show="isShowRegister">
         <div ng-show="error" class="alert alert-danger">{{error}}</div>
-        <form name="registerForm" ng-submit="register()" role="form" id="registerForm" style="margin-left:15px; margin-right:15px;">
-        
+        <form name="registerForm" ng-submit="register()" role="form" id="registerForm" style="margin-left:25px; margin-right:25px;">
+
             <div class="form-group">
                 <label for="username">Choose Your Username</label>
                 <i class="fa fa-key"></i>
@@ -76,8 +83,9 @@
             </div>
         </form>
     </div>
-    
+
     <div class="row">
-        <div id="resetPasswordDiv" style="margin-left:15px; margin-top:10px;"><a href="#resetpassword">Forgot password</a></div>
+        <div id="resetPasswordDiv" style="margin-left:24px; margin-top:10px;"><a href="#resetpassword">Forgot password?</a></div>
     </div>
 </div>
+<p>&nbsp;</p>

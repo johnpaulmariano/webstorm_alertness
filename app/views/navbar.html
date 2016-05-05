@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default ng-scope navbar-fixed-top" ng-controller="NavBarController">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#home"><img src="images/FullyCharged_cleanup_logo.gif" style="margin:-13px; max-height:70px;" alt=""/></a>
+        <a class="navbar-brand" href="#home"><img src="images/FullyCharged_cleanup_logo.png" style="margin:-13px; max-height:70px;" alt=""/></a>
        <!--<a  href="#dashboard"> <img src="images/dashboard.png" style="position:absolute; margin-left:40px; margin-top:12px;" width="75" alt=""/></a> -->
 <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" style="margin-right:25px;">
@@ -10,15 +10,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav pull-right">
-                <li ng-hide="asGuest"><a href="#profile" class="navbar-href"><img src="images/FC_DropdownMenu_UserProfile_Button.png" alt="" id="Image2"><span class="navText" id="navMargin">User Profile </span></a><span class="navText">/</span></li>
-                <li><a href="#chronotype" class="navbar-href"><img src="images/FC_DropdownMenu_Chronotype_Button.png" alt="" id="Image2"><span class="navText" id="navMargin">Chronotype</span></a><span class="navText">/</span></li>
-                <!-- <li><a href="#sleepneed" class="navbar-href"><img src="images/FC_DropdownMenu_SleepNeed_Button.png" alt="" id="Image5"><span class="navText">Sleep Need </span></a><span class="navText">/</span></li> -->
+                <li ng-hide="asGuest"><a href="#profile" class="navbar-href"><img src="images/FC_DropdownMenu_UserProfile_Button.png" alt="" id="Image2"><span class="navText" id="navMargin">User Profile </span></a><span class="navText"></span></li>
+                <li><a href="#larkorowl" class="navbar-href"><img src="images/FC_DropdownMenu_Chronotype_Button.png" alt="" id="Image2"><span class="navText" id="navMargin">Lark Or Owl?</span></a><span class="navText"></span></li>
+                <li><a href="#amisleepy" class="navbar-href"><img src="images/FC_DropdownMenu_Sleepy_Button.png" alt="" id="Image5"><span class="navText">Am I Sleepy?</span></a><span class="navText"></span></li>
                 <!-- <li><a href="#sleepdebt" class="navbar-href"><img src="images/FC_DropdownMenu_SleepDebt_Button.png" alt="" id="Image4"><span class="navText">Sleep Balance </span></a><span class="navText">/</span></li> -->
-                <li><a href="#checklist" class="navbar-href"><img src="images/FC_DropdownMenu_ChecklistPlanner_Button.png" alt="" id="Image3"><span class="navText">Checklist/Planner </span></a><span class="navText">/</span></li>
-                <li><a href="#sleepdisorder" class="navbar-href"><img src="images/FC_DropdownMenu_SleepDisorder_Button.png" alt="" id="Image6"><span class="navText">Sleep Problems </span></a><span class="navText">/</span></li>
+                <li><a href="#checklist" class="navbar-href"><img src="images/FC_DropdownMenu_ChecklistPlanner_Button.png" alt="" id="Image3"><span class="navText">Checklist/Planner </span></a><span class="navText"></span></li>
+                <li><a href="#sleepdisorder" class="navbar-href"><img src="images/FC_DropdownMenu_SleepDisorder_Button.png" alt="" id="Image6"><span class="navText">Sleep Problems </span></a><span class="navText"></span></li>
                 <!-- <li><a href="#mycharge" class="navbar-href"><img src="images/FC_DropdownMenu_Guage1_Button.png" alt="" id="Image8"><span class="navText">What's My Charge</span></a><span class="navText">/</span></li> -->
-                <li><a href="#gauge2" class="navbar-href"><img src="images/FC_DropdownMenu_Guage2_Button.png" alt="" id="Image6"><span class="navText" id="navMargin">What's My Charge?</span></a><span class="navText">/</span></li>
-                <li><a href="#howmuchcaffeine" class="navbar-href"><img src="images/FC_DropdownMenu_Caffeine_Button.png" alt="" id="Image5"><span class="navText" id="navMargin">How Much Caffeine is in...</span></a><span class="navText">/</span></li>
+                <li><a href="#gauge2" class="navbar-href"><img src="images/FC_DropdownMenu_Guage2_Button.png" alt="" id="Image6"><span class="navText" id="navMargin">What's My Charge?</span></a><span class="navText"></span></li>
+                <li><a href="#howmuchcaffeine" class="navbar-href"><img src="images/FC_DropdownMenu_Caffeine_Button.png" alt="" id="Image5"><span class="navText" id="navMargin">How Much Caffeine is in...</span></a><span class="navText"></span></li>
 
 		<li ng-if="!$root.asGuest"><a href="#login" class="navbar-href" ng-click="logout();" ng-controller="LogoutController"><img src="images/FC_DropdownMenu_Logout_Button.png" alt="" id="Image7"><span class="navText">Logout</span></a></li>
                 <li ng-if="$root.asGuest"><a href="#login" class="navbar-href"><img src="images/FC_DropdownMenu_Login_Button.png" alt="" id="Image8"><span class="navText">Login</span></a></li>

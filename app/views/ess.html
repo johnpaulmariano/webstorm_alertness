@@ -1,0 +1,317 @@
+<div ng-include="'views/navbar.html'"></div>
+<div class="container">
+
+    <div id="essForm" ng-if="showForm">
+        <h4 class="row text-center fatigue-header">Epworth Sleepiness Scale</h4>
+        <p>The Epworth Sleepiness Scale (ESS) has 8 items and takes about 3 minutes to complete. It is widely used to help people determine whether they are obtaining enough sleep.</p>
+        <p>How likely are you to doze off or fall asleep in the following situations, in contrast to feeling just tired? This refers to your usual way of life in recent times. Even if you haven’t done some of these things recently, try to work out how they would have affected you.</p>
+        <p>
+            <strong>Use the following scale to choose the most appropriate number for each situation:</strong>
+        </p>
+        <ul style="list-style:none;">
+            <li>0 = Would never doze</li>
+            <li>1 = Slight chance of dosing</li>
+            <li>2 = Moderate chance of dozing</li>
+            <li>3 = High chance of dozing</li>
+        </ul>
+        <form name="meqForm" ng-submit="essSubmit()">
+            <ol style="list-style:none; padding-left:0px;">
+                <!-- q1 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px;">
+                    Sitting and reading
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_1" value="0" ng-checked="data.ess_1 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_1" value="1" ng-checked="data.ess_1 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_1" value="2" ng-checked="data.ess_1 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_1" value="3" ng-checked="data.ess_1 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- q2 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px; padding-bottom:10px;">
+                    Watching TV
+
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_2" value="0" ng-checked="data.ess_2 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_2" value="1" ng-checked="data.ess_2 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_2" value="2" ng-checked="data.ess_2 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_2" value="3" ng-checked="data.ess_2 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- q3 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px; padding-bottom:10px;">
+                    Sitting, inactive in a public place (e.g., a theater or meeting)
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_3" value="0" ng-checked="data.ess_3 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_3" value="1" ng-checked="data.ess_3 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_3" value="2" ng-checked="data.ess_3 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_3" value="3" ng-checked="data.ess_3 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- q4 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px; padding-bottom:10px;">
+                    As a passenger in a car for an hour without a break
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_4" value="0" ng-checked="data.ess_4 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_4" value="1" ng-checked="data.ess_4 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_4" value="2" ng-checked="data.ess_4 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_4" value="3" ng-checked="data.ess_4 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- q5 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px; padding-bottom:10px;">
+                    Lying down to rest in the afternoon when circumstances permit
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_5" value="0" ng-checked="data.ess_5 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_5" value="1" ng-checked="data.ess_5 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_5" value="2" ng-checked="data.ess_5 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_5" value="3" ng-checked="data.ess_5 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- q6 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px; padding-bottom:10px;">
+                    Sitting and talking to someone
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_6" value="0" ng-checked="data.ess_6 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_6" value="1" ng-checked="data.ess_6 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_6" value="2" ng-checked="data.ess_6 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_6" value="3" ng-checked="data.ess_6 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- q7 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px; padding-bottom:10px;">
+                    Sitting quietly after a lunch without alcohol
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_7" value="0" ng-checked="data.ess_7 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_7" value="1" ng-checked="data.ess_7 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_7" value="2" ng-checked="data.ess_7 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_7" value="3" ng-checked="data.ess_7 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- q8 -->
+                <li style="list-style:none; padding-left:0px; padding-top:10px; padding-bottom:10px;">
+                    In a car, while stopped for a few minutes in the traffic
+
+                    <ul style="list-style:none; padding-top:10px;">
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_8" value="0" ng-checked="data.ess_8 == 0"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">0-Would never doze</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_8" value="1" ng-checked="data.ess_8 == 1"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">1-Slight chance of dosing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_8" value="2" ng-checked="data.ess_8 == 2"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">2-Moderate chance of dozing</span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="radio-list">
+                                <label class="tasks-list-item">
+                                    <input type="radio" ng-model="data.ess_8" value="3" ng-checked="data.ess_8 == 3"  class="tasks-list-mark">
+                                    <span class="tasks-list-desc">3-High chance of dozing</span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+            </ol>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;color:#FFF;" >Click here to score ESS</button>
+            <div ng-show="message" class="alert alert-info">{{message}}</div>
+        </form>
+
+    </div>
+    <div id="essResults" ng-if="!showForm">
+        <h4 class="row text-center fatigue-header">Results of ESS</h4>
+          <p class="alert alert-success center-block text-center"><strong>Your ESS score is: {{score}}</strong></p>
+        <p>Your ESS score is calculated by adding up your responses to all 8 items. ESS scores range 0 to 24.</p>
+        <p><strong>ESS scores between 0 and 10:</strong> Scores in this range suggest that you do not have a problem with daytime sleepiness.</p>
+        <p><i>If you are getting 7-8 hours of sleep per night:</i> you are doing great. Keep getting at least 7-8 hours of sleep per night to maintain optimal alertness and mental acuity.</p>
+        <p><i>If you are getting less than 7-8 hours of sleep per night:</i> Even though your score on the ESS suggests that daytime sleepiness is not a problem for you, your mood, energy and physical health will benefit from increasing your nightly sleep toward the scientifically recommended 7-8 hours per night. Try increasing your sleep by 20 minutes, and see if some aspects of your well-being improve.</p>
+        <p><strong>ESS scores between 11 and 24:</strong> Scores in this range suggest that you are having difficulties staying awake under conditions when most other people can stay awake.</p>
+        <p><i>If you are not getting at least 7 hours of sleep per night:</i> increase your nightly sleep amount. The closer you can get to the scientifically recommended 7-8 hours per night, the more benefit you will obtain. Can you commit to obtaining 20-30 minutes more sleep per night for a trial period of a week or so? Give it a try and see whether you feel better and perform better.</p>
+        <p><i>If you are getting at least 7 hours of sleep:</i> something may be disrupting your sleep without your awareness. Go through the Health Sleep Checklist again to see if you overlooked something (for example, leaving the TV on while you are trying to sleep). You can also talk to your healthcare provider.</p>
+          <a href="#amisleepy">Back to "Am I Sleepy?" page</a>
+    </div>
+</div>

@@ -4,7 +4,7 @@
 var myServices = angular.module('atoAlertnessServices', []);
 
 //defining constants
-myServices.value("BASE_API_URL", 'http://atsaptest.cssiinc.com/alertness/svc/');
+myServices.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertness/svc/');
 
 myServices.factory('TokenService', ['$http', 'BASE_API_URL', 
     function($http, BASE_API_URL){
@@ -198,11 +198,31 @@ myServices.factory('Base64', function () {
     };
 });
 
-myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataService', '$rootScope',
-    function($http, BASE_API_URL, GuestDataService, $rootScope){
+myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataService', '$rootScope', 'localStorageService',
+    function($http, BASE_API_URL, GuestDataService, $rootScope, localStorageService){
         var service = {};
         var asGuest = $rootScope.asGuest;
-        
+        var storageKey = "Chronotype";
+
+        //var localData = localStorageService.get(storageKey);
+        service.getLocalData = function(username, callback) {
+            var localData = localStorageService.get(storageKey);
+            if(localData) {
+                callback(localData);
+            }
+        };
+
+        service.setLocalData = function(username, chronoMorning, chronoEvening, callback){
+            var r = {
+                username: username,
+                chronoMorning: chronoMorning,
+                chronoEvening: chronoEvening,
+                success: true
+            };
+
+            localStorageService.set(storageKey, r);
+        };
+
         service.getProfile = function(username, callback){
             if(!asGuest) {
                 $http.get(BASE_API_URL + 'user/profile')
@@ -215,6 +235,7 @@ myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataSe
             }
             else {
                 var data = GuestDataService.getCookie('profile');
+                console.log(data);
                 callback({result : "success", data: data});
             }
         };
@@ -291,7 +312,7 @@ myServices.factory('GuestDataService', ['$cookieStore',
         return service;
     }
 ]);
-
+/*
 myServices.factory('SleepNeedService', ['$http', 'BASE_API_URL', '$cookieStore', '$rootScope', 'GuestDataService',
     function($http, BASE_API_URL, $cookieStore, $rootScope, GuestDataService){
         var service = {};
@@ -331,6 +352,8 @@ myServices.factory('SleepNeedService', ['$http', 'BASE_API_URL', '$cookieStore',
         return service;
     }
 ]);
+*/
+
 /*warning: pre 1.4 angular js doesn't support set cookie expiration
  * and $cookieStore is deprecrated in > 1.4
  * */
@@ -383,7 +406,7 @@ myServices.factory('RememberMeService', ['$cookieStore', '$http', 'BASE_API_URL'
         return service;
     }
 ]);
-
+/*
 myServices.factory('SleepDebtService', ['$http', 'BASE_API_URL', 'GuestDataService', '$rootScope',
     function($http, BASE_API_URL, GuestDataService, $rootScope){
         var service = {};
@@ -439,7 +462,7 @@ myServices.factory('SleepDebtService', ['$http', 'BASE_API_URL', 'GuestDataServi
         return service;
     }
 ]);
-
+*/
 myServices.factory('ChecklistService', ['$http', 'BASE_API_URL', 'GuestDataService', '$rootScope',
     function($http, BASE_API_URL, GuestDataService, $rootScope){
         var service = {};
@@ -515,25 +538,25 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
         var expiredStorage = 1000 * 60 * 60; // 60 minutes for testing
         var fromLocal = false;
 
-        service.getData = function(data, checkLocal, callback) {
-            console.log('get prediction');
+        service.getData = function(data, renew, callback) {
 
             //check with local storage
-            if(checkLocal) {
+            if(!renew) {
+                console.log('not renew');
                 var localData = localStorageService.get(storageKey);
                 var currDate = new Date();
                 var currTime = currDate.getTime();
 
-                if (localData) {
+                if(localData) {
                     if (currTime - localData.time < expiredStorage) {
-                        console.log("get data from local");
                         fromLocal = true;
                         callback(localData);
                     }
                 }
             }
 
-            if(!fromLocal) {
+            if(!fromLocal || renew) {
+                console.log('renew');
                 $http.put(BASE_API_URL + 'data/prediction',data)
                     .success(function(response){
                         var d = new Date();
@@ -550,7 +573,7 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
                             r.success = true;
                             localStorageService.set(storageKey, r);
                         }
-
+                        console.log(r);
                         callback(r);
                     })
                     .error(function(data, status, headers, config){
@@ -653,30 +676,57 @@ myServices.factory('CaffeineService', ['$http', 'BASE_API_URL', '$rootScope',
     }
 ]);
 
-myServices.factory('MyChargeService', ['$http', 'BASE_API_URL', '$rootScope',
-    function($http, BASE_API_URL, $rootScope){
+myServices.factory('MyChargeService', ['$http', 'BASE_API_URL', '$rootScope','localStorageService',
+    function($http, BASE_API_URL, $rootScope, localStorageService){
         var service = {};
+        var storageKey = 'MyChargeData';
 
-        service.getData = function(data, callback) {
-            console.log('get mycharge');
-            $http.get(BASE_API_URL + 'unknown')
-                .success(function(response){
-                    callback(response);
-                })
-                .error(function(data, status, headers, config){
-                    callback({success: false, message: 'Server connection error'});
-                });
+        //retrieve from local storage
+        service.getData = function(callback) {
+            var localData = localStorageService.get(storageKey);
+            callback(localData);
         };
 
         service.setData = function(data, callback) {
-            console.log('get mycharge');
-            /*$http.put(BASE_API_URL + 'unknown', data)
-                .success(function(response){
-                    callback(response);
-                })
-                .error(function(data, status, headers, config){
-                    callback({success: false, message: 'Server connection error'});
-                });*/
+            localStorageService.set(storageKey, data);
+            callback({success: true});
+        };
+
+        return service;
+    }
+]);
+
+myServices.factory('MeqService', ['$http', 'BASE_API_URL', '$rootScope', 'localStorageService',
+    function($http, BASE_API_URL, $rootScope, localStorageService){
+        var service = {};
+        var storageKey = 'MEQData';
+
+        service.getData = function(callback) {
+            var localData = localStorageService.get(storageKey);
+            callback(localData);
+        };
+
+        service.setData = function(data, callback) {
+            localStorageService.set(storageKey, data);
+            callback({success: true});
+        };
+
+        return service;
+    }
+]);
+
+myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localStorageService',
+    function($http, BASE_API_URL, $rootScope, localStorageService){
+        var service = {};
+        var storageKey = 'ESSData';
+
+        service.getData = function(callback) {
+            var localData = localStorageService.get(storageKey);
+            callback(localData);
+        };
+
+        service.setData = function(data, callback) {
+            localStorageService.set(storageKey, data);
             callback({success: true});
         };
 

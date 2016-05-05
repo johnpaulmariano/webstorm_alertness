@@ -1,45 +1,34 @@
-<div ng-include="'views/navbar.html'"></div>
-<div class="container" style="margin-top:69px;">
-    <h4 class="row text-center fatigue-header">What's My Charge Input</h4>
-    <div class="row" style="position: fixed; top: 96px; z-index: 1001; width:100%; height: 110px;">
-        <div class="col-md-4 sleep-btns">
-            <button type="button" class="btn btn-warning btn-sm" ng-click="addSleep()">Add Sleep</button>
-            <button type="button" class="btn btn-info btn-sm" ng-click="addCaffeine()">Add Caffeine</button>
-            <button type="button" class="btn btn-alert btn-sm" ng-click="addDay()">Add Day</button>
-            <button type="button" class="btn btn-danger btn-sm" ng-click="save()">Submit</button>
-
-        </div>
-        <div class="col-md-6 mycharge-message" ng-if="message">{{message}}</div>
-
+<div class="row mycharge-input" style="position: fixed; top: 70px; z-index: 1001;">
+    <div class="row sleep-btns">
+        <button type="button" class="btn btn-mycharge btn-sm col-md-2" ng-click="addSleep()"><span class="glyphicon glyphicon-plus"  aria-hidden="true"></span> Sleep</button>
+        <button type="button" class="btn btn-mycharge btn-sm col-md-2" ng-click="addCaffeine()"><span class="glyphicon glyphicon-plus"  aria-hidden="true"></span> Caffeine</button>
+        <button type="button" class="btn btn-mycharge btn-sm col-md-2" ng-click="addDay()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Day</button>
+        <button type="button" class="btn btn-mycharge btn-sm col-md-2 mycharge-last" style="color:#F2ED8F;" ng-click="save()">Submit</button>
+        <div class="col-md-4 input-msg" ng-if="message">{{message}}</div>
     </div>
-    <!--
-    <button type="button" class="btn btn-alert btn-sm" ng-click="removeDay(idx)">Remove Day</button>
-    -->
+</div>
+<div ng-include="'views/navbar.html'"></div>
+<div class="container" style="margin-top:40px;">
+    <h4 class="row text-center fatigue-header">What's My Charge Input</h4>
     <div id="mycharge_list" style="position: relative; top: 10px;">
         <div class="mycharge-sleep-div row" ng-repeat="(idx, day) in sleeps">
-            <h4 class="mycharge-panel-title" id="day_title_{{idx}}"><button type="button" class="btn btn-danger btn-sm" ng-click="removeDay(idx)">-</button> Day {{idx+1}} </h4>
+            <h4 class="mycharge-panel-title" id="day_title_{{idx}}">Day {{numberOfDays - idx}} <div class="glyphicon glyphicon-remove pull-right"  ng-click="removeDay(idx)"></div></h4>
             <div class="col-md-6 sleep-background">
                 <div class="mycharge-sleep-line" ng-repeat="(dIdx, s) in day">
-                    <div class="mycharge-sleep-text">
+                    <div class="mycharge-sleep-text"><span style="color:#F2ED8F;">Sleep:</span>
                         Start: {{formatTwoDigits(s.startHour)}}:{{formatTwoDigits(s.startMinute)}} - Duration: {{formatTwoDigits(s.durationHour)}}:{{formatTwoDigits(s.durationMinute)}}
-                        <button type="button" class="btn btn-primary btn-sm pull-right mycharge-remove" ng-click="removeSleep(idx, dIdx)">X</button>
+                        <div class="glyphicon glyphicon-trash" ng-click="removeSleep(idx, dIdx)"></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 caffeine-background">
-                <div class="mycharge-caffeine-line" ng-repeat="(cIdx, coffee) in caffeine[idx]">
-                    <div class="mycharge-caffeine-text">
+                <div class="mycharge-caffeine-line" ng-repeat="(cIdx, coffee) in caffeine[idx]"><hr style="margin-top:5px; margin-bottom:5px;" ng-if="cIdx == 0" />
+                    <div class="mycharge-caffeine-text"><span style="color:#F2ED8F;">Caffeine:</span>
                         {{coffee.source}} ({{coffee.amount}})mg x {{coffee.quantity}} = {{coffee.amount * coffee.quantity}}(mg) @ {{formatTwoDigits(coffee.hour)}}:{{formatTwoDigits(coffee.minute)}}
-                        <button type="button" class="btn btn-info btn-sm pull-right mycharge-remove" ng-click="removeCaffeine(idx, cIdx)">X</button>
+                      <div class="glyphicon glyphicon-trash" ng-click="removeCaffeine(idx, cIdx)"></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row" style="position: relative; top: 45px;">
-        <div class="col-md-2 pull-right">
-            <button type="button" class="btn btn-danger pull-right" ng-click="addDay()">Add Day</button>&nbsp;
-            <button type="button" class="btn btn-danger pull-right" ng-click="save()">Submit</button>
         </div>
     </div>
 
@@ -92,37 +81,22 @@
                     <div class="form-group">
                         <label>Day:</label>
                         <select class="form-control" name="currentDay" ng-options="d as d.txt for d in dayDropdowns track by d.val" ng-model="currentDay" required></select>
-                        <!--
-                        <p ng-show="sleepForm.currentDay.$invalid && !sleepForm.currentDay.$pristine" class="help-block">You name is required.</p>
-                        -->
                     </div>
                     <div class="form-group">
                         <label>Caffeine Source:</label>
                         <select class="form-control" ng-options="type as type.name for type in dropdowns.caffeineItems track by type.id" ng-model="c.caffeineSource"></select>
-                        <!--
-                        <p ng-show="sleepForm.currentDay.$invalid && !sleepForm.currentDay.$pristine" class="help-block">You name is required.</p>
-                        -->
                     </div>
                     <div class="form-group">
                         <label>Quantity:</label>
                         <select class="form-control" ng-options="k for k in dropdowns.quantity" ng-model="c.quantity"></select>
-                        <!--
-                        <p ng-show="sleepForm.currentDay.$invalid && !sleepForm.currentDay.$pristine" class="help-block">You name is required.</p>
-                        -->
                     </div>
                     <div class="form-group">
                         <label>Hour:</label>
                         <select class="form-control" ng-options="hour as hour.txt for hour in dropdowns.startHours track by hour.val" ng-model="c.hour"></select>
-                        <!--
-                        <p ng-show="sleepForm.currentDay.$invalid && !sleepForm.currentDay.$pristine" class="help-block">You name is required.</p>
-                        -->
                     </div>
                     <div class="form-group">
                         <label>Minute:</label>
                         <select class="form-control" ng-options="min as min.txt for min in dropdowns.startMins track by min.val" ng-model="c.minute"></select>
-                        <!--
-                        <p ng-show="sleepForm.currentDay.$invalid && !sleepForm.currentDay.$pristine" class="help-block">You name is required.</p>
-                        -->
                     </div>
 
                 </div>
