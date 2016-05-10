@@ -1,3 +1,37 @@
+<ul>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="1" ng-checked="scenario == 1"  class="tasks-list-mark" ng-change="getData(1)">
+                <div><span class="tasks-list-desc">8 days (sleep starts at 23:00 and ends at 7:00 in the next day)</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="2" ng-checked="scenario == 2"  class="tasks-list-mark" ng-change="getData(2)">
+                <div><span class="tasks-list-desc">14 days (sleep starts at 23:00 and ends at 7:00 in the next day, 0 sleep time in Day 2,4, 7 )</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="3" ng-checked="scenario == 3"  class="tasks-list-mark" ng-change="getData(3)">
+                <div><span class="tasks-list-desc">14 days with caffeine (sleep starts at 23:00 and ends at 7:00 in the next day)</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="4" ng-checked="scenario == 4"  class="tasks-list-mark" ng-change="getData(4)">
+                <div><span class="tasks-list-desc">18 days (sleep starts at 23:00 and ends at 7:00 in the next day)</span></div>
+            </label>
+        </div>
+    </li>
+</ul>
 
 Time, Day, Value<br/>
 <ul>

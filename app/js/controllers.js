@@ -1038,8 +1038,8 @@ atoAlertnessControllers.controller('ResetPasswordController', ['$rootScope', '$s
     }
 ]);*/
 
-atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope', '$scope', '$location', 'DataPredictionService', 'MyChargeService','usSpinnerService',
-    function($window, $rootScope, $scope, $location, DataPredictionService, MyChargeService, usSpinnerService) {
+atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope', '$scope', '$location', 'DataPredictionService', 'MyChargeService','usSpinnerService', 'PREDICTION_DATA_EXPIRATION',
+    function($window, $rootScope, $scope, $location, DataPredictionService, MyChargeService, usSpinnerService, PREDICTION_DATA_EXPIRATION) {
         //initiate vars for sliders
         $scope.hourRange = 24;
         $scope.tickInterval = 4;
@@ -1051,6 +1051,9 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
         $scope.sliderValText = "0";
         $scope.dataTimeStamp = null;
         $scope.gaugeText = '';
+        $scope.isExpired = false;
+        //$scope.expiredIn = 72 * 60 * 60 * 1000; // expired within 3 days
+        $scope.expiredIn = PREDICTION_DATA_EXPIRATION;
 
         var d = new Date();
         $scope.currentTime = d.toLocaleString();
@@ -1093,19 +1096,15 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
             ];
         };
 
-        $scope.filterData = function(r){     // filter data with range from 48 hours before to 48 hours after
-                                            // the current time
-                                            // of the very last day of sleep data - ie. the very first day in prediction
-                                            //  (ie. = numDays + 1)
+        $scope.filterData = function(r){
+            // calculate the beginning of TS day
+            var ts = new Date(r.time);
+            var begTS = new Date(ts.getFullYear(), ts.getMonth(), ts.getDate(), 0, 0, 0, 0);
+            var endTS = new Date(begTS.getTime() + $scope.expiredIn);
 
-            var daysInMilli = 1000 * 60 * 60 * 24;
             var d = new Date();
-            var currTime = d.getTime();
-            var currDate = d.getDate();
-            var currMonth = d.getMonth();
-            var currYear = d.getFullYear();
-            var currMinutes = d.getMinutes(currTime);
-            var currHours = d.getHours(currTime);
+            var currMinutes = d.getMinutes();
+            var currHours = d.getHours();
             var currHourFraction = 0;
 
             if(currMinutes >= 0 && currMinutes < 7) {
@@ -1129,23 +1128,23 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
                 currHourFraction = 0;
             }
 
-            var newCurrDate = new Date(currYear, currMonth, currDate, currHours, currHourFraction * 60, 0, 0);
-            var dataDate = new Date(r.time);
-            var dataTime = dataDate.getTime();
-            var dataTimeInDay = dataTime % daysInMilli;
-            var dataDay = (dataTime - dataTimeInDay) / daysInMilli;
-            var midPointDay = r.numDays;
+            var newCurrDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), currHours, currHourFraction * 60, 0, 0);
 
-            if(currTime >= (dataDay + 1) * daysInMilli ) {
-                midPointDay =  Math.ceil((currTime - dataTime) / daysInMilli);
+            //check if data is expired
+            console.log(endTS);
+            console.log(newCurrDate);
+            if(newCurrDate.getTime() > endTS.getTime()) {
+                $scope.isExpired = true;
             }
 
+            //calculate the mid point of the slider based on approx. current time
+            var currentTimeSlot = r.numDays * 24 + currHours + currHourFraction;
+            console.log(currentTimeSlot);
 
-            var timeSlot = (midPointDay + 1) * 24 + currHours + currHourFraction;
+            //search for the middle point
             var midPoint = 0;
-
             for(var i = 0; i < r.data.length; i++) {
-                if(r.data[i].time < timeSlot) {
+                if(r.data[i].time < currentTimeSlot) {
                     continue;
                 }
                 else {
@@ -1153,22 +1152,23 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
                     break;
                 }
             }
+            console.log(midPoint);
+            console.log(r.data.length);
 
+            //calculate the beggining and ending point of slider
             var startPoint = 0;
             var timeStartPoint = 0;
-            var endPoint = r.data.length - 1;
-            var timeEndPoint = r.data[endPoint].time;
-            var timeMidPoint = r.data[midPoint].time;
-
+            var endPoint = r.data.length -  1;
             if(midPoint - 2 * 24 * 4 > 0) {
                 startPoint = midPoint - 2 * 24 * 4;
-                timeStartPoint = newCurrDate.getTime() - (timeSlot - r.data[startPoint].time) * 60 * 60 * 1000;
+                timeStartPoint = newCurrDate.getTime() - (r.data[midPoint].time - r.data[startPoint].time) * 60 * 60 * 1000;
             }
 
-            if(midPoint + 2 * 24 * 4 < r.data.length) {
+            if(midPoint + 2 * 24 * 4 + 1 < r.data.length) {
                 endPoint = midPoint + 2 * 24 * 4 + 1;
-                timeEndPoint = newCurrDate.getTime() +  (r.data[endPoint].time - timeSlot) * 60 * 60 * 1000;
             }
+
+            console.log(endPoint);
 
             $scope.sliderVal = midPoint - startPoint;
             $scope.defaultTick = $scope.sliderVal;
@@ -1185,25 +1185,34 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
 
                 data[j].epoch = timeStartPoint + 15 * 60 * 1000 * j;
             }
-            console.log(data);
+
             return data;
         };
 
         $scope.data = [];
         $scope.requestData = {};
 
-        //get local data
         MyChargeService.getData(function(d){
-            $scope.localData = d;
+            //padding 3 days for predictions
+            var paddingThreeDays = function(sleepWake){
+                //extracting the last sleep
+                var last = sleepWake[sleepWake.length - 1];
+                sleepWake.splice(sleepWake.length, 0, 24 - last, 8, 16, 8, 16, 8);
+
+                return sleepWake;
+            };
 
             if(d){
                 $scope.requestData = d.data;
+                $scope.requestData.sleepWakeSchedule = paddingThreeDays($scope.requestData.sleepWakeSchedule);
             }
             else {
                 //default data to send to the prediction API
+                var defaultSleepWake = [8.0,16,8.0, 16, 8.0, 16, 8, 16, 8, 16,8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8];
+                defaultSleepWake = paddingThreeDays(defaultSleepWake);
                 $scope.requestData = {
                     sleepStartTime: 23,
-                    sleepWakeSchedule:[8.0,47.0,8.0, 71.0, 8.0, 95, 8, 119, 8, 143,8, 167, 8, 191, 8, 215, 8, 239, 8, 263, 8, 287, 8, 311, 8, 335, 8],
+                    sleepWakeSchedule:defaultSleepWake,
                     caffeineDoses:[],
                     caffeineTimes:[],
                     numDays: 14
@@ -1217,63 +1226,67 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
 
         $scope.showSpinner = true;
 
-        DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction,
-            function(response){
-                if(response.success == true) {
-                    $scope.showSpinner = false;
-                    $rootScope.renewPrediction = false; // turn off the renew prediction request from MyCharge inputs
-                    $scope.data = $scope.filterData(response);
+        var GetPredictionData = function() {
+            DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction,
+                function(response){
+                    if(response.success == true) {
+                        $scope.showSpinner = false;
+                        $rootScope.renewPrediction = false; // turn off the renew prediction request from MyCharge inputs
+                        $scope.data = $scope.filterData(response);
 
-                    if($scope.data.length > 0) {
-                        var ts = new Date(response.time);
-                        $scope.dataTimeStamp = ts.toLocaleString();
+                        if($scope.data.length > 0) {
+                            var ts = new Date(response.time);
+                            $scope.dataTimeStamp = ts.toLocaleString();
 
-                        //initiate vars for gauge
-                        $scope.initializeGauge();
+                            //initiate vars for gauge
+                            $scope.initializeGauge();
 
-                        $scope.maxRange = $scope.data.length - 1;
-                        $scope.gauge.value = $scope.data[$scope.defaultTick].value;
-                        $scope.setGaugeText($scope.data[$scope.defaultTick]);
+                            $scope.maxRange = $scope.data.length - 1;
+                            $scope.gauge.value = $scope.data[$scope.defaultTick].value;
+                            $scope.setGaugeText($scope.data[$scope.defaultTick]);
 
-                        //slider config
-                        //$scope.settingSlider();
-                        $scope.minSlider = {
-                            minValue: $scope.minRange,
-                            maxValue: $scope.maxRange,
-                            value: $scope.sliderVal,
-                            options: {
-                                floor: $scope.minRange,
-                                ceil: $scope.maxRange,
-                                step: $scope.step,
-                                //showTicks: true,
-                                translate: function(value){
-                                    return $scope.getSlideVal(parseInt(value));
-                                },
-                                onChange: function() {
-                                    var idx = $scope.minSlider.value;
-                                    if(idx == $scope.data.length) {
-                                        idx = idx-1;
+                            //slider config
+                            //$scope.settingSlider();
+                            $scope.minSlider = {
+                                minValue: $scope.minRange,
+                                maxValue: $scope.maxRange,
+                                value: $scope.sliderVal,
+                                options: {
+                                    floor: $scope.minRange,
+                                    ceil: $scope.maxRange,
+                                    step: $scope.step,
+                                    //showTicks: true,
+                                    translate: function(value){
+                                        return $scope.getSlideVal(parseInt(value));
+                                    },
+                                    onChange: function() {
+                                        var idx = $scope.minSlider.value;
+                                        if(idx == $scope.data.length) {
+                                            idx = idx-1;
+                                        }
+                                        $scope.gauge.value = $scope.data[idx].value;
+                                        $scope.setGaugeText($scope.data[idx]);
                                     }
-                                    $scope.gauge.value = $scope.data[idx].value;
-                                    $scope.setGaugeText($scope.data[idx]);
                                 }
-                            }
-                        };
+                            };
+                        }
+
+
                     }
-
-
+                    else {
+                        $scope.error = response.message;
+                        $scope.showSpinner = false;
+                    }
                 }
-                else {
-                    $scope.error = response.message;
-                    $scope.showSpinner = false;
-                }
-            }
-        );
+            );
+        };
+
+        GetPredictionData();
 
         $scope.getSlideVal = function(v){
             var valString = '';
             if(v == $scope.defaultTick) {
-                valString = 'Now';
+                valString = '';
             }
             else {
                 var diff = v - $scope.defaultTick;
@@ -1290,6 +1303,13 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
             }
 
             return valString;
+        };
+
+        $scope.resetGauge = function(){
+            console.log('reset');
+            $rootScope.renewPrediction = true;
+            GetPredictionData();
+            $scope.isExpired = false;
         };
     }
 // display a clock
@@ -1419,7 +1439,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
             for(var i = 0; i < $scope.numberOfDays; i++) {
                 arr.push(
                     {
-                        txt: $scope.numberOfDays - i,
+                        txt: i + 1,
                         val: i
                     }
                 );
@@ -1485,7 +1505,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
             var daySleep = $scope.sleeps[day];
             $scope.sleeps[day].splice(sleep, 1);
             $scope.errorDays = [];
-            $scope.message = "Sleep Time Removed in Day" + ($scope.numberOfDays - day);
+            $scope.message = "Sleep Time Removed in Day" + (day + 1);
             $window.confirm("Are you sure to remove this entry?");
         };
 
@@ -1494,13 +1514,13 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
             $scope.sleeps.splice(day, 1);
             $scope.caffeine.splice(day, 1);
             $scope.numberOfDays --;
-            $window.confirm("Are you sure to remove Day " + ($scope.numberOfDays - day) + "?");
+            $window.confirm("Are you sure to remove Day " + (day + 1) + "?");
             $scope.message = "Day " + (day + 1) + " Removed";
         }
 
         $scope.addDay = function() {
             $scope.errorDays = [];
-            $scope.sleeps.unshift([$scope.convertSleepTime(0, $scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
+            $scope.sleeps.push([$scope.convertSleepTime(0, $scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
                 $scope.defaultDurationHour, $scope.defaultDurationMinute)]);
             $scope.caffeine.push(null);
             $scope.numberOfDays ++;
@@ -1619,7 +1639,6 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
         $scope.validateData = function(){
             var output = {};
             var ok = false;
-            //var errorDays = [];
             var timeline = [];
 
             //expecting data format
@@ -1703,27 +1722,45 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                 numDays: $scope.numberOfDays
             };
             var sleepData = [];
-
             if($scope.errorDays.length == 0) {
                 for(var j = 0; j < timeline.length; j++) {
                     for(var m = 0; m < timeline[j].length; m++) {
                         sleepData.push(timeline[j][m].start/60);
                         sleepData.push(timeline[j][m].duration/60);
+                        sleepData.push(timeline[j][m].end/60);
                     }
                 }
 
+                var sData = [];
+
                 output.sleepStartTime = sleepData[0];
                 sleepData.shift();
-                output.sleepWakeSchedule = sleepData;
+                for(var a = 0; a < sleepData.length; a++) {
+                    if(a % 3 == 1) {
+                        if(a < sleepData.length - 1) {
+                            var wake = sleepData[a+1] - sleepData[a];
+                            sData.push(wake);
+                        }
+                    }
+                    else if(a % 3 == 2) {
+                        //do nothing
+                        //console.log(sleepData[a]);
+                    }
+                    else {
+                        sData.push(sleepData[a])
+                    }
+                }
+
+                output.sleepWakeSchedule = sData;
 
                 var drinks = $scope.processCaffeine();
                 output.caffeineDoses = drinks.doses;
                 output.caffeineTimes = drinks.time;
-
+                console.log(output);
                 ok = true;
             }
             else {
-                alert("Entry Error in Day " + ($scope.numberOfDays - $scope.errorDays[0]) + "!!!");
+                alert("Entry Error in Day " + ($scope.errorDays[0] + 1) + "!!!");
             }
 
             //not an ideal place to manipulate DOM here
@@ -2013,25 +2050,9 @@ atoAlertnessControllers.controller('EssController', ['$window', '$scope', '$loca
 atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '$scope', '$location', 'DataPredictionService',
     function($window, $rootScope, $scope, $location, DataPredictionService) {
         //expecting data format
+        $scope.scenario = 1;
         $scope.data = [];
-        var result = {
-            "success": true,
-                data: {
-                    sleepStartTime:23,
-                    sleepWakeSchedule:[8.0,47.0,8.0,71.0, 8.0,95, 8, 119, 8, 143,8, 167, 8, 191],
-                    caffeineDoses:[],
-                    caffeineTimes:[],
-                    numDays:2
-            },
-            "rawData": {
-                "sleeps": [
-                    [{"startHour":23,"startMinute":0,"durationHour":8,"durationMinute":0,"startTime":1380,"endTime":1860,"durationTime":480}],
-                    [{"startHour":23,"startMinute":0,"durationHour":8,"durationMinute":0,"startTime":1380,"endTime":1860,"durationTime":480}]
-                ],
-                    "drinks":[null,null],
-                    "numberOfDays":2
-            }
-        };
+
 
         $scope.transformHours = function(h){
             var remainder = h % 1;
@@ -2050,20 +2071,85 @@ atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '
             var hStr = hour + ':' + remainder;
 
             return hStr;
+        };
+
+        $scope.getData = function getData(scenario) {
+            switch(scenario) {
+                case 1:
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8];
+                    var numDays = 8;
+                    var caffeineDoses = [];
+                    var caffeineTime = [];
+                    break;
+
+                case 2:
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8,40,8,40,8,16,8,40,8,16,8,16,8,16,8,16,8,16,8,16,8];
+                    var numDays = 14;
+                    var caffeineDoses = [];
+                    var caffeineTime = [];
+                    break;
+
+                case 3:
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8];
+                    var numDays = 14;
+                    var caffeineDoses = [820,165,230];
+                    var caffeineTime = [10.116666666666667,296,320];
+                    break;
+
+                //
+                case 4:
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8];
+                    var numDays = 18;
+                    var caffeineDoses = [];
+                    var caffeineTime = [];
+                    break;
+            }
+
+            var paddingThreeDays = function(sleepWake){
+                //extracting the last sleep
+                var last = sleepWake[sleepWake.length - 1];
+                sleepWake.splice(sleepWake.length, 0, 24 - last, 8, 16, 8, 16, 8);
+
+                return sleepWake;
+            };
+
+            var result = {
+                success: true,
+                data: {
+                    sleepStartTime: sleepStartTime,
+                    sleepWakeSchedule:paddingThreeDays(sleepWakeSchedule),
+                    caffeineDoses:caffeineDoses,
+                    caffeineTimes:caffeineTime,
+                    numDays:numDays
+                },
+                /*rawData: {
+                 "sleeps": [
+                 [{"startHour":23,"startMinute":0,"durationHour":8,"durationMinute":0,"startTime":1380,"endTime":1860,"durationTime":480}],
+                 [{"startHour":23,"startMinute":0,"durationHour":8,"durationMinute":0,"startTime":1380,"endTime":1860,"durationTime":480}]
+                 ],
+                 "drinks":[null,null],
+                 "numberOfDays":2
+                 }*/
+            };
+
+            DataPredictionService.getData(result.data, true, function (response) {
+                if (response.success == true) {
+                    //$location.path("/gauge2");
+                    console.log(response);
+                    $scope.data = response.data;
+
+                }
+                else {
+                    $scope.message = response.message;
+                }
+            });
         }
 
-        DataPredictionService.getData(result.data, true, function(response) {
-             if(response.success == true) {
-                //$location.path("/gauge2");
-                 console.log(response);
-                 $scope.data = response.data;
-
-             }
-             else {
-                $scope.message = response.message;
-             }
-        });
-
+        $scope.getData($scope.scenario);
 
     }
 ]);

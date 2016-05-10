@@ -3,8 +3,7 @@
 /*App services*/
 var myServices = angular.module('atoAlertnessServices', []);
 
-//defining constants
-myServices.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertness/svc/');
+
 
 myServices.factory('TokenService', ['$http', 'BASE_API_URL', 
     function($http, BASE_API_URL){
@@ -535,8 +534,6 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
     function($http, BASE_API_URL, localStorageService, $rootScope){
         var service = {};
         var storageKey = 'PredictionData';
-        var expiredStorage = 1000 * 60 * 60; // 60 minutes for testing
-        var fromLocal = false;
 
         service.getData = function(data, renew, callback) {
 
@@ -548,20 +545,17 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
                 var currTime = currDate.getTime();
 
                 if(localData) {
-                    if (currTime - localData.time < expiredStorage) {
-                        fromLocal = true;
                         callback(localData);
-                    }
                 }
             }
-
-            if(!fromLocal || renew) {
+            else {
                 console.log('renew');
+                console.log(data);
                 $http.put(BASE_API_URL + 'data/prediction',data)
                     .success(function(response){
                         var d = new Date();
                         var t = d.getTime();
-
+                        console.log(response);
                         var r = {
                             numDays: data.numDays,
                             time: t,
@@ -573,7 +567,7 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
                             r.success = true;
                             localStorageService.set(storageKey, r);
                         }
-                        console.log(r);
+
                         callback(r);
                     })
                     .error(function(data, status, headers, config){
@@ -707,6 +701,8 @@ myServices.factory('MeqService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
         };
 
         service.setData = function(data, callback) {
+            console.log('set meq');
+            console.log(data);
             localStorageService.set(storageKey, data);
             callback({success: true});
         };
@@ -726,6 +722,8 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
         };
 
         service.setData = function(data, callback) {
+            console.log('set ess');
+            console.log(data);
             localStorageService.set(storageKey, data);
             callback({success: true});
         };
