@@ -550,12 +550,10 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
             }
             else {
                 console.log('renew');
-                console.log(data);
                 $http.put(BASE_API_URL + 'data/prediction',data)
                     .success(function(response){
                         var d = new Date();
                         var t = d.getTime();
-                        console.log(response);
                         var r = {
                             numDays: data.numDays,
                             time: t,

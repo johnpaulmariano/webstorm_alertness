@@ -31,11 +31,60 @@
             </label>
         </div>
     </li>
+    <hr />
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="5" ng-checked="scenario == 5"  class="tasks-list-mark" ng-change="getData(5)">
+                <div><span class="tasks-list-desc">5 Night SR</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="6" ng-checked="scenario == 6"  class="tasks-list-mark" ng-change="getData(6)">
+                <div><span class="tasks-list-desc">5 Night SR + Caffeine</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="7" ng-checked="scenario == 7"  class="tasks-list-mark" ng-change="getData(7)">
+                <div><span class="tasks-list-desc">72 hrs TSD</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="8" ng-checked="scenario == 8"  class="tasks-list-mark" ng-change="getData(8)">
+                <div><span class="tasks-list-desc">72 hrs TSD + caffeine </span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="9" ng-checked="scenario == 9"  class="tasks-list-mark" ng-change="getData(9)">
+                <div><span class="tasks-list-desc">5 days DT sleep</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="10" ng-checked="scenario == 10"  class="tasks-list-mark" ng-change="getData(10)">
+                <div><span class="tasks-list-desc">5 days DT sleep + caffeine</span></div>
+            </label>
+        </div>
+    </li>
 </ul>
 
 Time, Day, Value<br/>
 <ul>
 <li ng-repeat="(idx, d) in data" >
-{{transformHours(d.time)}},{{(d.time/24).toPrecision(4)}},{{d.value.toPrecision(4)}}
+{{transformHours(d.time)}},{{(d.time/24).toPrecision(4)}},{{d.value}}
 </li>
 </ul>

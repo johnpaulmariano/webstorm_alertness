@@ -5,8 +5,9 @@
         <form name="form2" ng-submit="setChrono()" role="form">
             <div id="chronotypeDiv">
                 <div class="form-group">
-                    <label class="chrono-label glass-bg">1. In general, how is your energy level in the
-                        <strong>morning?</strong>
+                  <div class="mid-wrapper">
+                    <li class="glass-bg-q"><span class="q-color">1.</span> In general, how is your energy level in the
+                        <strong>morning?</strong></li>
                     </label>
                     <div class="radio-list  btn-primary" ng-repeat="sel in chronoMorning">
                         <label class="tasks-list-item"><input type="radio" name="optionsMorning" ng-model="$parent.chronoMorningSel" value="{{sel.value}}" ng-checked="sel.isChecked" class="tasks-list-mark">
@@ -15,11 +16,13 @@
                             </span></div>
                         </label>
                     </div>
+                  </div>
                 </div>
                 <div class="form-group">
-                    <label class="chrono-label glass-bg">2. In general, how is your energy level in the
+                  <div class="mid-wrapper">
+                      <li class="glass-bg-q"><span class="q-color">2.</span> In general, how is your energy level in the
                         <strong>evening?</strong>
-                    </label>
+                    </li>
                     <div class="radio-list  btn-primary" ng-repeat="sel2 in chronoEvening">
                         <label class="tasks-list-item"><input type="radio" name="optionsEvening" ng-model="$parent.chronoEveningSel" value="{{sel2.value}}" ng-checked="sel2.isChecked" class="tasks-list-mark">
                             <div><span class="tasks-list-desc">
@@ -27,6 +30,7 @@
                             </span></div>
                         </label>
                     </div>
+                  </div>
                 </div>
                 <div class="form-actions">
                     <div class="alert alert-info" ng-show="chronoMessage != ''">{{chronoMessage}}</div>

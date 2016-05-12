@@ -15,9 +15,8 @@
             <li>3 = High chance of dozing</li>
         </ul>
         <form name="meqForm" ng-submit="essSubmit()">
-          <ol style="padding-left:0px; list-style:none;">
                 <!-- q1 -->
-                <li class="glass-bg">1. Sitting and reading</li>
+                <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">1.</span> Sitting and reading</li>
                     <ul>
                         <li>
                             <div class="radio-list btn-primary">
@@ -47,11 +46,11 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul></div>
+
 
                 <!-- q2 -->
-              <li class="glass-bg">2. Watching TV</li>
+              <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">2.</span>  Watching TV</li>
 
                     <ul>
                         <li>
@@ -82,11 +81,10 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul></div>
 
                 <!-- q3 -->
-              <li class="glass-bg">3. Sitting, inactive in a public place (e.g., a theater or meeting)</li>
+              <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">3.</span>  Sitting, inactive in a public place (e.g., a theater or meeting)</li>
                     <ul>
                         <li>
                             <div class="radio-list btn-primary">
@@ -116,11 +114,10 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul></div>
 
                 <!-- q4 -->
-              <li class="glass-bg">4. As a passenger in a car for an hour without a break</li>
+              <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">4.</span>  As a passenger in a car for an hour without a break</li>
                     <ul>
                         <li>
                             <div class="radio-list btn-primary">
@@ -150,11 +147,10 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul></div>
 
                 <!-- q5 -->
-              <li class="glass-bg">5. Lying down to rest in the afternoon when circumstances permit</li>
+              <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">5.</span>  Lying down to rest in the afternoon when circumstances permit</li>
                     <ul>
                         <li>
                             <div class="radio-list btn-primary">
@@ -184,11 +180,11 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul></div>
+
 
                 <!-- q6 -->
-              <li class="glass-bg">6. Sitting and talking to someone</li>
+              <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">6.</span>  Sitting and talking to someone</li>
                     <ul>
                         <li>
                             <div class="radio-list btn-primary">
@@ -218,10 +214,10 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
+                    </ul></div>
 
                 <!-- q7 -->
-              <li class="glass-bg">7. Sitting quietly after a lunch without alcohol</li>
+              <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">7.</span>  Sitting quietly after a lunch without alcohol</li>
                     <ul>
                         <li>
                             <div class="radio-list btn-primary">
@@ -251,10 +247,10 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
+                    </ul></div>
 
                 <!-- q8 -->
-              <li class="glass-bg">8. In a car, while stopped for a few minutes in the traffic</li>
+              <div class="mid-wrapper"><li class="glass-bg-q"><span class="q-color">8.</span>  In a car, while stopped for a few minutes in the traffic</li>
 
                     <ul>
                         <li>
@@ -285,10 +281,8 @@
                                     <div><span class="tasks-list-desc">3-High chance of dozing</span></div></label>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul></div>
 
-            </ol>
             <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;color:#FFF;" >Click here to score ESS</button>
             <div ng-show="message" class="alert alert-info">{{message}}</div>
         </form>
@@ -308,6 +302,6 @@
         <li><b>If you are not getting at least 7 hours of sleep per night:</b> increase your nightly sleep amount. The closer you can get to the scientifically recommended 7-8 hours per night, the more benefit you will obtain. Can you commit to obtaining 20-30 minutes more sleep per night for a trial period of a week or so? Give it a try and see whether you feel better and perform better.</li>
         <li><b>If you are getting at least 7 hours of sleep:</b> something may be disrupting your sleep without your awareness. Go through the Health Sleep Checklist again to see if you overlooked something (for example, leaving the TV on while you are trying to sleep). You can also talk to your healthcare provider.</li>
         </ul>
-        <div class="glass-bg"><a href="#amisleepy" style="color:#6EFF6D;"><span class="glyphicon glyphicon-chevron-left"></span>Back to "Am I Sleepy?" page</a></div>
+        <div class="fatigue-header"><a href="#amisleepy" style="color:#fff;"><span class="glyphicon glyphicon-chevron-left"></span>Back to "Am I Sleepy?" page</a></div>
     </div>
 </div>

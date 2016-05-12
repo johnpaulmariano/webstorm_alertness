@@ -11,20 +11,24 @@
     <p>
         <strong>To see how different sleep amounts or caffeine affects mental speed, click the button below the gauge to input your personal sleep schedule or caffeine intake.</strong>
     </p>
-    <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;" ng-if="isExpired" ng-click="resetGauge()">Way too old - Reset Now</button>
+    <button type="button" class="btn btn-primary btn-lg btn-block form-control" style="padding-bottom:35px;" ng-if="isExpired" ng-click="resetGauge()">Sleep Data is Outdated. Reset Now.
+        <span class="glyphicon glyphicon glyphicon-alert" style="top: 2px;left:15px;color: rgb(220, 109, 108);font-size: 18px;"></span>
+    </button>
     <div style="margin-top:0px;">
         <div style="text-align:center; font-size:14px;">
-            Powered By: BHSAI/TATRC
+            <i>Powered By: BHSAI/TATRC</i>
         </div>
     </div>
     <div
         width="100%"
-        class="glass-bg"
         style="max-width:300px; text-align:center; margin:auto;"
         ng-radial-gauge
         major-graduations="5"
         needle-color="#FFFFFF"
+        needle-value-color="#FFFFFF"
         needle-value-text-size="22"
+        major-graduation-text-color="rgb(176, 176, 176)"
+        major-graduation-text-size="16"
         ranges="gauge.ranges"
         value="gauge.value"
         value-unit="gauge.unit"
@@ -32,9 +36,10 @@
         lower-limit="gauge.lowerLimit"
         upper-limit="gauge.upperLimit"></div>
     <div class="container  center-block text-center" style="max-width:300px; margin-top:0px; padding-top:10px; background-color: rgba(240, 248, 255, 0); margin-bottom:0px;">
-        <div class="gauge-time">{{gaugeText| date:"MMM dd, yyyy 'at' hh:mma"}}</div>
+
         <div class="slower-text">Slower</div>
         <div class="faster-text">Faster</div>
+        <div class="gauge-time">{{gaugeText| date:"MMM dd, yyyy 'at' hh:mma"}}</div>
     </div>
     <rzslider rz-slider-model="minSlider.value" rz-slider-options="minSlider.options"></rzslider>
     <h4 class="row text-center fatigue-header">

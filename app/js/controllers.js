@@ -1052,7 +1052,6 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
         $scope.dataTimeStamp = null;
         $scope.gaugeText = '';
         $scope.isExpired = false;
-        //$scope.expiredIn = 72 * 60 * 60 * 1000; // expired within 3 days
         $scope.expiredIn = PREDICTION_DATA_EXPIRATION;
 
         var d = new Date();
@@ -1131,15 +1130,12 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
             var newCurrDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), currHours, currHourFraction * 60, 0, 0);
 
             //check if data is expired
-            console.log(endTS);
-            console.log(newCurrDate);
             if(newCurrDate.getTime() > endTS.getTime()) {
                 $scope.isExpired = true;
             }
 
             //calculate the mid point of the slider based on approx. current time
             var currentTimeSlot = r.numDays * 24 + currHours + currHourFraction;
-            console.log(currentTimeSlot);
 
             //search for the middle point
             var midPoint = 0;
@@ -1152,8 +1148,6 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
                     break;
                 }
             }
-            console.log(midPoint);
-            console.log(r.data.length);
 
             //calculate the beggining and ending point of slider
             var startPoint = 0;
@@ -1167,8 +1161,6 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
             if(midPoint + 2 * 24 * 4 + 1 < r.data.length) {
                 endPoint = midPoint + 2 * 24 * 4 + 1;
             }
-
-            console.log(endPoint);
 
             $scope.sliderVal = midPoint - startPoint;
             $scope.defaultTick = $scope.sliderVal;
@@ -1306,8 +1298,11 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
         };
 
         $scope.resetGauge = function(){
-            console.log('reset');
             $rootScope.renewPrediction = true;
+            $scope.showSpinner = true;
+            MyChargeService.setData(null, function(){
+
+            });
             GetPredictionData();
             $scope.isExpired = false;
         };
@@ -1792,18 +1787,6 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                     $rootScope.renewPrediction = true;
                     $location.path("/gauge2");
                 });
-
-                /*DataPredictionService.getData(result.data, false,
-                    function(response){
-                        if(response.success == true) {
-                            //re-route to gauge page
-                            $location.path("/gauge2");
-                        }
-                        else {
-                            $scope.message = response.message;
-                        }
-                    }
-                );*/
             }
             else {
                 $scope.messgae = "Error in data";
@@ -2050,7 +2033,7 @@ atoAlertnessControllers.controller('EssController', ['$window', '$scope', '$loca
 atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '$scope', '$location', 'DataPredictionService',
     function($window, $rootScope, $scope, $location, DataPredictionService) {
         //expecting data format
-        $scope.scenario = 1;
+        $scope.scenario = 5;
         $scope.data = [];
 
 
@@ -2060,6 +2043,9 @@ atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '
             hour = hour % 24;
 
             remainder = remainder * 60;
+            //remainder.toPrecision(4);
+            remainder = Math.round(remainder);
+
             if(remainder < 10) {
                 remainder = "0" + remainder;
             }
@@ -2099,7 +2085,6 @@ atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '
                     var caffeineTime = [10.116666666666667,296,320];
                     break;
 
-                //
                 case 4:
                     var sleepStartTime = 23;
                     var sleepWakeSchedule = [8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8,16,8];
@@ -2107,12 +2092,60 @@ atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '
                     var caffeineDoses = [];
                     var caffeineTime = [];
                     break;
+                //---------------------------
+                case 5:     // 5 Nights SR
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8, 16, 8, 16, 8, 21, 3, 21, 3, 21, 3, 21, 3, 21, 3, 16, 8, 16, 8, 16, 8];
+                    var caffeineDoses = [];
+                    var caffeineTimes = [];
+                    var numDays = 11;
+                    break;
+
+                case 6:     // 5 nights SR with caffeine
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8, 16, 8, 16, 8, 21, 3, 21, 3, 21, 3, 21, 3, 21, 3, 16, 8, 16, 8, 16, 8];
+                    var caffeineDoses = [400, 400, 400, 400, 400];
+                    var caffeineTimes = [104,128,152,176,200];
+                    var numDays = 11;
+                    break;
+
+                case 7: // 72 hrs TSD
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8,16,8,16,8,88,8,16,8,16,8];
+                    var caffeineDoses = [];
+                    var caffeineTimes = [];
+                    var numDays = 9;
+                    break;
+
+                case 8: // 72 hrs TSD with caffeine
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8,16,8,16,8,88,8,16,8,16,8];
+                    var caffeineDoses = [600, 600, 600];
+                    var caffeineTimes = [99,123,147];
+                    var numDays = 9;
+                    break;
+
+                case 9: // 5 day time sleeps
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8,16,8,16,8,24,6,18,6,18,6,18,6,18,6,10,8,16,8,16,8];
+                    var caffeineDoses = [];
+                    var caffeineTimes = [];
+                    var numDays = 11;
+                    break;
+
+                case 10:    // 5 day time sleeps w ith caffeine
+                    var sleepStartTime = 23;
+                    var sleepWakeSchedule = [8,16,8,16,8,24,6,18,6,18,6,18,6,18,6,10,8,16,8,16,8];
+                    var caffeineDoses = [400, 400, 400, 400, 400];
+                    var caffeineTimes = [95,119,143,167,191];
+                    var numDays = 11;
+                    break;
             }
 
             var paddingThreeDays = function(sleepWake){
                 //extracting the last sleep
-                var last = sleepWake[sleepWake.length - 1];
-                sleepWake.splice(sleepWake.length, 0, 24 - last, 8, 16, 8, 16, 8);
+                //var last = sleepWake[sleepWake.length - 1];
+                //sleepWake.splice(sleepWake.length, 0, 24 - last, 8, 16, 8, 16, 8);
 
                 return sleepWake;
             };
@@ -2123,7 +2156,7 @@ atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '
                     sleepStartTime: sleepStartTime,
                     sleepWakeSchedule:paddingThreeDays(sleepWakeSchedule),
                     caffeineDoses:caffeineDoses,
-                    caffeineTimes:caffeineTime,
+                    caffeineTimes:caffeineTimes,
                     numDays:numDays
                 },
                 /*rawData: {
