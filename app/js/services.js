@@ -5,10 +5,10 @@ var myServices = angular.module('atoAlertnessServices', []);
 
 
 
-myServices.factory('TokenService', ['$http', 'BASE_API_URL', 
+myServices.factory('TokenService', ['$http', 'BASE_API_URL',
     function($http, BASE_API_URL){
         var service = {};
-        
+
         service.getToken = function(callback){
             //$http.get('services.php?callback=getToken')
             $http.get(BASE_API_URL + 'user/getToken')
@@ -17,15 +17,15 @@ myServices.factory('TokenService', ['$http', 'BASE_API_URL',
                     callback(response);
                 });
             };
-            
+
         return service;
     }
 ]);
 
-myServices.factory('ChangePasswordService', ['$http', 'BASE_API_URL',  
+myServices.factory('ChangePasswordService', ['$http', 'BASE_API_URL',
     function($http, BASE_API_URL) {
         var service = {};
-        
+
         service.changePassword = function(username, password, callback) {
             $http.put(BASE_API_URL + 'user/changePassword', {username: username, password: password})
                 .success(function(response){
@@ -42,7 +42,7 @@ myServices.factory('ChangePasswordService', ['$http', 'BASE_API_URL',
                     }
                 });
         };
-        
+
         return service;
     }
 ]);
@@ -50,7 +50,7 @@ myServices.factory('AuthenticationService',
     ['BASE_API_URL', '$http', '$cookieStore', '$rootScope',
     function (BASE_API_URL, $http, $cookieStore, $rootScope) {
         var service = {};
-        
+
         service.Login = function (username, password, rememberMe, callback) {
             //console.log('login in');
             $http.post(BASE_API_URL + 'user/login', {username: username, password: password, rememberMe: rememberMe})
@@ -61,8 +61,8 @@ myServices.factory('AuthenticationService',
                 .error(function(data, status, headers, config){
                     callback({success: false, message: 'Server connection error'});
                 });
-            
-            
+
+
         };
         /*waiting for CSSI to enable email capturing */
         //service.Register = function(username, password, email, callback) {
@@ -78,7 +78,7 @@ myServices.factory('AuthenticationService',
                     callback({success: false, message: 'Server connection error'});
                 });
         };
-        
+
         service.SetCredentials = function (username, token) {
             //var authdata = Base64.encode(username + ':' + password);
             $rootScope.globals = {
@@ -98,20 +98,20 @@ myServices.factory('AuthenticationService',
             $http.defaults.headers.common.Authorization = 'Basic';
             //delete $http.defaults.headers.common.Authorization;
         };
-        
+
         service.getUser = function(){
             var $global = $cookieStore.get('globals');
             var $user = {};
-            
+
             if($global) {
                 if($global.currentUser != undefined) {
                     $user = $global.currentUser;
                 }
             }
-            
+
             return $user
         };
-        
+
         return service;
     }]);
 
@@ -238,7 +238,7 @@ myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataSe
                 callback({result : "success", data: data});
             }
         };
-        
+
         service.setProfile = function(username, chronoMorning, chronoEvening, callback){
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'user/profile', {chronoMorning: chronoMorning, chronoEvening: chronoEvening})
@@ -256,7 +256,7 @@ myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataSe
                 callback({success : true, message: 'Chronotype data saved'});
             }
         };
-        
+
         service.setEmail = function(username, email, callback){
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'user/profile', {email: email})
@@ -275,14 +275,14 @@ myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataSe
                 callback({success : true, message: 'Chronotype data saved'});
             }*/
         };
-        
+
         return service;
     }
 ]);
 
-myServices.factory('GuestDataService', ['$cookieStore', 
+myServices.factory('GuestDataService', ['$cookieStore',
     function($cookieStore){
-        
+
         var service = {};
         var cook = {
             profile: {},
@@ -290,24 +290,24 @@ myServices.factory('GuestDataService', ['$cookieStore',
             sleepDebt: {},
             checklist: {}
         };
-        
+
         var localCookie = $cookieStore.get("asGuestCookies");
-        
+
         if(angular.isDefined(localCookie)) {
             for(var k in localCookie) {
                 cook[k] = localCookie[k];
             }
         }
-        
+
         service.setCookie = function(cookieName, cookieValue){
             cook[cookieName] = cookieValue;
             $cookieStore.put("asGuestCookies", cook);
         };
-        
+
         service.getCookie = function(cookieName){
             return cook[cookieName];
         };
-        
+
         return service;
     }
 ]);
@@ -316,7 +316,7 @@ myServices.factory('SleepNeedService', ['$http', 'BASE_API_URL', '$cookieStore',
     function($http, BASE_API_URL, $cookieStore, $rootScope, GuestDataService){
         var service = {};
         var asGuest = $rootScope.asGuest;
-        
+
         service.setSleepNeed = function(sleepNeedData, callback){
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/sleepneed', sleepNeedData)
@@ -332,7 +332,7 @@ myServices.factory('SleepNeedService', ['$http', 'BASE_API_URL', '$cookieStore',
                 callback({result : "success", message: 'Sleep Need data saved'});
             }
         };
-        
+
         service.getSleepNeed = function(callback){
             if(!asGuest) {
                 $http.get(BASE_API_URL + 'data/sleepneed')
@@ -356,14 +356,14 @@ myServices.factory('SleepNeedService', ['$http', 'BASE_API_URL', '$cookieStore',
 /*warning: pre 1.4 angular js doesn't support set cookie expiration
  * and $cookieStore is deprecrated in > 1.4
  * */
-myServices.factory('RememberMeService', ['$cookieStore', '$http', 'BASE_API_URL', 
+myServices.factory('RememberMeService', ['$cookieStore', '$http', 'BASE_API_URL',
     function($cookieStore, $http, BASE_API_URL){
         var service = {};
         var cookieName = 'alertness-rememberme';
-        
+
         service.rememberMe = function(cookieValue, expiration) {
             /*var cookie = cookieName + '=';
-            
+
             cookie += cookieValue + ';';
 
             var date = new Date();
@@ -373,7 +373,7 @@ myServices.factory('RememberMeService', ['$cookieStore', '$http', 'BASE_API_URL'
             document.cookie = cookieName + '='  + cookieValue + '; expires=' + date.toUTCString() + '; path=/';*/
             $cookieStore.put(cookieName, cookieValue);
         };
-        
+
         service.forgetMe = function(){
             /*var cookie = cookieName + '=;';
             cookie += 'expires=' + (new Date()).toString() + ';';
@@ -382,10 +382,10 @@ myServices.factory('RememberMeService', ['$cookieStore', '$http', 'BASE_API_URL'
             //console.log('forget me');
             $cookieStore.remove(cookieName);
         };
-        
+
         service.authenticateMe = function(callback) {
             var cookieVal = $cookieStore.get(cookieName);
-            
+
             if(cookieVal){
                 //console.log('get remember me');
                 $http.get(BASE_API_URL + 'user/rememberMe')
@@ -401,7 +401,7 @@ myServices.factory('RememberMeService', ['$cookieStore', '$http', 'BASE_API_URL'
                 console.log('no remember me cookie');
             }
         };
-        
+
         return service;
     }
 ]);
@@ -410,7 +410,7 @@ myServices.factory('SleepDebtService', ['$http', 'BASE_API_URL', 'GuestDataServi
     function($http, BASE_API_URL, GuestDataService, $rootScope){
         var service = {};
         var asGuest = $rootScope.asGuest;
-        
+
         service.setSleepDebt = function(sleepDebtData, callback){
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/sleepdebt', sleepDebtData)
@@ -426,7 +426,7 @@ myServices.factory('SleepDebtService', ['$http', 'BASE_API_URL', 'GuestDataServi
                 callback({success: true, message: 'Sleep Balance data saved'});
             }
         };
-        
+
         service.getSleepNeed = function(callback){
             if(!asGuest) {
                 $http.get(BASE_API_URL + 'data/sleepneed')
@@ -442,7 +442,7 @@ myServices.factory('SleepDebtService', ['$http', 'BASE_API_URL', 'GuestDataServi
                 callback({result : "success", data: data});
             }
         };
-        
+
         service.getSleepDebt = function(callback){
             if(!asGuest) {
                 $http.get(BASE_API_URL + 'data/sleepdebt')
@@ -466,7 +466,7 @@ myServices.factory('ChecklistService', ['$http', 'BASE_API_URL', 'GuestDataServi
     function($http, BASE_API_URL, GuestDataService, $rootScope){
         var service = {};
         var asGuest = $rootScope.asGuest;
-        
+
         service.getChecklist = function(username, callback) {
             if(!asGuest) {
                 $http.get(BASE_API_URL + 'data/checklist')
@@ -482,16 +482,16 @@ myServices.factory('ChecklistService', ['$http', 'BASE_API_URL', 'GuestDataServi
                 callback({result : "success", data: data});
             }
         };
-        
+
         service.setChecklist = function(data, callback) {
             var submitData = {};
-          
+
             angular.forEach(data, function(v, k){
                 if(v != null) {
                     submitData[k] = v;
                 }
             });
-            
+
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/checklist', submitData)
                     .success(function(response){
@@ -506,7 +506,7 @@ myServices.factory('ChecklistService', ['$http', 'BASE_API_URL', 'GuestDataServi
                 callback({success: "true", message: 'Checklist saved'});
             }
         };
-        
+
         return service;
     }
 ]);
@@ -515,7 +515,7 @@ myServices.factory('ChecklistService', ['$http', 'BASE_API_URL', 'GuestDataServi
 myServices.factory('ResetPasswordService', ['$http', 'BASE_API_URL', '$rootScope',
     function($http, BASE_API_URL, $rootScope){
         var service = {};
-        
+
         service.resetPassword = function(email, callback) {
                 $http.put(BASE_API_URL + 'user/resetpassword', {email: email})
                     .success(function(response){
@@ -525,7 +525,7 @@ myServices.factory('ResetPasswordService', ['$http', 'BASE_API_URL', '$rootScope
                         callback({success: false, message: 'Server connection error'});
                     });
         };
-        
+
         return service;
     }
 ]);
@@ -534,10 +534,10 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
     function($http, BASE_API_URL, localStorageService, $rootScope){
         var service = {};
         var storageKey = 'PredictionData';
+        var localExisted = true;
 
         service.getData = function(data, renew, callback) {
 
-            //check with local storage
             if(!renew) {
                 console.log('not renew');
                 var localData = localStorageService.get(storageKey);
@@ -545,10 +545,14 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
                 var currTime = currDate.getTime();
 
                 if(localData) {
-                        callback(localData);
+                    callback(localData);
+                }
+                else {
+                    localExisted = false;
                 }
             }
-            else {
+
+            if(!localExisted || renew){
                 console.log('renew');
                 $http.put(BASE_API_URL + 'data/prediction',data)
                     .success(function(response){
