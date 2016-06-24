@@ -45,7 +45,7 @@ atoAlertnessControllers.controller('LoginController',
         $scope.rememberMe = 0;
         $scope.dataLoading = false;
 
-        //$scope.isAuthenticated = false;
+        $scope.isAuthenticated = false;
         $scope.username = '';
         $scope.password = '';
         $scope.password2 = '';
