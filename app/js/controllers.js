@@ -2043,7 +2043,7 @@ atoAlertnessControllers.controller('EssController', ['$window', '$scope', '$loca
 
         EssService.getData(function(response){
             if(response.success == true) {
-                angular.forEach(data, function(v, k){
+                angular.forEach(response.data, function(v, k){
                     $scope.data[k] = v;
                 });
             }
