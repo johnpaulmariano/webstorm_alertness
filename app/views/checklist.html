@@ -1,20 +1,20 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container" id="appContainer">
-		<h4 class="row text-center fatigue-header">Healthy Sleep Planning</h4>
+		<!-- <h4 class="row text-center fatigue-header">Healthy Sleep Planning</h4>-->
 		<!-- <img class="header-image"	style="margin-top:-30px;" src="images/checklist@2x.png" alt="Sleep Debt"> -->
-		<p style="margin:19px 0;">We all need to take proactive steps to ensure that we get the proper amount of high quality sleep we need to rejuvenate our bodies and our minds. Review the "Healthy Sleep Checklist" and check how you are doing in each area.
+		<!-- <p style="margin:19px 0;">We all need to take proactive steps to ensure that we get the proper amount of high quality sleep we need to rejuvenate our bodies and our minds. Review the "Healthy Sleep Checklist" and check how you are doing in each area.
 				You may find some areas where you can make an improvement. If so, then check the box to take steps to improve in that area. A text box will appear where you can make notes on specific steps you plan to take to get more healthy sleep. In this way you
-				can create a individualized "Healthy Sleep Action Plan."</p>
+				can create a individualized "Healthy Sleep Action Plan."</p> -->
 
 		<div class="panel panel-default">
+
+				<h4 class="row text-center fatigue-header">Healthy Sleep Checklist</h4>
 				<div ng-hide="emptyChecklist">
 						<div class="fatigue-header">
-								<a href="#todos" style="color:#fff;">Tap here to see your current action plan.
+								<a href="#todos" style="color:#fff;">Tap here to see your current Health Sleep Checklist.
 								</a>
 						</div>
 				</div>
-				<h4 class="row text-center fatigue-header">Healthy Sleep Checklist</h4>
-
 				<form class="form-horizontal" name="checklistForm" role="form" ng-submit="setChecklist()">
 						<div class="form-group">
 								<div class="mid-wrapper">
@@ -228,8 +228,7 @@
 												<li>Once you feel sleepy, return to your bed.</li>
 												<li>If you don't fall asleep within 20 minutes, repeat these steps.</li>
 										</ul>
-										<p>Repeat the above steps as needed throughout your sleep period. Implementing these steps might make you sleepy the next day. THAT IS EXPECTED -- and the increased sleepiness will help you sleep the following night. If implementing these steps does
-												make you sleepy, during the following day only enough to ensure safety (e.g., for driving).</p>
+										<p> If implementing these steps makes you sleepy the next day, nap only long enough to ensure safety (e.g., for driving).</p>
 								</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
@@ -242,7 +241,8 @@
 								<div class="checklist-textarea">
 										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="get_out_bed_text" ng-model="get_out_bed_text" ng-show="get_out_bed == 1">{{get_out_bed_text}}</textarea>
 								</div>
-						</div>
+									</div><p>Repeat the above steps as needed throughout your sleep period. Implementing these steps might make you sleepy the next day. THAT IS EXPECTED -- and the increased sleepiness will help you sleep the following night.</p>
+
 				</div>
 				<div class="form-actions">
 						<div ng-show="error" class="alert alert-danger">{{error}}</div>
