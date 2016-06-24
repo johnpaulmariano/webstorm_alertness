@@ -65,10 +65,10 @@ myServices.factory('AuthenticationService',
 
         };
         /*waiting for CSSI to enable email capturing */
-        //service.Register = function(username, password, email, callback) {
-        service.Register = function(username, password, callback) {
-            //$http.put(BASE_API_URL + 'user/create', {username: username, password: password, email: email})
-            $http.put(BASE_API_URL + 'user/create', {username: username, password: password})
+        service.Register = function(username, password, email, callback) {
+        //service.Register = function(username, password, callback) {
+            $http.put(BASE_API_URL + 'user/create', {username: username, password: password, email: email})
+            //$http.put(BASE_API_URL + 'user/create', {username: username, password: password})
                 .success(function (response) {
                     //console.log('create user');
                     //console.log(response);
@@ -95,6 +95,7 @@ myServices.factory('AuthenticationService',
         service.ClearCredentials = function () {
             $rootScope.globals = {};
             $cookieStore.remove('globals');
+
             $http.defaults.headers.common.Authorization = 'Basic';
             //delete $http.defaults.headers.common.Authorization;
         };
@@ -521,8 +522,8 @@ myServices.factory('ResetPasswordService', ['$http', 'BASE_API_URL', '$rootScope
                     .success(function(response){
                         callback(response);
                     })
-                    .error(function(data, status, headers, config){
-                        callback({success: false, message: 'Server connection error'});
+                    .error(function(response){
+                        callback({success: false, message: ""});
                     });
         };
 
@@ -697,7 +698,7 @@ myServices.factory('MeqService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
         var service = {};
         var storageKey = 'MEQData';
 
-        service.getData = function(callback) {
+        /*service.getData = function(callback) {
             var localData = localStorageService.get(storageKey);
             callback(localData);
         };
@@ -707,6 +708,42 @@ myServices.factory('MeqService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
             console.log(data);
             localStorageService.set(storageKey, data);
             callback({success: true});
+        };*/
+        var asGuest = $rootScope.asGuest;
+
+        service.getData = function(callback) {
+            if(!asGuest) {
+                $http.get(BASE_API_URL + 'data/meq')
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                var localData = localStorageService.get(storageKey);
+                callback({success: true, data: localData});
+            }
+        };
+
+        service.setData = function(data, callback) {
+            console.log('set meq');
+            console.log(data);
+
+            if(!asGuest) {
+                $http.put(BASE_API_URL + 'data/meq', data)
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                localStorageService.set(storageKey, data);
+                callback({success: true});
+            }
         };
 
         return service;
@@ -717,18 +754,43 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
     function($http, BASE_API_URL, $rootScope, localStorageService){
         var service = {};
         var storageKey = 'ESSData';
+        var asGuest = $rootScope.asGuest;
 
         service.getData = function(callback) {
-            var localData = localStorageService.get(storageKey);
-            callback(localData);
+            if(!asGuest) {
+                $http.get(BASE_API_URL + 'data/ess')
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                var localData = localStorageService.get(storageKey);
+                callback({success: true, data: localData});
+            }
         };
 
         service.setData = function(data, callback) {
             console.log('set ess');
             console.log(data);
-            localStorageService.set(storageKey, data);
-            callback({success: true});
+
+            if(!asGuest) {
+                $http.put(BASE_API_URL + 'data/ess', data)
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                localStorageService.set(storageKey, data);
+                callback({success: true});
+            }
         };
+
 
         return service;
     }

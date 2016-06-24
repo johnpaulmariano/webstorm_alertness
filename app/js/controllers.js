@@ -45,7 +45,7 @@ atoAlertnessControllers.controller('LoginController',
         $scope.rememberMe = 0;
         $scope.dataLoading = false;
 
-        $scope.isAuthenticated = false;
+        //$scope.isAuthenticated = false;
         $scope.username = '';
         $scope.password = '';
         $scope.password2 = '';
@@ -70,7 +70,7 @@ atoAlertnessControllers.controller('LoginController',
             AuthenticationService.Login($scope.username, $scope.password, $scope.rememberMe, function (response) {
                 if(response.success == "true") {
                     AuthenticationService.SetCredentials(response.username, response.token);
-                    $scope.isAuthenticated = true;
+                    $rootScope.isAuthenticated = true;
 
                     if($scope.rememberMe == 1) {
                         //workaround because $cookieStore expects a json object when using get method
@@ -84,6 +84,7 @@ atoAlertnessControllers.controller('LoginController',
                 } else {
                     $scope.loginError = response.message;
                     $scope.dataLoading = false;
+                    $rootScope.isAuthenticated = false;
                 }
             });
         };
@@ -99,15 +100,14 @@ atoAlertnessControllers.controller('LoginController',
         };
 
         $scope.register = function () {
-
             if($scope.password != $scope.password2) {
                 $scope.error = 'Password not matching';
             }
             else {
                 $scope.dataLoading = true;
                 /* waiting for CSSI to enable capturing email */
-                //AuthenticationService.Register($scope.username, $scope.password, $scope.email,
-                AuthenticationService.Register($scope.username, $scope.password,
+                AuthenticationService.Register($scope.username, $scope.password, $scope.email,
+                //AuthenticationService.Register($scope.username, $scope.password,
                     function (response) {
                         if(response.success == "true") {
                             // try to re-route newly created user to profile page after registration
@@ -164,6 +164,7 @@ atoAlertnessControllers.controller('LogoutController', ['$scope', '$rootScope', 
             $cookieStore.remove('X-CSRF-TOKEN');
             $rootScope.logout = true;
             $rootScope.asGuest = false;
+            $rootScope.isAuthenticated = false;
 
             $location.path('/login');
         };
@@ -584,7 +585,6 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
         var questions = ['plan_sleeptime', 'room_temperature', 'bedroom_darkness', 'room_quiet', 'bedroom_only',
             'regulate_waketimes', 'stop_caffeine', 'exercise_routine', 'no_alcohol', 'get_out_bed'];
 
-
         ChecklistService.getChecklist($scope.username, function(response){
             if(response.result == "success") {
                 var data = response.data;
@@ -624,37 +624,64 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
 
         $scope.prepareData = function(){
             var $postData = {};
+            var isValid = true;
+
             for(var i = 0; i < questions.length; i++) {
                 var $text_field = questions[i] + '_text';
-                $postData[questions[i]] = parseInt($scope[questions[i]]);
+                //console.log($scope[questions[i]]);
+                //console.log(isValid);
 
-                if($postData[questions[i]] == 0) {
-                    $postData[$text_field] = "";
+                if($scope[questions[i]] == null){
+                    isValid = false;
                 }
                 else {
-                    $postData[$text_field] = $scope[$text_field];
+                    var choice = parseInt($scope[questions[i]]);
+                    //console.log(choice);
+                    $postData[questions[i]] = choice;
+
+                    if(choice == 1) {
+                        $postData[$text_field] = $scope[$text_field];
+                    }
+                    else {
+                        $postData[$text_field] = "";
+                    }
                 }
             }
 
-            return $postData;
+            //console.log($postData);
+
+            if(isValid) {
+                return $postData;
+            }
+            else {
+                return undefined;
+            }
+
         };
 
         $scope.setChecklist = function(){
             var $data = $scope.prepareData();
+            //console.log($data);
 
-            ChecklistService.setChecklist($data,
-                function(response){
-                    if(response.success == "true") {
-                        //$scope.message = response.message;
-                        //$scope.message = "Checklist Data Saved";
-                        $scope.emptyChecklist = false;  //display the link to "To-Dos" list
-                        $location.path('/todos');
+            if($data == undefined) {
+                $scope.error = "You did not complete one or more Checklist items.  Please go back and select ALL 9 items.";
+            }
+            else {
+                //console.log('not empty');
+                ChecklistService.setChecklist($data,
+                    function(response){
+                        if(response.success == "true") {
+                            //$scope.message = response.message;
+                            //$scope.message = "Checklist Data Saved";
+                            $scope.emptyChecklist = false;  //display the link to "To-Dos" list
+                            $location.path('/todos');
+                        }
+                        else {
+                            $scope.error = response.message;
+                        }
                     }
-                    else {
-                        $scope.error = response.message;
-                    }
-                }
-            );
+                );
+            }
         };
     }
 ]);
@@ -666,6 +693,13 @@ atoAlertnessControllers.controller('NavBarController', ['$scope', '$rootScope',
         }
         else {
             $scope.asGuest = false;
+        }
+
+        if($rootScope.isAuthenticated == true) {
+            $scope.isAuthenticated = true;
+        }
+        else {
+            $scope.isAuthenticated = false;
         }
     }
 ]);
@@ -879,11 +913,13 @@ atoAlertnessControllers.controller('ResetPasswordController', ['$rootScope', '$s
         $scope.email = '';
         $scope.resetMessage = '';
         $scope.resetError = '';
+        $scope.buttonHit = false;
 
         $scope.resetPassword = function(){
+            $scope.buttonHit = true;
             ResetPasswordService.resetPassword($scope.email,
                 function(response){
-                    if(response.success) {
+                    if(response.success == "true") {
                         $scope.resetMessage = response.message;
                     }
                     else {
@@ -1926,8 +1962,8 @@ atoAlertnessControllers.controller('MeqController', ['$window', '$scope', '$loca
             $scope["meq_" + i] = null;
         }
 
-        MeqService.getData(function(data){
-            if(data) {
+        MeqService.getData(function(response){
+            if(response.success == true) {
                 angular.forEach(data, function(v, k){
                     $scope.data[k] = v;
                 });
@@ -2005,8 +2041,8 @@ atoAlertnessControllers.controller('EssController', ['$window', '$scope', '$loca
             $scope["ess_" + i] = null;
         }
 
-        EssService.getData(function(data){
-            if(data) {
+        EssService.getData(function(response){
+            if(response.success == true) {
                 angular.forEach(data, function(v, k){
                     $scope.data[k] = v;
                 });
@@ -2032,7 +2068,7 @@ atoAlertnessControllers.controller('EssController', ['$window', '$scope', '$loca
             for(var i = 1; i < 9; i++) {
                 if(!$scope.data["ess_" + i]) {
                     isValid = false;
-                    $scope.message = "Missing entry";
+                    $scope.message = "You did not answer one or more MEQ questions.  Please go back and answer ALL 19 questions before scoring your MEQ";
                     break;
                 }
             }
