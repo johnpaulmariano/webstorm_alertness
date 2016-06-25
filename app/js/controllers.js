@@ -1964,7 +1964,7 @@ atoAlertnessControllers.controller('MeqController', ['$window', '$scope', '$loca
 
         MeqService.getData(function(response){
             if(response.success == true) {
-                angular.forEach(data, function(v, k){
+                angular.forEach(response.data, function(v, k){
                     $scope.data[k] = v;
                 });
             }
@@ -2008,7 +2008,7 @@ atoAlertnessControllers.controller('MeqController', ['$window', '$scope', '$loca
             for(var i = 1; i < 20; i++) {
                 if(!$scope.data["meq_" + i]) {
                     isValid = false;
-                    $scope.message = "Missing entry";
+                    $scope.message = "You did not answer one or more MEQ questions.  Please go back and answer ALL 19 questions before scoring your MEQ";
                     break;
                 }
             }
@@ -2068,7 +2068,7 @@ atoAlertnessControllers.controller('EssController', ['$window', '$scope', '$loca
             for(var i = 1; i < 9; i++) {
                 if(!$scope.data["ess_" + i]) {
                     isValid = false;
-                    $scope.message = "You did not answer one or more MEQ questions.  Please go back and answer ALL 19 questions before scoring your MEQ";
+                    $scope.message = "You did not answer one or more ESS questions.  Please go back and answer ALL 8 questions before scoring your ESS";
                     break;
                 }
             }
