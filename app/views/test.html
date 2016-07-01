@@ -1,0 +1,90 @@
+<ul>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="1" ng-checked="scenario == 1"  class="tasks-list-mark" ng-change="getData(1)">
+                <div><span class="tasks-list-desc">8 days (sleep starts at 23:00 and ends at 7:00 in the next day)</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="2" ng-checked="scenario == 2"  class="tasks-list-mark" ng-change="getData(2)">
+                <div><span class="tasks-list-desc">14 days (sleep starts at 23:00 and ends at 7:00 in the next day, 0 sleep time in Day 2,4, 7 )</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="3" ng-checked="scenario == 3"  class="tasks-list-mark" ng-change="getData(3)">
+                <div><span class="tasks-list-desc">14 days with caffeine (sleep starts at 23:00 and ends at 7:00 in the next day)</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="4" ng-checked="scenario == 4"  class="tasks-list-mark" ng-change="getData(4)">
+                <div><span class="tasks-list-desc">18 days (sleep starts at 23:00 and ends at 7:00 in the next day)</span></div>
+            </label>
+        </div>
+    </li>
+    <hr />
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="5" ng-checked="scenario == 5"  class="tasks-list-mark" ng-change="getData(5)">
+                <div><span class="tasks-list-desc">5 Night SR</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="6" ng-checked="scenario == 6"  class="tasks-list-mark" ng-change="getData(6)">
+                <div><span class="tasks-list-desc">5 Night SR + Caffeine</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="7" ng-checked="scenario == 7"  class="tasks-list-mark" ng-change="getData(7)">
+                <div><span class="tasks-list-desc">72 hrs TSD</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="8" ng-checked="scenario == 8"  class="tasks-list-mark" ng-change="getData(8)">
+                <div><span class="tasks-list-desc">72 hrs TSD + caffeine </span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="9" ng-checked="scenario == 9"  class="tasks-list-mark" ng-change="getData(9)">
+                <div><span class="tasks-list-desc">5 days DT sleep</span></div>
+            </label>
+        </div>
+    </li>
+    <li>
+        <div class="radio-list btn-primary">
+            <label class="tasks-list-item">
+                <input type="radio" ng-model="scenario" value="10" ng-checked="scenario == 10"  class="tasks-list-mark" ng-change="getData(10)">
+                <div><span class="tasks-list-desc">5 days DT sleep + caffeine</span></div>
+            </label>
+        </div>
+    </li>
+</ul>
+
+Time, Day, Value<br/>
+<ul>
+<li ng-repeat="(idx, d) in data" >
+{{transformHours(d.time)}},{{(d.time/24).toPrecision(4)}},{{d.value}}
+</li>
+</ul>

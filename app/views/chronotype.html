@@ -1,51 +1,45 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container">
-   
-        <h4 class="row text-center fatigue-header">Chronotype</h4>
-        <img class="header-image"  style="margin-top:-55px; margin-bottom:-10px;" src="images/chronotype@2x.png" alt="Sleep Debt">
-        <div class="row" style="margin-left:5px; margin-right:5px; margin-top:10px;">
-      
-            <!-- <h5>Chronotype Settings</h5> -->
-            <!--
-            <label class="tasks-list-item update-chrono">
-                
-                <input type="checkbox" name="resetChronotype" ng-model="showChronotypeForm" class="tasks-list-cb"  />
-                <span class="tasks-list-mark"></span>
-                <span class="tasks-list-desc">Update Chronotype Settings</span>
-            </label>
-            -->
-            <form name="form2" ng-submit="setChrono()" role="form">
-                <div class="alert alert-info" ng-show="dataReady">
-                    You are a <strong>{{chronoType}}</strong> person
-                </div>
-                <div id="chronotypeDiv">
-                    <div class="form-group">
-                        <label class="chrono-label" for="optionsMorning">In general, how is your energy level in the <strong>morning?</strong></label>
-                        <div class="radio-list" ng-repeat="sel in chronoMorning">
+    <h4 class="row text-center fatigue-header">2-Item Circadian Energy Scale (CIRENS)</h4>
+    <div class="row">
+        <form name="form2" ng-submit="setChrono()" role="form">
+            <div id="chronotypeDiv">
+                <div class="form-group">
+                  <div class="mid-wrapper">
+                    <li class="glass-bg-q"><span class="q-color">1.</span> In general, how is your energy level in the
+                        <strong>morning?</strong></li>
+                    </label>
+                    <div class="radio-list  btn-primary" ng-repeat="sel in chronoMorning">
                         <label class="tasks-list-item"><input type="radio" name="optionsMorning" ng-model="$parent.chronoMorningSel" value="{{sel.value}}" ng-checked="sel.isChecked" class="tasks-list-mark">
-                            <span class="tasks-list-desc"> {{sel.text}} </span>
+                            <div><span class="tasks-list-desc">
+                                {{sel.text}}
+                            </span></div>
                         </label>
                     </div>
+                  </div>
                 </div>
                 <div class="form-group">
-                    <label class="chrono-label" for="optionsEvening">In general, how is your energy level in the <strong>evening?</strong></label>
-                    <div class="radio-list" ng-repeat="sel2 in chronoEvening">
-                        <label class="tasks-list-item"><input type="radio" name="optionsEvening" ng-model="$parent.chronoEveningSel" value="{{sel2.value}}" ng-checked="sel2.isChecked"  class="tasks-list-mark">
-                            <span class="tasks-list-desc"> {{sel2.text}} </span>
+                  <div class="mid-wrapper">
+                      <li class="glass-bg-q"><span class="q-color">2.</span> In general, how is your energy level in the
+                        <strong>evening?</strong>
+                    </li>
+                    <div class="radio-list  btn-primary" ng-repeat="sel2 in chronoEvening">
+                        <label class="tasks-list-item"><input type="radio" name="optionsEvening" ng-model="$parent.chronoEveningSel" value="{{sel2.value}}" ng-checked="sel2.isChecked" class="tasks-list-mark">
+                            <div><span class="tasks-list-desc">
+                                {{sel2.text}}
+                            </span></div>
                         </label>
                     </div>
+                  </div>
                 </div>
-                <div class="form-actions" style="margin-top:24px;">
+                <div class="form-actions">
                     <div class="alert alert-info" ng-show="chronoMessage != ''">{{chronoMessage}}</div>
                     <div ng-show="chronoError" class="alert alert-danger">{{chronoError}}</div>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;" ng-show="!$root.asGuest">Set My Chronotype</button>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block form-control"  style="padding-bottom:35px;" ng-show="$root.asGuest">Set My Chronotype *</button>
-                    <div id="as-guest-disclaimer" ng-show="$root.asGuest">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Click here to see score</button>
+
+                    <!-- <div id="as-guest-disclaimer" ng-show="$root.asGuest">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div> -->
                 </div>
             </form>
         </div>
-        <!--
-        <tt>Morning = {{chronoMorningSel}}, Evening = {{chronoEveningSel}}</tt><br/>
-        -->
     </div>
 </div>

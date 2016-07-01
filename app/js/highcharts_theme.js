@@ -5,7 +5,7 @@
 
 // Load the fonts
 Highcharts.createElement('link', {
-    //href: 'fonts.googleapis.com/css?family=Tangerine"',
+    href: 'fonts.googleapis.com/css?family=Tangerine"',
     rel: 'stylesheet',
     type: 'text/css'
 }, null, document.getElementsByTagName('head')[0]);
@@ -134,7 +134,7 @@ Highcharts.theme = {
         }
     },
 
-   // scroll charts
+    // scroll charts
     rangeSelector: {
         buttonTheme: {
             fill: '#505053',

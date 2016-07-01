@@ -1,21 +1,27 @@
 'use strict';
 
-/* App Module */
-//angular.module('Authentication', []);
-//angular.module('Home', []);
- 
 var myApp = angular.module('AtoAlertnessApp', [
-    //'Authentication',
-    //'Home',
     'ngRoute',
     'ngCookies',
+    'LocalStorageModule',
     'rzModule',
     'ngRadialGauge',
-    'ui.bootstrap.collapse',
-    'ui.bootstrap.accordion',
+    'ui.bootstrap.modal',
+    'angularSpinner',
     'atoAlertnessControllers',
     'atoAlertnessServices'
 ]);
+
+//defining constants
+myApp.value('DEBUG_MODE', false);
+myApp.value('PREDICTION_DATA_EXPIRATION', 3 * 24 * 60 * 60 * 1000 );// 3 days
+//myApp.value('PREDICTION_DATA_EXPIRATION', 1 * 60 * 1000 );
+myApp.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertness/svc/');
+
+myApp.config(function (localStorageServiceProvider) {
+    localStorageServiceProvider
+        .setPrefix('AtoAlertnessApp');
+});
 
 myApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -91,16 +97,48 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/howmuchcaffeine', {
             templateUrl: 'views/howmuchcaffeine.html'
         })
+        .when('/m-e-questionnaire', {
+            templateUrl: 'views/m-e-questionnaire.html',
+            controller: 'MeqController'
+        })
+        .when('/larkorowl', {
+            templateUrl: 'views/larkorowl.html'
+        })
+        .when('/amisleepy', {
+            templateUrl: 'views/amisleepy.html'
+        })
+        .when('/ess', {
+            templateUrl: 'views/ess.html',
+            controller: 'EssController'
+        })
+        .when('/meq-info', {
+            templateUrl: 'views/meq-info.html',
+        })
+        .when('/professionalhelp', {
+            templateUrl: 'views/professionalhelp.html',
+        })
+
+        /*.when('/ess-results', {
+            templateUrl: 'views/ess-results.html'
+        })*/
+        .when('/cirens-results', {
+            templateUrl: 'views/cirens-results.html',
+            controller: 'ChronotypeController'
+        })
+        .when('/test', {
+            templateUrl: 'views/test.html',
+            controller: 'TestController'
+        })
         .otherwise({ redirectTo: '/login' });
 }]);
-  
-myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'TokenService', 'RememberMeService',
-    function ($rootScope, $location, $window, $cookieStore, $http, TokenService, RememberMeService) {
+
+myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'TokenService', 'RememberMeService', 'DEBUG_MODE',
+    function ($rootScope, $location, $window, $cookieStore, $http, TokenService, RememberMeService, DEBUG_MODE) {
         $rootScope.logout = false;
         $rootScope.csrfToken = $cookieStore.get('X-CSRF-TOKEN');
         $rootScope.location = $location.path();
         $rootScope.asGuest = $cookieStore.get("asGuestCookies");
-       
+
         if($rootScope.csrfToken) {
             $http.defaults.headers.common['X-CSRF-TOKEN'] = $rootScope.csrfToken;
         }
@@ -114,9 +152,9 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
                 }
             });
         }
-        
+
         $rootScope.isAuthenticated = false;
-                
+
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             console.log('on change fired');
             console.log($location.path());
@@ -125,7 +163,7 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
             $rootScope.csrfToken = $cookieStore.get('X-CSRF-TOKEN');
             $rootScope.rememberMe = $cookieStore.get('alertness-rememberme');
             $rootScope.location = $location.path();
-            
+
             //always get a new csrf token in login page
             if ($location.path() == '/login') {
                 TokenService.getToken(function(response){
@@ -137,7 +175,7 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
                     }
                 });
             }
-                
+
             if($rootScope.csrfToken) {
                 $http.defaults.headers.common['X-CSRF-TOKEN'] = $rootScope.csrfToken;
             }
@@ -151,42 +189,50 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
                     }
                 });
             }
-            
+
             if ($location.path() == '/login') { //check if in login page and rememberMe is set
                 //temporary disable remember me check
                 /*if($rootScope.rememberMe) {
-                    var rememberCookie = angular.fromJson($rootScope.rememberMe);
-                    $http.defaults.headers.common['Authorization'] = 'Basic ' + rememberCookie.token;
-                    
-                    RememberMeService.authenticateMe(function(res){
-                        if(res.success == "true") {
-                            AuthenticationService.SetCredentials(res.username, res.token);
-                            $rootScope.isAuthenticated = true;
-                        }
+                 var rememberCookie = angular.fromJson($rootScope.rememberMe);
+                 $http.defaults.headers.common['Authorization'] = 'Basic ' + rememberCookie.token;
 
-                        if($rootScope.isAuthenticated == true) {
-                            if($location.path() == "/" || $location.path() == "/login")
-                                $location.path('/profile');
-                        }
-                    });
-                }*/
+                 RememberMeService.authenticateMe(function(res){
+                 if(res.success == "true") {
+                 AuthenticationService.SetCredentials(res.username, res.token);
+                 $rootScope.isAuthenticated = true;
+                 }
+
+                 if($rootScope.isAuthenticated == true) {
+                 if($location.path() == "/" || $location.path() == "/login")
+                 $location.path('/profile');
+                 }
+                 });
+                 }*/
             }
             else if($rootScope.asGuest) {
                 //doing nothing
                 console.log('as guest');
             }
-            else if (($location.path() !== '/login' && $location.path() !== '/resetpassword') && !$rootScope.globals.currentUser) { // redirect to login page if not logged in
-                $location.path('/login');
+            else if (($location.path() !== '/login' && $location.path() !== '/resetpassword')) { // redirect to login page if not logged in
+                if(DEBUG_MODE) {
+                    ;   // do nothing
+                }
+                else if(!$rootScope.globals.currentUser) {
+                    $location.path('/login');
+                }
             }
-            console.log("after if");
+
             if ($rootScope.globals.currentUser) {
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
             }
-            else {
+            else if(DEBUG_MODE){
+                $http.defaults.headers.common['Authorization'] = 'Basic debug';
+            }
+            else{
                 $http.defaults.headers.common['Authorization'] = 'Basic';
             }
         });
-        
+
         $rootScope.$watch('logout', function(newValue, oldValue){
             if(newValue == true) {
                 TokenService.getToken(function(response){
@@ -199,13 +245,13 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
                 });
             }
         });
-        //guarantee page move to top when loaded 
+        //guarantee page move to top when loaded
         $rootScope.$on('$routeChangeSuccess', function(evt, absNewUrl, absOldUrl){
             $window.scrollTo(0,0);    //scroll to top of page after each route change
         });
-}]);
+    }]);
 
-myApp.config(['$httpProvider', 
+myApp.config(['$httpProvider',
     function($httpProvider){
         //$httpProvider.defaults.useXDomain = true;
         //delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -215,7 +261,7 @@ myApp.config(['$httpProvider',
          * The workhorse; converts an object to x-www-form-urlencoded serialization.
          * @param {Object} obj
          * @return {String}
-         */ 
+         */
         var param = function(obj) {
             var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
 
@@ -250,13 +296,12 @@ myApp.config(['$httpProvider',
 
         // Override $http service's default transformRequest
         /*$httpProvider.defaults.transformRequest = [function(data) {
-            return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
-        }];*/
+         return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
+         }];*/
     }
 ]);
 
-
-
-
-
-
+myApp.config(['$compileProvider', function ($compileProvider) {
+    // disable debug info
+    $compileProvider.debugInfoEnabled(false);
+}]);
