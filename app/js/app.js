@@ -9,7 +9,8 @@ var myApp = angular.module('AtoAlertnessApp', [
     'ui.bootstrap.modal',
     'angularSpinner',
     'atoAlertnessControllers',
-    'atoAlertnessServices'
+    'atoAlertnessServices',
+    'atoAlertnessChartModule'
 ]);
 
 //defining constants

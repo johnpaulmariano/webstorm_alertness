@@ -5,7 +5,7 @@
 
 // Load the fonts
 Highcharts.createElement('link', {
-    href: 'fonts.googleapis.com/css?family=Tangerine"',
+    href: 'https://fonts.googleapis.com/css?family=Open+Sans',
     rel: 'stylesheet',
     type: 'text/css'
 }, null, document.getElementsByTagName('head')[0]);
@@ -21,7 +21,7 @@ Highcharts.theme = {
             ]
         },
         style: {
-            fontFamily: "'Tangerine', serif"
+            fontFamily: "'Open Sans', serif"
         },
         plotBorderColor: '#606063'
     },
