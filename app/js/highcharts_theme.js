@@ -43,7 +43,8 @@ Highcharts.theme = {
         labels: {
             style: {
                 color: '#E0E0E3'
-            }
+            },
+            overflow: 'justify'
         },
         lineColor: '#707073',
         minorGridLineColor: '#505053',
@@ -126,6 +127,9 @@ Highcharts.theme = {
         }
     },
     navigation: {
+        menuItemStyle: {
+            fontSize: '10px'
+        },
         buttonOptions: {
             symbolStroke: '#DDDDDD',
             theme: {

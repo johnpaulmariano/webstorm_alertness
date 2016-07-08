@@ -8,6 +8,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
         $scope.caffeine = [];
         $scope.message = "";
         $scope.numberOfDays = 14;
+        $scope.sleepDays = [];
         $scope.defaultStartSleepHour = 23;
         $scope.defaultStartSleepMinute = 0;
         $scope.defaultDurationHour = 8;
@@ -15,8 +16,8 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
         $scope.errorDays = [];
 
 
-        $scope.convertSleepTime = function(day, startHour, startMinute, durationHour, durationMinute){
-            var startTime = day * 24 * 60 + startHour * 60 + startMinute;
+        $scope.convertSleepTime = function(startHour, startMinute, durationHour, durationMinute){
+            var startTime = startHour * 60 + startMinute;
             var durationTime = (durationHour) * 60 + durationMinute;
             var endTime = startTime + durationTime;
 
@@ -28,6 +29,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                 startTime: startTime,
                 endTime: endTime,
                 durationTime: durationTime
+                //ts: day.getTime()
             };
         };
 
@@ -95,7 +97,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
             for(var i = 0; i < $scope.numberOfDays; i++) {
                 arr.push(
                     {
-                        txt: $scope.numberOfDays - i,
+                        txt: $scope.sleepDays[i].toDateString(),
                         val: i
                     }
                 );
@@ -110,17 +112,36 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                 $scope.sleeps = d.rawData.sleeps;
                 $scope.caffeine = d.rawData.drinks;
                 $scope.numberOfDays = d.rawData.numberOfDays;
+
+                //converting date strings to date objects
+                for(var i = 0; i < d.rawData.sleepDays.length; i++) {
+                    //var d = Date.parse(d.rawData.sleepDays[i]);
+                    var dStr = d.rawData.sleepDays[i];
+                    var dInt = Date.parse(dStr);
+                    var dateObj = new Date(dInt);
+                    $scope.sleepDays.push(dateObj);
+                }
+
+                console.log($scope.sleepDays);
+
             }
             else {
                 //initiate sleeps && caffeine
+                //set default day to today and count back to $scope.numberOfDay
+                var dateObj = new Date();
                 for(var i = 0; i < $scope.numberOfDays; i++) {
+                    var ts = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() -  i, 0, 0, 0, 0);
                     var daySleep = [];
-                    daySleep.push($scope.convertSleepTime(0, $scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
+                    daySleep.push($scope.convertSleepTime($scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
                         $scope.defaultDurationHour, $scope.defaultDurationMinute));
 
                     $scope.sleeps.push(daySleep);
+                    $scope.sleepDays.push(ts);
                     $scope.caffeine.push(null);
                 }
+
+                console.log($scope.sleeps);
+                console.log($scope.sleepDays);
             }
         });
 
@@ -146,6 +167,9 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                     },
                     errorDays: function(){
                         return $scope.errorDays;
+                    },
+                    sleepDays: function(){
+                        return $scope.sleepDays;
                     }
                 }
             });
@@ -158,32 +182,45 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
         };
 
         $scope.removeSleep = function(day, sleep) {
+            var sleepDay = $scope.sleepDays[day];
+
             if($window.confirm("Are you sure you want to remove this entry?")){
-                var daySleep = $scope.sleeps[day];
+                //var daySleep = $scope.sleeps[day];
                 $scope.sleeps[day].splice(sleep, 1);
                 $scope.errorDays = [];
-                $scope.message = "Sleep Time Removed in Day" + ($scope.numberOfDays - day);
+                $scope.message = "Sleep Time Removed in \"" + sleepDay.toDateString() + "\"";
             }
         };
 
         $scope.removeDay = function(day) {
-            if($window.confirm("Are you sure you want to remove Day " + ($scope.numberOfDays - day) + "?")){
+            //var removedDay = $scope.sleeps[day];
+            var dayStr = $scope.sleepDays[day].toDateString();
+            if($window.confirm("Are you sure you want to remove \"" + dayStr + "\"?")){
                 $scope.errorDays = [];
                 $scope.sleeps.splice(day, 1);
                 $scope.caffeine.splice(day, 1);
+                $scope.sleepDays.splice(day, 1);
                 $scope.numberOfDays --;
-                $scope.message = "Day " + ($scope.numberOfDays - day + 1) + " Removed";
+                //$scope.message = "Day " + ($scope.numberOfDays - day + 1) + " Removed";
+                $scope.message = "\"" + dayStr + "\" Removed";
             }
         }
 
         $scope.addDay = function() {
             $scope.errorDays = [];
-            $scope.sleeps.unshift([$scope.convertSleepTime(0, $scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
+
+            //get the last date from $scope.sleeps
+            var lastSleep = $scope.sleepDays[0];
+            var newSleep = new Date(lastSleep.getFullYear(), lastSleep.getMonth(), lastSleep.getDate() + 1, 0, 0, 0, 0);
+
+            $scope.sleeps.unshift([$scope.convertSleepTime($scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
                 $scope.defaultDurationHour, $scope.defaultDurationMinute)]);
             $scope.caffeine.unshift(null);
+            $scope.sleepDays.unshift(newSleep);
             $scope.numberOfDays ++;
 
-            $scope.message = "Day" + ($scope.numberOfDays) + " Added";
+            console.log($scope.sleepDays);
+            $scope.message = "\"" + newSleep.toDateString() + "\" Added";
         };
 
         $scope.$watch('sleeps', function(){
@@ -451,14 +488,19 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                 }
             }
 
+            //get the timestamp
+            var lastDay = $scope.sleepDays[0];
+            var ts = new Date(lastDay.getFullYear(), lastDay.getMonth(), lastDay.getDate() + 1, 0, 0, 0, 0);
             return {
                 success: ok,
                 data: output,
                 rawData: {
                     sleeps: $scope.sleeps,
                     drinks: $scope.caffeine,
-                    numberOfDays: $scope.numberOfDays
-                }
+                    numberOfDays: $scope.numberOfDays,
+                    sleepDays: $scope.sleepDays
+                },
+                timestamp: ts
             };
         };
 
@@ -466,9 +508,8 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
             var result = $scope.validateData();
             if(result.success) {
                 MyChargeService.setData(result, function(response){
-                    //do nothing
                     $rootScope.renewPrediction = true;
-                    $location.path("/gauge2");
+                    $location.path("/charts");
                 });
             }
             else {

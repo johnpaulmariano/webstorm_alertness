@@ -80,8 +80,8 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/home', {
             templateUrl: 'views/home.html'
         })
-        .when('/charts', {
-            templateUrl: 'views/charts.html'
+        .when('/chart', {
+            templateUrl: 'views/chart.html'
         })
         .when('/gauge', {
             controller: 'GaugeController',
@@ -133,8 +133,8 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .otherwise({ redirectTo: '/login' });
 }]);
 
-myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'TokenService', 'RememberMeService', 'DEBUG_MODE',
-    function ($rootScope, $location, $window, $cookieStore, $http, TokenService, RememberMeService, DEBUG_MODE) {
+myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'TokenService', 'RememberMeService', 'DEBUG_MODE', '$document',
+    function ($rootScope, $location, $window, $cookieStore, $http, TokenService, RememberMeService, DEBUG_MODE, $document) {
         $rootScope.logout = false;
         $rootScope.csrfToken = $cookieStore.get('X-CSRF-TOKEN');
         $rootScope.location = $location.path();
@@ -157,8 +157,8 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
         $rootScope.isAuthenticated = false;
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            console.log('on change fired');
-            console.log($location.path());
+            //console.log('on change fired');
+            //console.log($location.path());
             // keep user logged in after page refresh
             $rootScope.globals = $cookieStore.get('globals') || {};
             $rootScope.csrfToken = $cookieStore.get('X-CSRF-TOKEN');
@@ -212,7 +212,7 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
             }
             else if($rootScope.asGuest) {
                 //doing nothing
-                console.log('as guest');
+                //console.log('as guest');
             }
             else if (($location.path() !== '/login' && $location.path() !== '/resetpassword')) { // redirect to login page if not logged in
                 if(DEBUG_MODE) {
@@ -248,7 +248,8 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
         });
         //guarantee page move to top when loaded
         $rootScope.$on('$routeChangeSuccess', function(evt, absNewUrl, absOldUrl){
-            $window.scrollTo(0,0);    //scroll to top of page after each route change
+            //$window.scrollTo(0,0);    //scroll to top of page after each route change
+            $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
         });
     }]);
 

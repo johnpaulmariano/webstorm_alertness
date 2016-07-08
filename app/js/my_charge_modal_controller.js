@@ -1,15 +1,16 @@
 /**
  * Created by trieutran on 7/1/16.
  */
-atoAlertnessControllers.controller('MyChargeModalController', ['$scope', '$uibModalInstance', 'dropdowns', 'sleeps', 'dayDropdowns','errorDays',
-    function($scope, $uibModalInstance, dropdowns, sleeps, dayDropdowns, errorDays) {
+atoAlertnessControllers.controller('MyChargeModalController', ['$scope', '$uibModalInstance', 'dropdowns', 'sleeps', 'dayDropdowns','errorDays', 'sleepDays',
+    function($scope, $uibModalInstance, dropdowns, sleeps, dayDropdowns, errorDays, sleepDays) {
         $scope.dropdowns = dropdowns;
         $scope.sleeps = sleeps;
         $scope.errorDays = errorDays;
         $scope.dayDropdowns = dayDropdowns;
+        $scope.sleepDays = sleepDays;
         $scope.currentDay = {
-            txt: 1,
-            val: 0
+            txt: $scope.sleepDays[$scope.sleepDays.length - 1].toDateString(),
+            val: $scope.sleepDays.length - 1
         };
 
         $scope.ok = function () {

@@ -59,6 +59,7 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
         };
 
         $scope.filterData = function(r){
+            console.log(r);
             // calculate the beginning of TS day
             var ts = new Date(r.time);
             var begTS = new Date(ts.getFullYear(), ts.getMonth(), ts.getDate(), 0, 0, 0, 0);
@@ -180,9 +181,11 @@ atoAlertnessControllers.controller('Gauge2Controller', ['$window', '$rootScope',
         };
 
         $scope.showSpinner = true;
+        var d = new Date();
+        $scope.lastTimeStamp = d.getTime();
 
         var GetPredictionData = function() {
-            DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction,
+            DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction, $scope.lastTimeStamp,
                 function(response){
                     if(response.success == true) {
                         $scope.showSpinner = false;

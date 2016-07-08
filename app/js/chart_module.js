@@ -13,10 +13,6 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         },
         link: function ($scope, $element) {
             $scope.$watch('data', function(value) {
-
-                console.log($scope.data);
-                console.log(value);
-
                 if (!value)
                     return;
 
@@ -26,9 +22,8 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         width: 2000,
                         marginTop: 50
                     },
-
                     title: {
-                        text: ''
+                        text: 'Title here'
                     },
                     exporting: {
                         enabled: false
@@ -36,18 +31,12 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                     xAxis: {
                         type: 'datetime',
                         dateTimeLabelFormats: {
-                            day: '%b %e '
-                        },
-                        labels: {
-                            overflow: 'justify'
+                            day: '%b %e, %Y'
                         },
                         plotBands: $scope.data.plotBands,
                         plotLines: $scope.data.plotLines,
                         tickInterval: 24 * 60 * 60 * 1000,
                         minorTickInterval: 12 * 60 * 60 * 1000,
-                        //gridLineDashType: 'Dash',
-                        //gridLineColor: 'rgba(159, 160, 158, 0.5)'
-
                     },
                     yAxis: {
                         title: {
@@ -55,29 +44,20 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         },
                         max: 6,
                         min: 2,
-                        minorGridLineColor: 'rgba(159, 160, 158, 0.5)',
+                        //minorGridLineColor: 'rgba(159, 160, 158, 0.5)',
                         minorTickInterval: 0.5,
-                        //gridLineWidth: 1,
-                        //gridLineDashType: 'Dash',
-                        //gridLineColor: "rgba(159, 160, 158, 0.9)",
-                        //alternateGridColor: null,
                         plotBands: [
-
                             {
                                 from: 4,
                                 to: 5,
                                 color: 'rgba(132, 185, 97, 0.3)',
-                                /*label: {
-                                    text: 'Slow',
-                                    style: {
-                                        color: '#f7f5f5'
-                                    }
-                                },*/
-
                             }
                         ]
                     },
                     tooltip: {
+                        dateTimeLabelFormats: {
+                            minute: '%A, %b %e, %Y, %H:%M'
+                        },
                         valueSuffix: ' m/s',
                         crosshairs: true
                     },
@@ -99,16 +79,9 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         data: $scope.data.series,
                         pointStart: $scope.data.begTS,
                         pointInterval: 15 * 60 * 1000
-                    }],
-                    navigation: {
-                        menuItemStyle: {
-                            fontSize: '10px'
-                        }
-                    }
+                    }]
                 });
             });
-
-
         }
     };
 })
@@ -117,10 +90,8 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         $scope.isExpired = false;
         $scope.expiredIn = PREDICTION_DATA_EXPIRATION;
         $scope.chartData = {};
-        $scope.submittedTime = '';
 
-        //temporary enforce renew
-        $rootScope.renewPrediction = true;
+        //$rootScope.renewPrediction = false;
 
         $scope.filterData = function(r){
             for(var j = 0; j < r.data.length; j++) {
@@ -146,7 +117,6 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                 //r = $scope.filterData(r);
 
                 var ts = new Date(r.time);
-                $scope.submittedTime = ts.toLocaleString();
                 var sleepStartTime = $scope.requestData.sleepStartTime;
                 var begTime = Date.UTC(ts.getFullYear(), ts.getMonth(), ts.getDate() - r.numDays, 0, 0, 0, 0);
                 var begTS = begTime + sleepStartTime * 60 * 60 * 1000;
@@ -180,7 +150,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                 for(var i = 0; i < $scope.requestData.caffeineTimes.length; i++) {
                     var c = {
                         color: 'rgba(230,8,18,0.7)',
-                        dashStyle: 'Solid',
+                        dashStyle: 'solid',
                         label: {
                             text: "Caffeine drink",
                             style: {
@@ -218,6 +188,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
 
         $scope.data = [];
         $scope.requestData = {};
+        $scope.lastTimeStamp = 0;
 
         MyChargeService.getData(function(d){
             //padding 3 days for predictions
@@ -231,6 +202,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
 
             if(d){
                 $scope.requestData = d.data;
+                $scope.lastTimeStamp = d.timestamp;
                 //$scope.requestData.sleepWakeSchedule = paddingThreeDays($scope.requestData.sleepWakeSchedule);
             }
             else {
@@ -247,13 +219,15 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                     caffeineTimes: [90,119,143,167,191],
                     numDays: 14
                 };
+                var d = new Date();
+                $scope.lastTimeStamp = d.getTime();
             }
         });
 
         $scope.showSpinner = true;
 
         var GetPredictionData = function() {
-            DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction,
+            DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction, $scope.lastTimeStamp,
                 function(response){
                     console.log(response);
                     if(response.success == true) {
@@ -261,10 +235,6 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         $rootScope.renewPrediction = false; // turn off the renew prediction request from MyCharge inputs
 
                         $scope.chartData = $scope.transformData(response);
-
-
-
-                        /**/
                     }
                     else {
                         $scope.error = response.message;
@@ -275,11 +245,5 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         };
 
         GetPredictionData();
-
-        $scope.$watch('chartData', function(value){
-            console.log('changed');
-            console.log($scope.chartData);
-        });
-        //$scope.chartData.series = [1,2,3,4,5,3,2,1,5];
     }
 ]);

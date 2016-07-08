@@ -537,13 +537,11 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
         var storageKey = 'PredictionData';
         var localExisted = true;
 
-        service.getData = function(data, renew, callback) {
+        service.getData = function(data, renew, timestamp, callback) {
 
             if(!renew) {
                 console.log('not renew');
                 var localData = localStorageService.get(storageKey);
-                var currDate = new Date();
-                var currTime = currDate.getTime();
 
                 if(localData) {
                     callback(localData);
@@ -557,11 +555,9 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
                 console.log('renew');
                 $http.put(BASE_API_URL + 'data/prediction',data)
                     .success(function(response){
-                        var d = new Date();
-                        var t = d.getTime();
                         var r = {
                             numDays: data.numDays,
-                            time: t,
+                            time: timestamp,
                             data: response.message,
                         };
 
