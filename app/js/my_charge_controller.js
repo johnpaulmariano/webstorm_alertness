@@ -106,6 +106,24 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
             return arr;
         };
 
+        $scope.setDefaultData = function(){
+            var dateObj = new Date();
+
+            $scope.sleeps = [];
+            $scope.sleepDays = [];
+            $scope.caffeine = [];
+
+            for(var i = 0; i < $scope.numberOfDays; i++) {
+                var ts = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() -  i, 0, 0, 0, 0);
+                var daySleep = [];
+                daySleep.push($scope.convertSleepTime($scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
+                    $scope.defaultDurationHour, $scope.defaultDurationMinute));
+
+                $scope.sleeps.push(daySleep);
+                $scope.sleepDays.push(ts);
+                $scope.caffeine.push(null);
+            }
+        };
         //get saved data
         MyChargeService.getData(function(d){
             if(d){
@@ -126,20 +144,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
 
             }
             else {
-                //initiate sleeps && caffeine
-                //set default day to today and count back to $scope.numberOfDay
-                var dateObj = new Date();
-                for(var i = 0; i < $scope.numberOfDays; i++) {
-                    var ts = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() -  i, 0, 0, 0, 0);
-                    var daySleep = [];
-                    daySleep.push($scope.convertSleepTime($scope.defaultStartSleepHour, $scope.defaultStartSleepMinute,
-                        $scope.defaultDurationHour, $scope.defaultDurationMinute));
-
-                    $scope.sleeps.push(daySleep);
-                    $scope.sleepDays.push(ts);
-                    $scope.caffeine.push(null);
-                }
-
+                $scope.setDefaultData();
                 console.log($scope.sleeps);
                 console.log($scope.sleepDays);
             }
@@ -506,15 +511,20 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
 
         $scope.save = function() {
             var result = $scope.validateData();
+            console.log(result);
             if(result.success) {
                 MyChargeService.setData(result, function(response){
                     $rootScope.renewPrediction = true;
-                    $location.path("/charts");
+                    $location.path("/chart");
                 });
             }
             else {
-                $scope.messgae = "Error in data";
+                $scope.message = "Error in data";
             }
+        };
+
+        $scope.reset = function(){
+            $scope.setDefaultData();
         };
     }
 ]);

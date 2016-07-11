@@ -1,19 +1,19 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container">
-    <h4 class="row text-center fatigue-header">To Do's</h4>
-    <p>Please tap item to check it off the list.</p>
+    <h4 class="row text-center header-bg">Healthy Sleep Checklist</h4>
+    <p>Please tap item to change to "I am following this step". If you would like to modify a comment click <a href="#checklist"  style="color:#A2FF64;">here.</a></p>
     <form class="form-horizontal" name="todosForm" role="form" ng-submit="setToDosList()">
 	<div ng-show="plan_sleeptime_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="plan_sleeptime" id="plan_sleeptime" value="1" ng_model="plan_sleeptime_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
-      			<div class="todos-text {{plan_sleeptime_check?'strike-though':''}}">I plan for – and protect – my sleep time.</div>
+      			<div class="todos-text {{plan_sleeptime_check?'strike-though':''}}">I plan for - and protect - my sleep time.</div>
                 <span class="todos-action {{plan_sleeptime_check?'strike-though':''}}">{{plan_sleeptime_text}}</span>
             </label>
    </div>
 
     <div ng-show="room_temperature_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="room_temperature" id="room_temperature" value="1" ng_model="room_temperature_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
       			<div class="todos-text {{room_temperature_check?'strike-though':''}}">I keep my room temperature comfortable for my sleep.</div>
@@ -22,7 +22,7 @@
      </div>
 
     <div ng-show="bedroom_darkness_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="bedroom_darkness" id="bedroom_darkness" value="1" ng_model="bedroom_darkness_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
       			<div class="todos-text {{bedroom_darkness_check?'strike-though':''}}">I keep my room dark when I am trying to sleep.</div>
@@ -32,7 +32,7 @@
 
 
     <div ng-show="room_quiet_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="room_quiet" id="room_quiet" value="1" ng_model="room_quiet_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
       			<div class="todos-text {{room_quiet_check?'strike-though':''}}">I keep my room quiet when I am trying to sleep.</div>
@@ -43,7 +43,7 @@
 
 
     <div ng-show="bedroom_only_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="bedroom_only" id="bedroom_only" value="1" ng_model="bedroom_only_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                  <div class="todos-text {{bedroom_only_check?'strike-though':''}}">I use my bedroom only for sleep and intimacy.</div>
@@ -53,7 +53,7 @@
 
 
     <div ng-show="regulate_waketimes_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="regulate_waketimes" id="regulate_waketimes" value="1" ng_model="regulate_waketimes_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                 <div class="todos-text {{regulate_waketimes_check?'strike-though':''}}">I wake up at the same time every day.</div>
@@ -63,7 +63,7 @@
 
 
     <div ng-show="stop_caffeine_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="stop_caffeine" id="stop_caffeine" value="1" ng_model="stop_caffeine_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                 <div class="todos-text {{stop_caffeine_check?'strike-though':''}}">I stop using anything with caffeine at least 6 hours before bedtime.</div>
@@ -73,7 +73,7 @@
 
 
     <div ng-show="exercise_routine_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="exercise_routine" id="exercise_routine" value="1" ng_model="exercise_routine_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                 <div class="todos-text {{exercise_routine_check?'strike-though':''}}">I finish my exercise routine at least 3 hours before bedtime.</div>
@@ -83,7 +83,7 @@
 
 
     <div ng-show="no_alcohol_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="no_alcohol" id="no_alcohol" value="1" ng_model="no_alcohol_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                  <div class="todos-text {{no_alcohol_check?'strike-though':''}}">I do not use alcohol to help me fall asleep.</div>
@@ -92,7 +92,7 @@
     </div>
 
     <div ng-show="get_out_bed_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="get_out_bed" id="get_out_bed" value="1" ng_model="get_out_bed_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                  <div class="todos-text {{get_out_bed_check?'strike-though':''}}">I get out of bed if I cannot fall asleep or stay asleep.</div>
@@ -123,9 +123,9 @@
     <div class="form-actions" style="margin-top:10px;">
         <div ng-show="error" class="alert alert-danger">{{error}}</div>
         <!-- <div ng-show="message" class="alert alert-info">{{message}}</div> -->
-        <button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;" ng-show="!$root.asGuest">Save To-Do List</button>
-        <button type="submit" class="btn btn-primary btn-lg btn-block form-control"  style="padding-bottom:35px;" ng-show="$root.asGuest">Save To-Do List</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;" ng-show="!$root.asGuest">Save Healthy Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block form-control"  style="padding-bottom:35px;" ng-show="$root.asGuest">Save Healthy Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button>
     </div>
     </form>
-    <div class="fatigue-header" style="margin-bottom:10px;"><a href="#checklist" style="color:#fff;"><span class="glyphicon glyphicon-chevron-left"></span>Back to Checklist</a></div>
+  <a href="#checklist" class="fatigue-header" style="color:#fff; margin-bottom:10px;"><span class="glyphicon glyphicon-chevron-left"></span>Back to Checklist</a>
 </div>

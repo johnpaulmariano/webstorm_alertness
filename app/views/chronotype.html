@@ -1,6 +1,6 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container">
-    <h4 class="row text-center fatigue-header">2-Item Circadian Energy Scale (CIRENS)</h4>
+    <h4 class="row text-center header-bg">2-Item Circadian Energy Scale (CIRENS)</h4>
     <div class="row">
         <form name="form2" ng-submit="setChrono()" role="form">
             <div id="chronotypeDiv">
@@ -35,11 +35,11 @@
                 <div class="form-actions">
                     <div class="alert alert-info" ng-show="chronoMessage != ''">{{chronoMessage}}</div>
                     <div ng-show="chronoError" class="alert alert-danger">{{chronoError}}</div>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Click here to see score</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Click here to see score<span class="glyphicon glyphicon-floppy-save"></span></button>
 
                     <!-- <div id="as-guest-disclaimer" ng-show="$root.asGuest">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div> -->
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>

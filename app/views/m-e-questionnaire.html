@@ -1,6 +1,6 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container">
-    <h4 class="row text-center fatigue-header">Instructions for the MEQ</h4>
+    <h4 class="row text-center header-bg">Instructions for the MEQ</h4>
     <div id="meqquestionaire" ng-if="showForm">
 
       <ul class="custom-bullet glass-bg">
@@ -28,7 +28,7 @@
                       <div class="radio-list btn-primary">
                         <label class="tasks-list-item">
                           <input type="radio" ng-model="data.meq_1" value="4" ng-checked="data.meq_1 == 4"  class="tasks-list-mark">
-                          <div><div><span class="tasks-list-desc">6:30AM-7:45AM</span></div>
+                          <div><span class="tasks-list-desc">6:30AM-7:45AM</span></div>
                         </label>
                       </div>
                     </li>
@@ -388,7 +388,7 @@
 
                   <!-- Q11 -->
                   <div class="mid-wrapper">
-                  <li class="glass-bg-q"><span class="q-color">11.</span> You want to be at your peak performance for a test that you know is going to be mentally exhausting and lasting for two hours. You are entirely free to plan your day and considering only your own "feelingbest" rhythm, which ONE of the four testing times would you choose?</li>
+                  <li class="glass-bg-q"><span class="q-color">11.</span> You want to be at your peak performance for a test that you know is going to be mentally exhausting and lasting for two hours. You are entirely free to plan your day and considering only your own "feeling best" rhythm, which ONE of the four testing times would you choose?</li>
                   <ul>
                     <li>
                       <div class="radio-list btn-primary">
@@ -459,24 +459,24 @@
                   <li class="glass-bg-q"><span class="q-color">13.</span> For some reason you have gone to bed several hours later than usual, but there is no need to get up at any particular time the next morning. Which ONE of the following are you most likely to experience?</li>
                   <ul>
                     <li>
-                      <div class="radio-list btn-primary">
+                      <div class="radio-list btn-primary" style="min-height:50px;">
                         <label class="tasks-list-item">
-                          <input type="radio" ng-model="data.meq_13" value="4" ng-checked="data.meq_13 == 4"  class="tasks-list-mark">
-                          <div><span class="tasks-list-desc">Will wake up at usual time and will NOT fall back asleep</span></div></label>
+                          <input type="radio" ng-model="data.meq_13" value="4" ng-checked="data.meq_13 == 4"  class="tasks-list-mark" style="margin-top:15px;">
+                          <div style="line-height:1.4;"><span class="tasks-list-desc">Will wake up at usual time and will NOT fall back asleep</span></div></label>
                       </div>
                     </li>
                     <li>
-                      <div class="radio-list btn-primary">
+                      <div class="radio-list btn-primary" style="min-height:50px;">
                         <label class="tasks-list-item">
-                          <input type="radio" ng-model="data.meq_13" value="3" ng-checked="data.meq_13 == 3"  class="tasks-list-mark">
-                          <div><span class="tasks-list-desc">Will wake up at usual time and will doze thereafter</span></div></label>
+                          <input type="radio" ng-model="data.meq_13" value="3" ng-checked="data.meq_13 == 3"  class="tasks-list-mark" style="margin-top:15px;">
+                          <div style="line-height:1.4;"><span class="tasks-list-desc">Will wake up at usual time and will doze thereafter</span></div></label>
                       </div>
                     </li>
                     <li>
-                      <div class="radio-list btn-primary">
+                      <div class="radio-list btn-primary" style="min-height:50px;">
                         <label class="tasks-list-item">
-                          <input type="radio" ng-model="data.meq_13" value="2" ng-checked="data.meq_13 == 2"  class="tasks-list-mark">
-                          <div><span class="tasks-list-desc">Will wake up at usual time, but will fall asleep again</span></div></label>
+                          <input type="radio" ng-model="data.meq_13" value="2" ng-checked="data.meq_13 == 2"  class="tasks-list-mark" style="margin-top:15px;">
+                          <div style="line-height:1.4;"><span class="tasks-list-desc">Will wake up at usual time, but will fall asleep again</span></div></label>
                       </div>
                     </li>
                     <li>
@@ -592,7 +592,7 @@
 
                   <!-- Q17 -->
                   <div class="mid-wrapper">
-                  <li class="glass-bg-q"><span class="q-color">17.</span> Suppose that you can choose your own work hours. Assume that you worked a FIVE-hour day (including breaks) and that your job was I nteresting and paid by results.  Which FIVE CONSECUTIVE HOURS would you select?</li>
+                  <li class="glass-bg-q"><span class="q-color">17.</span> Suppose that you can choose your own work hours. Assume that you worked a FIVE-hour day (including breaks) and that your job was Interesting and paid by results.  Which FIVE CONSECUTIVE HOURS would you select?</li>
                   <ul>
                     <li>
                       <div class="radio-list btn-primary">
@@ -686,14 +686,14 @@
                       <div class="radio-list btn-primary">
                         <label class="tasks-list-item">
                           <input type="radio" ng-model="data.meq_19" value="4" ng-checked="data.meq_19 == 4"  class="tasks-list-mark">
-                          <div><span class="tasks-list-desc">Rather more a "morning" than an "evening" type</span></div></label>
+                          <div><span class="tasks-list-desc">Rather more a "morning" than an "evening"</span></div></label>
                       </div>
                     </li>
                     <li>
                       <div class="radio-list btn-primary">
                         <label class="tasks-list-item">
                           <input type="radio" ng-model="data.meq_19" value="2" ng-checked="data.meq_19 == 2"  class="tasks-list-mark">
-                          <div><span class="tasks-list-desc">Rather more an "evening" than a "morning" type</span></div></label>
+                          <div><span class="tasks-list-desc">Rather more an "evening" than a "morning"</span></div></label>
                       </div>
                     </li>
                     <li>
@@ -705,7 +705,7 @@
                     </li>
                   </ul></div>
                 </ol>
-            <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Click here to score MEQ</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Click here to score MEQ<span class="glyphicon glyphicon-floppy-save"></span></button>
         </form>
         <!-- end of questionaire-->
         <div ng-show="message" class="alert alert-info">{{message}}</div>

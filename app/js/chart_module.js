@@ -213,10 +213,10 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                 $scope.requestData = {
                     sleepStartTime: 23,
                     sleepWakeSchedule:defaultSleepWake,
-                    //caffeineDoses:[],
-                    //caffeineTimes:[],
-                    caffeineDoses: [400, 400, 400, 400, 400],
-                    caffeineTimes: [90,119,143,167,191],
+                    caffeineDoses:[],
+                    caffeineTimes:[],
+                    //caffeineDoses: [400, 400, 400, 400, 400],
+                    //caffeineTimes: [90,119,143,167,191],
                     numDays: 14
                 };
                 var d = new Date();

@@ -1,6 +1,6 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container">
-    <h4 class="row text-center fatigue-header">Defining Your Daily Sleep Need</h4>
+    <h4 class="row text-center header-bg">Defining Your Daily Sleep Need</h4>
     <img class="header-image" src="images/need@2x.png" alt="Sleep Debt">
     <h5>How much sleep do I need each night to feel refreshed?</h5>
     <p>We need about eight hours of good, quality sleep each day to fully rejuvenate our bodies and our minds. But, because we are unique individuals, some of us may need more than the requisite eight hours, and some of us will be able to function successfully on a bit less. When you understand how much sleep you need to feel refreshed and ready to go, it will be easier to create a personal plan to ensure you obtain the right amount of sleep every night.</p>
@@ -11,11 +11,11 @@
             <p>1. To begin, you will need six consecutive days when you are free to sleep as long as you like. Vacations work great but are not necessary. Go to sleep the same time every night and do not wake to an alarm. Get out of bed when your body naturally wakes you.</p>
             <p>2. During days one, two and three you will notice that you are "sleeping in."  Your body is now recovering from previous sleep loss. </p>
             <p>3. On days four, five and six, you will start to awaken around the same time every day.  Insert the amount of sleep you received on each of these days into this App.</p>
-            <p>4. The App will total your sleep hours from days four, five and six and divide that total by three to calculate the average duration of your nightly sleep.</p> 
+            <p>4. The App will total your sleep hours from days four, five and six and divide that total by three to calculate the average duration of your nightly sleep.</p>
             <p>5. The answer will be your individual daily sleep need.</p>
         </div>
     </div>
-    <div class="row-centered">  
+    <div class="row-centered">
         <form class="form-horizontal" ng-submit="saveSleepNeed()">
             <div class="form-group">
             <div class="col-xs-6">
@@ -23,7 +23,7 @@
             </div>
             <div class="col-xs-6">
                 <label for="day4selectminutes" class="col-sm-2 control-label">Minutes</label>
-            </div>    
+            </div>
             <br>
                 <div class="col-xs-6">
                     <select class="form-control" name="day4selecthours" ng-options="h for h in day4hours" ng-model="day4selectedhours"  ng-change="calculateSleepNeed()" >
@@ -40,7 +40,7 @@
             </div>
             <div class="col-xs-6">
                 <label for="day5selectminutes" class="col-sm-2 control-label">Minutes</label>
-            </div>    
+            </div>
             <br>
                 <div class="col-xs-6">
                     <select class="form-control" name="day5selecthours" ng-options="h for h in day5hours" ng-model="day5selectedhours"  ng-change="calculateSleepNeed()" >
@@ -57,7 +57,7 @@
             </div>
             <div class="col-xs-6">
                 <label for="day6selectminutes" class="col-sm-2 control-label">Minutes</label>
-            </div>    
+            </div>
             <br>
                 <div class="col-xs-6">
                     <select class="form-control" name="day6selecthours" ng-options="h for h in day6hours" ng-model="day6selectedhours"  ng-change="calculateSleepNeed()" >
@@ -75,7 +75,7 @@
                     <input class="form-control" type="text" readonly ng-model="sleepNeed" name="sleepNeed" id="sleepNeed" />
                 </div>
             </div>
-            
+
            <div class="form-actions" style="margin-bottom:20px; margin-top:30px;">
                 <div class="alert alert-success">Strive always to achieve your individual daily sleep need. When you do, you will discover that your are more alert and functioning at your highest performance level.</div>
                 <div ng-show="error" class="alert alert-danger">{{error}}</div>

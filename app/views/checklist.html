@@ -8,12 +8,11 @@
 
 		<div class="panel panel-default">
 
-				<h4 class="row text-center fatigue-header">Healthy Sleep Checklist</h4>
+				<h4 class="row text-center header-bg">Healthy Sleep Checklist</h4>
 				<div ng-hide="emptyChecklist">
-						<div class="fatigue-header">
+
 								<a href="#todos" style="color:#fff;">Tap here to see your current Health Sleep Checklist.
 								</a>
-						</div>
 				</div>
 				<form class="form-horizontal" name="checklistForm" role="form" ng-submit="setChecklist()">
 						<div class="form-group">
@@ -23,7 +22,7 @@
 														<span class="q-color">1.</span>
 														I plan for - and protect - my sleep time.</strong>
 												<br>
-												Especially if you have to sleep during the day, tell your family exactly when you will be sleeping and ensure that they understand that you are not to be disturbed during your sleep time.</div>
+												Especially if I have to sleep during the day, tell my family exactly when I will be sleeping and ensure that they understand that I am not to be disturbed during my sleep time.</div>
 										<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 												<label class="tasks-list-item">
 														<input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}" name="plan_sleeptime" ng-model="$parent.plan_sleeptime" value="{{sel.value}}" ng-checked="(plan_sleeptime != null && plan_sleeptime == sel.value)">
@@ -46,7 +45,7 @@
 														<span class="q-color">2.</span>
 														I keep my room temperature comfortable for my sleep.</strong>
 												<br>
-												Keep your bedroom at a temperature that doesn't cause you to awaken because you get too hot or too cold. If you can't adjust your room temperature, use blankets to stay warmer or a fan to stay cooler.</div>
+												Keep my bedroom at a temperature that doesn't cause me to awaken because I get too hot or too cold. If I can't adjust my room temperature, use blankets to stay warmer or a fan to stay cooler.</div>
 										<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 												<label class="tasks-list-item">
 														<input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}" name="room_temperature" ng-model="$parent.room_temperature" value="{{sel.value}}" ng-checked="(room_temperature != null && room_temperature == sel.value)">
@@ -69,7 +68,7 @@
 												<span class="q-color">3.</span>
 												I keep my room dark when I am trying to sleep.</strong>
 										<br>
-										Keep your bedroom dark - if possible, install light-blocking curtains (dark plastic taped over windows also works) or wear a sleep mask (available in most drug stores).</div>
+										Keep my bedroom dark - if possible, install light-blocking curtains (dark plastic taped over windows also works) or wear a sleep mask (available in most drug stores).</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
 												<input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}" name="bedroom_darkness" ng-model="$parent.bedroom_darkness" value="{{sel.value}}" ng-checked="(bedroom_darkness != null && bedroom_darkness == sel.value)">
@@ -112,7 +111,7 @@
 												<span class="q-color">5.</span>
 												I use my bedroom only for sleep and intimacy.</strong>
 										<br>
-										Remove TVs &amp; laptops, don't eat/drink in bed, don't let pets sleep on your bed. Put arguments and issues aside for later.</div>
+										Remove TVs &amp; laptops, don't eat/drink in bed, don't let pets sleep on my bed. Put arguments and issues aside for later.</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
 												<input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}" name="bedroom_only" ng-model="$parent.bedroom_only" value="{{sel.value}}" ng-checked="(bedroom_only != null && bedroom_only == sel.value)">
@@ -133,7 +132,7 @@
 												<span class="q-color">6.</span>
 												I wake up at the same time every day.</strong>
 										<br>
-										On days when you are not working night shifts, wake up at the same time every day - including your RDOs.
+										On days when I am not working night shifts, wake up at the same time every day - including my RDOs.
 								</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
@@ -155,7 +154,7 @@
 												<span class="q-color">7.</span>
 												I stop using anything with caffeine at least 6 hours before bedtime.</strong>
 										<br>
-										Allow MORE than 6 hours if you are especially sensitive to caffeine or you use a lot of caffeine (for example, more than about 2 cups of coffee a day).</div>
+										Allow MORE than 6 hours if I am especially sensitive to caffeine or I use a lot of caffeine (for example, more than about 2 cups of coffee a day).</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
 												<input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}" name="stop_caffeine" ng-model="$parent.stop_caffeine" value="{{sel.value}}" ng-checked="(stop_caffeine != null && stop_caffeine == sel.value)">
@@ -176,7 +175,7 @@
 												<span class="q-color">8.</span>
 												I finish my exercise routine at least 3 hours before bedtime.</strong>
 										<br>
-										3 hours is a general rule of thumb to allow sufficient cool-down and wind-down time. Finish exercising more than 3 hours if you are having trouble falling asleep after exercising.</div>
+										3 hours is a general rule of thumb to allow sufficient cool-down and wind-down time. Finish exercising more than 3 hours if I am having trouble falling asleep after exercising.</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
 												<input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}" name="exercise_routine" ng-model="$parent.exercise_routine" value="{{sel.value}}" ng-checked="(exercise_routine != null && exercise_routine == sel.value)">
@@ -197,7 +196,7 @@
 												<span class="q-color">9.</span>
 												I do not use alcohol to help me fall asleep.</strong>
 										<br>
-										Alcohol makes you feel sleepy, but it actually disrupts your sleep.</div>
+										Alcohol makes me feel sleepy, but it actually disrupts my sleep.</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
 												<input type="radio" class="tasks-list-mark-cl-{{sel.value == 0 ? 'a' : 'b'}}" name="no_alcohol" ng-model="$parent.no_alcohol" value="{{sel.value}}" ng-checked="(no_alcohol != null && no_alcohol == sel.value)">
@@ -218,17 +217,17 @@
 												<span class="q-color">10.</span>
 												I get out of bed if I cannot fall asleep or stay asleep.</strong>
 										<br>
-										This healthy sleep habit prevents you from developing an association between the bedroom and being awake.
+										This healthy sleep habit prevents me from developing an association between the bedroom and being awake.
 										<br>
-										Here is now to implement this healthy sleep habit:
+										Here is how to implement this healthy sleep habit:
 										<br>
 										<ul class="custom-bullet glass-bg">
-												<li>If you cannot fall asleep within 20 minutes, get out of bed and go to another room.</li>
-												<li>Do something relaxing (or boring) until you feel sleepy enough to fall back asleep. Using electronics is NOT recommended. Reading something boring is a better alternative.</li>
-												<li>Once you feel sleepy, return to your bed.</li>
-												<li>If you don't fall asleep within 20 minutes, repeat these steps.</li>
+												<li>If I cannot fall asleep within 20 minutes, I will get out of bed and go to another room.</li>
+												<li>Do something relaxing (or boring) until I feel sleepy enough to fall back asleep. Using electronics is NOT recommended. Reading something boring is a better alternative.</li>
+												<li>Once I feel sleepy, return to my bed.</li>
+												<li>If I don't fall asleep within 20 minutes, repeat these steps.</li>
 										</ul>
-										<p> If implementing these steps makes you sleepy the next day, nap only long enough to ensure safety (e.g., for driving).</p>
+										<p> If implementing these steps makes me sleepy the next day, nap only long enough to ensure safety (e.g., for driving).</p>
 								</div>
 								<div class="radio-list btn-primary" ng-repeat="sel in checklistOpts">
 										<label class="tasks-list-item">
@@ -241,15 +240,13 @@
 								<div class="checklist-textarea">
 										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="get_out_bed_text" ng-model="get_out_bed_text" ng-show="get_out_bed == 1">{{get_out_bed_text}}</textarea>
 								</div>
-									</div><p>Repeat the above steps as needed throughout your sleep period. Implementing these steps might make you sleepy the next day. THAT IS EXPECTED -- and the increased sleepiness will help you sleep the following night.</p>
+							</div><p>Repeat the above steps as needed throughout my sleep period. Implementing these steps might make me sleepy the next day. THAT IS EXPECTED -- and the increased sleepiness will help me sleep the following night.</p>
 
 				</div>
 				<div class="form-actions">
 						<div ng-show="error" class="alert alert-danger">{{error}}</div>
 						<!-- <div ng-show="message" class="alert alert-info">{{message}}</div> -->
-						<button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;" ng-show="!$root.asGuest">Save Action Plan</button>
-						<button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="padding-bottom:35px;" ng-show="$root.asGuest">Save Action Plan</button>
-
+						<button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;">Save Action Plan<span class="glyphicon glyphicon-floppy-save"></span></button>
 				</div>
 		</form>
 

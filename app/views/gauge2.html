@@ -1,6 +1,6 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container">
-    <h4 class="row text-center fatigue-header">What's My Charge?</h4>
+    <h4 class="row text-center header-bg">What's My Charge?</h4>
     <p>This tool provides an estimate of mental speed based on
         <strong>sleep amounts</strong>,
         <strong>time of day</strong>, and
@@ -42,12 +42,12 @@
         <div class="gauge-time">{{gaugeText| date:"MMM dd, yyyy 'at' hh:mma"}}</div>
     </div>
     <rzslider rz-slider-model="minSlider.value" rz-slider-options="minSlider.options"></rzslider>
-    <h4 class="row text-center fatigue-header">
-        <a href="#mycharge" style="color:#FFF;">Change Sleep Schedule
+
+        <a href="#mycharge"class="fatigue-header" style="color:#FFF; text-align:center;">Change Sleep Schedule
             <br>
             or
             <br>
-            Add Caffeine Event</a>
+            Add Caffeine Event<span class="glyphicon glyphicon-pencil"></span></a>
     </h4>
     <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" spinner-on="showSpinner"></span>
 </div>
