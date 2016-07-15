@@ -55,38 +55,44 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
         });
 
         $scope.prepareData = function(){
-            var $postData = {};
+            var postData = {};
             var isValid = true;
+            var count = 0;
 
             for(var i = 0; i < questions.length; i++) {
                 var $text_field = questions[i] + '_text';
-                //console.log($scope[questions[i]]);
-                //console.log(isValid);
 
                 if($scope[questions[i]] == null){
                     isValid = false;
                 }
                 else {
+                    count ++;
                     var choice = parseInt($scope[questions[i]]);
                     //console.log(choice);
-                    $postData[questions[i]] = choice;
+                    postData[questions[i]] = choice;
 
                     if(choice == 1) {
-                        $postData[$text_field] = $scope[$text_field];
+                        postData[$text_field] = $scope[$text_field];
                     }
                     else {
-                        $postData[$text_field] = "";
+                        postData[$text_field] = "";
                     }
                 }
             }
 
-            //console.log($postData);
-
             if(isValid) {
-                return $postData;
+                return {
+                    ok: true,
+                    postData: postData,
+                    message: ''
+                };
             }
             else {
-                return undefined;
+                return {
+                    ok: false,
+                    postData: null,
+                    message: 'You completed ' + count + ' of ' + questions.length + ' checklist items.  Please go back and select ALL 10 items.',
+                };
             }
 
         };
@@ -95,12 +101,12 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
             var $data = $scope.prepareData();
             //console.log($data);
 
-            if($data == undefined) {
-                $scope.error = "You did not complete one or more Checklist items.  Please go back and select ALL 9 items.";
+            if($data.ok == false) {
+                $scope.error = $data.message;
             }
             else {
                 //console.log('not empty');
-                ChecklistService.setChecklist($data,
+                ChecklistService.setChecklist($data.postData,
                     function(response){
                         if(response.success == "true") {
                             //$scope.message = response.message;

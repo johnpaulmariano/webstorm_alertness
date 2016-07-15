@@ -480,7 +480,9 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                 ok = true;
             }
             else {
-                alert("Entry Error in Day " + ($scope.numberOfDays - $scope.errorDays[0]) + "!!!");
+                //console.log($scope.sleepDays);
+                //console.log($scope.errorDays);
+                alert("Entry Error in  " + ($scope.sleepDays[$scope.errorDays[0]].toDateString()) + "!!!");
             }
 
             //not an ideal place to manipulate DOM here
@@ -511,7 +513,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
 
         $scope.save = function() {
             var result = $scope.validateData();
-            console.log(result);
+            //console.log(result);
             if(result.success) {
                 MyChargeService.setData(result, function(response){
                     $rootScope.renewPrediction = true;

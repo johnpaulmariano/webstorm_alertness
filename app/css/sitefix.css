@@ -44,7 +44,16 @@ background-size: cover;
   min-height:80px;
 }
 
-
+.glyphicon.glyphicon-link {
+  top: 0;
+    font-size: 12px;
+    padding-left: 3px;
+}
+.glyphicon.glyphicon-floppy-save {
+left: 10px;
+    font-size: 16px;
+    top: 1px;
+  }
 
 .tasks {
   width: 240px;
@@ -166,8 +175,7 @@ background-size: cover;
 }
 .tasks-list-item {
   display: block;
-
-  margin-bottom: 8px;
+  height: 35px;
 
   cursor: pointer;
   -webkit-user-select: none;
@@ -175,7 +183,7 @@ background-size: cover;
   -ms-user-select: none;
   user-select: none;
 
-  line-height: 16px;
+  line-height: 30px;
 }
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
   outline: none;
@@ -342,10 +350,10 @@ span.glyphicon.glyphicon-chevron-right {
 }
 .radio-list {
       margin: 10px;
-      padding-top: 10px;
+      /* padding-top: 10px;
       padding-right: 10px;
       padding-bottom: 2px;
-      padding-left: 10px;
+      padding-left: 10px; */
 
   border: 1px solid #85C03C;
       -webkit-border-radius:3px;
@@ -357,6 +365,9 @@ span.glyphicon.glyphicon-chevron-right {
 
 .inputlabel {
 	/*color:red;*/
+}
+#essForm > form > div:nth-child(n) > ul > li:nth-child(n) > div > label > div {
+  padding-top:7px;
 }
 .panel {
 	border:none;
@@ -370,6 +381,10 @@ margin-right: 5px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 5px;
   background: linear-gradient(#74BC44, rgba(112, 183, 66, 0.55));
+  max-width: 290px;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  margin-top: 10px;
 }
 h5 {
   margin:22px 0 16px;
@@ -387,6 +402,7 @@ h5 {
 }
 .form-control {
 	/*margin-top:10px;*/
+
 }
 .mid-wrapper {
   padding: 0;
@@ -533,8 +549,8 @@ div > label >div {
 }
 input[type=radio] {
   position: absolute;
-
-  margin: 0px;
+  margin-left: 5px;
+  margin-top:8px;
   margin-right:15px;
   /*margin-bottom:10px;*/
 
@@ -589,7 +605,7 @@ form#loginForm {
 }
 .fatigue-header {
   padding:10px;
-
+  display: block;
   color: #FFFAA7;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 5px;
@@ -714,6 +730,16 @@ ol.lower-alpha
   background-color: rgba(255, 255, 255, 0.14);
 box-shadow: 1px 2px rgba(0, 0, 0, 0.22);
 }
+.header-bg {
+      margin-bottom: 5px;
+      padding: 10px;
+    list-style: none;
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      color: #FFFAA7;
+    background-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 1px 2px rgba(0, 0, 0, 0.22);
+}
 .glass-bg-q {
     margin-bottom: 5px;
     padding: 10px;
@@ -723,11 +749,15 @@ box-shadow: 1px 2px rgba(0, 0, 0, 0.22);
 
 }
 .glass-bg-login {
-    margin-right: 16px;
-    margin-left: 16px;
+    margin-right: 21px;
+    margin-left: 21px;
 
     border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.14);
+}
+.checklist-textarea > textarea {
+  width: 290px;
+  margin: 0 auto;
 }
 .alert-success {
 padding: 10px;
@@ -937,9 +967,9 @@ rzslider .rz-bar {
   color: #FFF;
 }
 .zebrabg {
-padding-left: 0px;
+/*padding-left: 0px;
 
-background: rgba(255,255,255,0.1);
+background: rgba(255,255,255,0.1);*/
 
 font-size: 14px;
   }

@@ -19,7 +19,7 @@
     <h4 class="row text-center header-bg" style="margin-top:0; margin-bottom:0;">What's My Charge Input</h4>
     <div id="mycharge_list" style="position: relative; top: 10px;">
         <div class="glass-bg row" ng-repeat="(idx, day) in sleeps">
-            <h4 class="fatigue-header" style="padding:5px; margin-top:0px;" id="day_title_{{idx}}">Day
+            <h4 class="fatigue-header" style="padding:5px; margin-top:0px;" id="day_title_{{idx}}">
                 {{sleepDays[idx].toDateString()}}
                 <div class="glyphicon glyphicon-remove pull-right" ng-if="(numberOfDays - idx) == 1" ng-click="removeDay(idx)"></div>
             </h4>

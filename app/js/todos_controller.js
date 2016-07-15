@@ -20,12 +20,21 @@ atoAlertnessControllers.controller('ToDosController', ['$scope', 'Authentication
         ChecklistService.getChecklist($scope.username, function(response){
             if(response.result == "success") {
                 var data = response.data;
-
+                console.log(data);
                 if(angular.isObject(data) && !angular.equals({}, data)) {
                     for(var i = 0; i < $scope.questions.length; i++) {
                         $scope[$scope.questions[i]] = data[$scope.questions[i]];
                         var text_name = $scope.questions[i] + '_text';
-                        $scope[text_name] = data[text_name];
+
+
+                        if(data[$scope.questions[i]] == 1) {
+                            if(angular.isUndefined(data[text_name])) {
+                                $scope[text_name] = 'Need Improvement';
+                            }
+                            else {
+                                $scope[text_name] = data[text_name];
+                            }
+                        }
                     }
                 }
                 else {

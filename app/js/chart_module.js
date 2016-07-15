@@ -23,7 +23,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         marginTop: 50
                     },
                     title: {
-                        text: 'Title here'
+                        text: null
                     },
                     exporting: {
                         enabled: false
@@ -78,7 +78,8 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         name: 'Response Speed',
                         data: $scope.data.series,
                         pointStart: $scope.data.begTS,
-                        pointInterval: 15 * 60 * 1000
+                        pointInterval: 15 * 60 * 1000,
+                        showInLegend: false
                     }]
                 });
             });
@@ -93,55 +94,46 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
 
         //$rootScope.renewPrediction = false;
 
-        $scope.filterData = function(r){
-            for(var j = 0; j < r.data.length; j++) {
-                if(r.data[j].value <= 2) {
-                    r.data[j].value = 2;
-                }
-                else if(r.data[j].value >= 6) {
-                    r.data[j].value = 6;
-                }
-                else {
-                    r.data[j].value = r.data[j].value.toPrecision(4);
-                }
-                //data[j].epoch = timeStartPoint + 15 * 60 * 1000 * j;
-            }
-
-            return r;
-        };
-
         $scope.transformData = function(r) {
             var chartData = {};
-            console.log($scope.requestData);
+            //console.log($scope.requestData);
+            //console.log(r);
             if(r.data.length > 0) {
                 //r = $scope.filterData(r);
 
                 var ts = new Date(r.time);
-                var sleepStartTime = $scope.requestData.sleepStartTime;
+                //var sleepStartTime = $scope.requestData.sleepStartTime % 24;
                 var begTime = Date.UTC(ts.getFullYear(), ts.getMonth(), ts.getDate() - r.numDays, 0, 0, 0, 0);
-                var begTS = begTime + sleepStartTime * 60 * 60 * 1000;
-                chartData.begTS = begTS;
+                //console.log(begTime);
+                //var begTS = begTime + sleepStartTime * 60 * 60 * 1000;
+                chartData.begTS = begTime;
 
                 //calculate sleep periods
                 var sleepPeriods = [];
                 var accumTime = 0;
+
                 for(var i = 0; i < $scope.requestData.sleepWakeSchedule.length; i++) {
-                    var sleep = {};
-
+                    //
                     if(i == 0) {
+                        var sleep = {};
                         sleep.color = 'rgba(68, 170, 213, 0.5)';
-                        sleep.from = begTS;
-                        sleep.to = sleep.from + $scope.requestData.sleepWakeSchedule[i] * 60 * 60 * 1000;
+                        sleep.from = begTime + $scope.requestData.sleepStartTime * 60 * 60 * 1000;
+                        sleep.to = begTime + ($scope.requestData.sleepStartTime + $scope.requestData.sleepWakeSchedule[i])* 60 * 60 * 1000;
+                        accumTime += $scope.requestData.sleepStartTime;
                         sleepPeriods.push(sleep);
                     }
-                    else if(i % 2 == 0) {
-                        sleep.color = 'rgba(68, 170, 213, 0.5)';
-                        sleep.from = begTS + accumTime * 60 * 60 * 1000;
-                        sleep.to = sleep.from + $scope.requestData.sleepWakeSchedule[i] * 60 * 60 * 1000;
-                        sleepPeriods.push(sleep);
-                    }
+                    else {
+                        accumTime += $scope.requestData.sleepWakeSchedule[i];
 
-                    accumTime += $scope.requestData.sleepWakeSchedule[i];
+                        if(i % 2 == 0) {
+                            var sleep = {};
+                            sleep.color = 'rgba(68, 170, 213, 0.5)';
+                            sleep.from = begTime + accumTime * 60 * 60 * 1000;
+                            sleep.to = begTime + (accumTime + $scope.requestData.sleepWakeSchedule[i])* 60 * 60 * 1000;
+                            //accumTime += $scope.requestData.sleepWakeSchedule[i];
+                            sleepPeriods.push(sleep);
+                        }
+                    }
                 }
                 chartData.plotBands = sleepPeriods;
 
@@ -182,7 +174,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                     }
                 }
             }
-
+            //console.log(chartData);
             return chartData;
         };
 
@@ -229,7 +221,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         var GetPredictionData = function() {
             DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction, $scope.lastTimeStamp,
                 function(response){
-                    console.log(response);
+                    //console.log(response);
                     if(response.success == true) {
                         $scope.showSpinner = false;
                         $rootScope.renewPrediction = false; // turn off the renew prediction request from MyCharge inputs

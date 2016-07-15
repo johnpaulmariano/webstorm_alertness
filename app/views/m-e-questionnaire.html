@@ -204,7 +204,7 @@
                     <li>
                       <div class="radio-list btn-primary">
                         <label class="tasks-list-item">
-                          <input type="radio" ng-model="data.meq_5" value="4" ng-checked="data.meq_1 == 4"  class="tasks-list-mark">
+                          <input type="radio" ng-model="data.meq_5" value="4" ng-checked="data.meq_5 == 4"  class="tasks-list-mark">
                           <div><span class="tasks-list-desc">Very alert</span></div></label>
                       </div>
                     </li>
@@ -705,10 +705,11 @@
                     </li>
                   </ul></div>
                 </ol>
+            <div ng-show="message" class="alert alert-danger">{{message}}</div>
             <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;">Click here to score MEQ<span class="glyphicon glyphicon-floppy-save"></span></button>
         </form>
         <!-- end of questionaire-->
-        <div ng-show="message" class="alert alert-info">{{message}}</div>
+
     </div>
     <div id="meqresults" ng-if="!showForm">
         <p class="alert alert-success center-block text-center"><strong>Your MEQ score is {{score}}.<br>
