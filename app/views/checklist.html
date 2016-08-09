@@ -11,7 +11,7 @@
 				<h4 class="row text-center header-bg">Healthy Sleep Checklist</h4>
 				<div ng-hide="emptyChecklist">
 
-								<a href="#todos" style="color:#fff;">Tap here to see your current Health Sleep Checklist.
+								<a href="#todos" class="fatigue-header" style="color:#fff;">Tap here to see my current Healthy Sleep Checklist.
 								</a>
 				</div>
 				<form class="form-horizontal" name="checklistForm" role="form" ng-submit="setChecklist()">
@@ -33,7 +33,7 @@
 										</div>
 
 										<div class="checklist-textarea">
-												<textarea placeholder="How can I improve?" class="form-control" rows="3" name="plan_sleeptime_text" ng-model="plan_sleeptime_text" ng-show="plan_sleeptime == 1">{{plan_sleeptime_text}}</textarea>
+												<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="plan_sleeptime_text" ng-model="plan_sleeptime_text" ng-show="plan_sleeptime == 1">{{plan_sleeptime_text}}</textarea>
 										</div>
 								</div>
 						</div>
@@ -53,10 +53,9 @@
 																<span class="tasks-list-desc">{{sel.text}}</span>
 														</div>
 												</label>
-										</li>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="room_temperature_text" ng-model="room_temperature_text" ng-show="room_temperature == 1">{{room_temperature_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="room_temperature_text" ng-model="room_temperature_text" ng-show="room_temperature == 1">{{room_temperature_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -78,7 +77,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="bedroom_darkness_text" ng-model="bedroom_darkness_text" ng-show="bedroom_darkness == 1">{{bedroom_darkness_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="bedroom_darkness_text" ng-model="bedroom_darkness_text" ng-show="bedroom_darkness == 1">{{bedroom_darkness_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -100,7 +99,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="room_quiet_text" ng-model="room_quiet_text" ng-show="room_quiet == 1">{{room_quiet_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="room_quiet_text" ng-model="room_quiet_text" ng-show="room_quiet == 1">{{room_quiet_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -121,7 +120,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="bedroom_only_text" ng-model="bedroom_only_text" ng-show="bedroom_only == 1">{{bedroom_only_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="bedroom_only_text" ng-model="bedroom_only_text" ng-show="bedroom_only == 1">{{bedroom_only_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -143,7 +142,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="regulate_waketimes_text" ng-model="regulate_waketimes_text" ng-show="regulate_waketimes == 1">{{regulate_waketimes_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="regulate_waketimes_text" ng-model="regulate_waketimes_text" ng-show="regulate_waketimes == 1">{{regulate_waketimes_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -164,7 +163,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="stop_caffeine_text" ng-model="stop_caffeine_text" ng-show="stop_caffeine == 1">{{stop_caffeine_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="stop_caffeine_text" ng-model="stop_caffeine_text" ng-show="stop_caffeine == 1">{{stop_caffeine_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -185,7 +184,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="exercise_routine_text" ng-model="exercise_routine_text" ng-show="exercise_routine == 1">{{exercise_routine_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="exercise_routine_text" ng-model="exercise_routine_text" ng-show="exercise_routine == 1">{{exercise_routine_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -206,7 +205,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="no_alcohol_text" ng-model="no_alcohol_text" ng-show="no_alcohol == 1">{{no_alcohol_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="no_alcohol_text" ng-model="no_alcohol_text" ng-show="no_alcohol == 1">{{no_alcohol_text}}</textarea>
 								</div>
 						</div>
 				</div>
@@ -238,7 +237,7 @@
 										</label>
 								</div>
 								<div class="checklist-textarea">
-										<textarea placeholder="How can I improve?" class="form-control" rows="3" name="get_out_bed_text" ng-model="get_out_bed_text" ng-show="get_out_bed == 1">{{get_out_bed_text}}</textarea>
+										<textarea placeholder="How can I improve?" class="form-control width-fix" rows="3" name="get_out_bed_text" ng-model="get_out_bed_text" ng-show="get_out_bed == 1">{{get_out_bed_text}}</textarea>
 								</div>
 							</div><p>Repeat the above steps as needed throughout my sleep period. Implementing these steps might make me sleepy the next day. THAT IS EXPECTED -- and the increased sleepiness will help me sleep the following night.</p>
 
@@ -246,7 +245,9 @@
 				<div class="form-actions">
 						<div ng-show="error" class="alert alert-danger">{{error}}</div>
 						<!-- <div ng-show="message" class="alert alert-info">{{message}}</div> -->
-						<button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;">Save Action Plan<span class="glyphicon glyphicon-floppy-save"></span></button>
+						<!-- <button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;" ng-show="!$root.asGuest">Save Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button> -->
+						<button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="padding-bottom:35px;">Save Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button>
+
 				</div>
 		</form>
 

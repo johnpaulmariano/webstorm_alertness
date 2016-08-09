@@ -12,7 +12,7 @@
 
 <div ng-controller="LoginController" style="height:583px;">
     <div class="row" style="margin-top: 54px;padding-right: 10px;padding-left: 10px;">
-        <div class="col-lg-6" style="margin-bottom:5px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showLogin()">Sign In</button></div>
+        <div class="col-lg-6" style="margin-bottom:5px;"><button type="button" class="btn btn-primary btn-lg btn-block login-full" ng-click="showLogin()">Sign In</button></div>
 				<div class="row glass-bg-login"  class="loginForm" ng-show="isShowLogin">
 						<form name="loginForm" ng-submit="login()" role="form" id="loginForm" style="margin-left:25px; margin-right:25px;">
 								<div class="form-group">
@@ -37,12 +37,12 @@
 								<div class="form-actions" style="margin-top:25px;">
 										<div ng-show="loginError" class="alert alert-danger">{{loginError}}</div>
 										<div ng-show="loginMessage" class="alert alert-info">{{loginMessage}}</div>
-										<button type="submit" ng-disabled="loginForm.$invalid || dataLoading" class="btn btn-primary btn-lg btn-block">Login</button>
+										<button type="submit" ng-disabled="loginForm.$invalid || dataLoading" class="btn btn-primary btn-lg btn-block login-full">Login</button>
 										<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 								</div>
 						</form>
 				</div>
-        <div class="col-lg-6" style="margin-bottom:5px; margin-top:5px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showRegister()">New User</button></div>
+        <div class="col-lg-6" style="margin-bottom:5px; margin-top:5px;"><button type="button" class="btn btn-primary btn-lg btn-block login-full" ng-click="showRegister()">New User</button></div>
 				<div class="row  glass-bg-login" class="registerForm" ng-show="isShowRegister">
 						<div ng-show="error" class="alert alert-danger">{{error}}</div>
 						<form name="registerForm" ng-submit="register()" role="form" id="registerForm" style="margin-left:25px; margin-right:25px;">
@@ -74,12 +74,12 @@
 								<div class="form-actions" style="margin-top:25px;">
 										<div ng-show="registerError" class="alert alert-danger">{{registerError}}</div>
 										<div ng-show="registerMessage" class="alert alert-info">{{registerMessage}}</div>
-										<button type="submit" ng-disabled="registerForm.$invalid || dataLoading || password != password2" class="btn btn-primary btn-lg btn-block">Register</button>
+										<button type="submit" ng-disabled="registerForm.$invalid || dataLoading || password != password2" class="btn btn-primary btn-lg btn-block login-full">Register</button>
 										<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 								</div>
 						</form>
 				</div>
-  		<div class="col-lg-6" id="asGuestDiv" ng-click="loginAsGuest()" style="margin-bottom:5px; margin-top:5px;"><button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showRegister()">Continue as a Guest*</button><div id="as-guest-disclaimer">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div></div>
+  		<div class="col-lg-6" id="asGuestDiv" ng-click="loginAsGuest()" style="margin-bottom:5px; margin-top:5px;"><button type="button" class="btn btn-primary btn-lg btn-block login-full" ng-click="showRegister()">Continue as a Guest*</button><div id="as-guest-disclaimer">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div></div>
 
     </div>
 

@@ -128,7 +128,8 @@ atoAlertnessControllers.controller('TestController', ['$window', '$rootScope', '
                     sleepWakeSchedule:paddingThreeDays(sleepWakeSchedule),
                     caffeineDoses:caffeineDoses,
                     caffeineTimes:caffeineTimes,
-                    numDays:numDays
+                    numDays:numDays,
+                    statistic: 1
                 },
                 /*rawData: {
                  "sleeps": [

@@ -18,6 +18,7 @@ myApp.value('DEBUG_MODE', false);
 myApp.value('PREDICTION_DATA_EXPIRATION', 3 * 24 * 60 * 60 * 1000 );// 3 days
 //myApp.value('PREDICTION_DATA_EXPIRATION', 1 * 60 * 1000 );
 myApp.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertness/svc/');
+myApp.value("PREDICTION_STATISTIC", 1); //  1 - Mean RT, 2 - Mean Speed, 3 - Lapses
 
 myApp.config(function (localStorageServiceProvider) {
     localStorageServiceProvider

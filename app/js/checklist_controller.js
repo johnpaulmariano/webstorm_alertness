@@ -91,7 +91,7 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
                 return {
                     ok: false,
                     postData: null,
-                    message: 'You completed ' + count + ' of ' + questions.length + ' checklist items.  Please go back and select ALL 10 items.',
+                    message: 'You completed ' + count + ' of ' + questions.length + ' checklist items.  Please go back and select all 10 items.',
                 };
             }
 

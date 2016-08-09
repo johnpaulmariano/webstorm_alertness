@@ -1,8 +1,8 @@
 /**
  * Created by trieutran on 7/1/16.
  */
-atoAlertnessControllers.controller('MeqController', ['$window', '$scope', '$location', 'MeqService',
-    function($window, $scope, $location, MeqService) {
+atoAlertnessControllers.controller('MeqController', ['$document', '$window', '$scope', '$location', 'MeqService',
+    function($document, $window, $scope, $location, MeqService) {
         $scope.data = {};
         $scope.message = "";
         $scope.showForm = true;
@@ -14,9 +14,10 @@ atoAlertnessControllers.controller('MeqController', ['$window', '$scope', '$loca
         }
 
         MeqService.getData(function(response){
-            if(response.success == true) {
+            console.log(response);
+            if(response.success == "true") {
                 angular.forEach(response.data, function(v, k){
-                    $scope.data[k] = v;
+                    $scope.data[k] = parseInt(v);
                 });
             }
         });
@@ -57,7 +58,7 @@ atoAlertnessControllers.controller('MeqController', ['$window', '$scope', '$loca
             var isValid = true;
             //validation
             for(var i = 1; i < 20; i++) {
-                if(!$scope.data["meq_" + i]) {
+                if($scope.data["meq_" + i] == null) {
                     isValid = false;
                     $scope.message = "You did not answer one or more MEQ questions.  Please go back and answer ALL 19 questions before scoring your MEQ";
                     break;
@@ -77,5 +78,11 @@ atoAlertnessControllers.controller('MeqController', ['$window', '$scope', '$loca
             }
 
         };
+
+        $scope.$watch('showForm', function(value){
+            if(value == false) {
+                $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
+            }
+        });
     }
 ]);

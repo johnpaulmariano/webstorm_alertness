@@ -21,6 +21,7 @@ html {
 
     background-color: #73BB43!important;
 }
+
 body {
 font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
 height: 100%;
@@ -316,7 +317,7 @@ border-radius: 12px;
   display: block;
 }
 .checklist-textarea {
-  margin: 0 10px 10px 10px;
+  margin: 10px 0;
 }
 .tasks-list-desc {
   color:#ffffff;
@@ -381,7 +382,7 @@ margin-right: 5px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 5px;
   background: linear-gradient(#74BC44, rgba(112, 183, 66, 0.55));
-  max-width: 290px;
+  max-width: 90%;
   margin: 0 auto;
   margin-bottom: 5px;
   margin-top: 10px;
@@ -445,25 +446,49 @@ h5 {
 }
 @media (min-width:767px){
 
-#Image2,#Image3,#Image4,#Image5,#Image6,#Image7,#Image8, #dashboard {
+#Image1,#Image2,#Image3,#Image4,#Image5,#Image6,#Image7,#Image8, #dashboard {
 		display:none;
 
+}}
+@media (min-width: 767px){
+.navbar-toggle {
+    display: none;
 }
+.nav>li {
+  border-bottom: none!important;
+}
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
 /*.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav > li > a:focus {
   color: #143214;
   box-shadow: 1px 2px rgba(0, 0, 0, 0.22);
 }*/
-#navbar {
-	margin-top:30px;
-}
 .container-fluid{
   min-height: 80px!important;
 }
 }
-
-@media (min-width:767px) and (max-width:1298px) {
+@media (max-width:327px) {
+.br-item {
+  line-height: 1.4;
+}
+.br-menu {
+  min-height: 50px;
+}
+}
+@media (min-width:320px) and (max-width:374px) {
+.br-item2 {
+  line-height: 1.4;
+}
+.br-menu2 {
+  min-height: 50px;
+}
+}
+@media (min-width:767px) and (max-width:1347px) {
 .navText {
-	/*font-size:12px;*/
+	font-size:12px;
 }
 #navbar {
 	margin-top:10px;
@@ -471,9 +496,6 @@ h5 {
 .nav.navbar-nav {
 	width:70%;
 }
-/*#navMargin {
-	margin-left:210px;
-}*/
 .navbar-nav>li {
   padding: 0px!important;
   font-size: 14px;
@@ -546,6 +568,10 @@ h5 {
 }
 div > label >div {
   padding-left: 30px;
+}
+.nobr {
+  white-space: nowrap;
+  font-size: 13px;
 }
 input[type=radio] {
   position: absolute;
@@ -669,15 +695,25 @@ ol.lower-alpha
     margin-top: -65px;
     margin-bottom: -25px;
 }
-@media (min-width:600px){
+@media (min-width:767px){
 .header-image {
 	display:none;
 }
 .nav>li {
   /* border: none;*/
   background-color: rgba(110, 179, 64, 0);
-  font-size: 15px;
   color: #FFFAA7;
+  padding-top: 30px;
+
+}
+}
+@media (min-width:1343px){
+.nav>li {
+  /* border: none;*/
+  background-color: rgba(110, 179, 64, 0);
+  font-size: 13px;
+  color: #FFFAA7;
+  padding-top: 30px;
 
 }
 }
@@ -1050,4 +1086,10 @@ div > div.col-xs-4 {
 }
 .no-pad {
   padding:0px!important;
+}
+.login-full {
+  max-width: none;
+}
+.width-fix {
+  width: 90%!important;
 }

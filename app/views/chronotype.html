@@ -8,7 +8,6 @@
                   <div class="mid-wrapper">
                     <li class="glass-bg-q"><span class="q-color">1.</span> In general, how is your energy level in the
                         <strong>morning?</strong></li>
-                    </label>
                     <div class="radio-list  btn-primary" ng-repeat="sel in chronoMorning">
                         <label class="tasks-list-item"><input type="radio" name="optionsMorning" ng-model="$parent.chronoMorningSel" value="{{sel.value}}" ng-checked="sel.isChecked" class="tasks-list-mark">
                             <div><span class="tasks-list-desc">
@@ -39,7 +38,8 @@
 
                     <!-- <div id="as-guest-disclaimer" ng-show="$root.asGuest">* Guest Profiles are temporarily saved in your browser's cookies and are not permanent.</div> -->
                 </div>
-            </div>
-        </form>
+                </div>
+            </form>
+
     </div>
 </div>

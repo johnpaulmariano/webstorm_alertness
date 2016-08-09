@@ -20,10 +20,11 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                     chart: {
                         type: 'spline',
                         width: 2000,
-                        marginTop: 50
+                        marginTop: 10
                     },
                     title: {
-                        text: null
+                        text: 'What\'s My Charge?',
+                        x:'165'
                     },
                     exporting: {
                         enabled: false
@@ -35,31 +36,42 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         },
                         plotBands: $scope.data.plotBands,
                         plotLines: $scope.data.plotLines,
-                        tickInterval: 24 * 60 * 60 * 1000,
-                        minorTickInterval: 12 * 60 * 60 * 1000,
+                        tickInterval: 24 * 60 * 60 * 1000,  // 1 day
+                        minorTickInterval: 6 * 60 * 60 * 1000, // quarter of  day
                     },
                     yAxis: {
                         title: {
-                            text: 'Response Speed'
+                            text: 'Response Time (ms)',
+                            x:-10,
+                            style: {
+                              fontSize:'22px'
+                            }
                         },
-                        max: 6,
-                        min: 2,
+                        reversed: true,
+                        max: 350,
+                        min: 150,
                         //minorGridLineColor: 'rgba(159, 160, 158, 0.5)',
                         minorTickInterval: 0.5,
                         plotBands: [
-                            {
+                            /*{
                                 from: 4,
                                 to: 5,
                                 color: 'rgba(132, 185, 97, 0.3)',
-                            }
+                            }*/
                         ]
                     },
                     tooltip: {
                         dateTimeLabelFormats: {
                             minute: '%A, %b %e, %Y, %H:%M'
                         },
-                        valueSuffix: ' m/s',
-                        crosshairs: true
+                        valueSuffix: ' ms',
+                        crosshairs: true,
+                        backgroundColor:'#0c2911',
+                        borderRadius: '10',
+                        style: {
+                          padding: 10,
+                          fontWeight: 'bold'
+                        }
                     },
                     plotOptions: {
                         spline: {
@@ -75,11 +87,12 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         }
                     },
                     series: [{
-                        name: 'Response Speed',
+                        name: 'Response Time',
                         data: $scope.data.series,
                         pointStart: $scope.data.begTS,
                         pointInterval: 15 * 60 * 1000,
-                        showInLegend: false
+                        showInLegend: false,
+                        shadow: true
                     }]
                 });
             });
@@ -97,16 +110,22 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         $scope.transformData = function(r) {
             var chartData = {};
             //console.log($scope.requestData);
-            //console.log(r);
+            console.log(r);
             if(r.data.length > 0) {
                 //r = $scope.filterData(r);
 
                 var ts = new Date(r.time);
-                //var sleepStartTime = $scope.requestData.sleepStartTime % 24;
                 var begTime = Date.UTC(ts.getFullYear(), ts.getMonth(), ts.getDate() - r.numDays, 0, 0, 0, 0);
-                //console.log(begTime);
-                //var begTS = begTime + sleepStartTime * 60 * 60 * 1000;
-                chartData.begTS = begTime;
+                var coffeShift = 0;
+
+                if($scope.requestData.sleepStartTime >= 24){
+                    chartData.begTS = begTime;
+                    coffeShift = 24;
+                }
+                else {
+                    chartData.begTS = begTime + $scope.requestData.sleepStartTime * 60 * 60 * 1000;
+                }
+
 
                 //calculate sleep periods
                 var sleepPeriods = [];
@@ -114,25 +133,32 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
 
                 for(var i = 0; i < $scope.requestData.sleepWakeSchedule.length; i++) {
                     //
+                    //console.log(accumTime);
+                    //console.log(i);
                     if(i == 0) {
                         var sleep = {};
-                        sleep.color = 'rgba(68, 170, 213, 0.5)';
+                        sleep.color = '#ffb225';
+
                         sleep.from = begTime + $scope.requestData.sleepStartTime * 60 * 60 * 1000;
-                        sleep.to = begTime + ($scope.requestData.sleepStartTime + $scope.requestData.sleepWakeSchedule[i])* 60 * 60 * 1000;
+                        sleep.to = sleep.from + $scope.requestData.sleepWakeSchedule[i]* 60 * 60 * 1000;
                         accumTime += $scope.requestData.sleepStartTime;
+
                         sleepPeriods.push(sleep);
                     }
                     else {
-                        accumTime += $scope.requestData.sleepWakeSchedule[i];
+                        accumTime += $scope.requestData.sleepWakeSchedule[i-1];
 
                         if(i % 2 == 0) {
                             var sleep = {};
-                            sleep.color = 'rgba(68, 170, 213, 0.5)';
+                            sleep.color = '#ffb225';
                             sleep.from = begTime + accumTime * 60 * 60 * 1000;
-                            sleep.to = begTime + (accumTime + $scope.requestData.sleepWakeSchedule[i])* 60 * 60 * 1000;
+                            sleep.to = sleep.from + $scope.requestData.sleepWakeSchedule[i]* 60 * 60 * 1000;
+                            //console.log((accumTime + $scope.requestData.sleepWakeSchedule[i]));
                             //accumTime += $scope.requestData.sleepWakeSchedule[i];
                             sleepPeriods.push(sleep);
                         }
+
+
                     }
                 }
                 chartData.plotBands = sleepPeriods;
@@ -142,19 +168,24 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                 for(var i = 0; i < $scope.requestData.caffeineTimes.length; i++) {
                     var c = {
                         color: 'rgba(230,8,18,0.7)',
-                        dashStyle: 'solid',
+                        dashStyle: 'dash',
                         label: {
-                            text: "Caffeine drink",
+                            text: "Caffeine Event",
                             style: {
-                                color: 'rgba(230,8,18,0.7)',
-                                'margin-bottom': '20px'
+                                color: '#FFFFFF',
+                                fontSize:'14px',
+                                padding: 10
                             },
                             verticalAlign: 'bottom',
-                            textAlign: 'right'
+                            textAlign: 'right',
+                            y: -10,
+                            x: 10
+
                         },
-                        value: begTime + $scope.requestData.caffeineTimes[i] * 60 * 60 * 1000,
-                        width: 2,
-                        zIndex: 12
+                        value: begTime + ($scope.requestData.caffeineTimes[i] - coffeShift) * 60 * 60 * 1000,
+                        width: 4,
+                        height: 4,
+                        zIndex: 1
                     };
 
                     caffeine.push(c);
@@ -162,8 +193,8 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                 chartData.plotLines = caffeine;
 
                 chartData.series = [];
-                for(var j = 0; j < r.data.length; j++) {
-                    if(r.data[j].value <= 2) {
+                for(var j = 1; j < r.data.length; j++) {
+                    /*if(r.data[j].value <= 2) {
                         chartData.series.push(2);
                     }
                     else if(r.data[j].value >= 6) {
@@ -171,7 +202,8 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                     }
                     else {
                         chartData.series.push(parseFloat(r.data[j].value.toPrecision(4)));
-                    }
+                    }*/
+                    chartData.series.push(parseFloat(r.data[j].value.toPrecision(4)));
                 }
             }
             //console.log(chartData);

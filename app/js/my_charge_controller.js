@@ -480,8 +480,6 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                 ok = true;
             }
             else {
-                //console.log($scope.sleepDays);
-                //console.log($scope.errorDays);
                 alert("Entry Error in  " + ($scope.sleepDays[$scope.errorDays[0]].toDateString()) + "!!!");
             }
 

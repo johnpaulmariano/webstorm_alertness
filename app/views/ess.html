@@ -282,8 +282,7 @@
                             </div>
                         </li>
                     </ul></div>
-
-            <div ng-show="message" class="alert alert-danger">{{message}}</div>
+              <div ng-show="message" class="alert alert-danger">{{message}}</div>
             <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-bottom:20px;color:#FFF;" >Click here to score ESS<span class="glyphicon glyphicon-floppy-save"></span></button>
 
         </form>
@@ -294,15 +293,60 @@
           <p class="alert alert-success center-block text-center"><strong>Your ESS score is: {{score}}</strong></p>
         <p>Your ESS score is calculated by adding up your responses to all 8 items. ESS scores range 0 to 24.</p>
         <p><strong>ESS scores between 0 and 10:</strong> Scores in this range suggest that you do not have a problem with daytime sleepiness.</p>
-        <ul class="glass-bg custom-bullet">
-        <li><b>If you are getting 7-8 hours of sleep per night:</b> you are doing great. Keep getting at least 7-8 hours of sleep per night to maintain optimal alertness and mental acuity.</li>
-        <li><b>If you are getting less than 7-8 hours of sleep per night:</b> Even though your score on the ESS suggests that daytime sleepiness is not a problem for you, your mood, energy and physical health will benefit from increasing your nightly sleep toward the scientifically recommended 7-8 hours per night. Try increasing your sleep by 20 minutes, and see if some aspects of your well-being improve.</li>
-        </ul>
+        <div class="panel-group">
+            <div class="panel panel-default">
+              <div>
+                <h4 class="panel-title fatigue-header">
+                  <a data-toggle="collapse" ng-href="\#collapse1">If you are getting 7-8 hours of sleep per night: (Click Here)<span class="glyphicon glyphicon-chevron-right"></span></a>
+                </h4>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse">
+                <div class="panel-body">You are doing great. Keep getting at least 7-8 hours of sleep per night to maintain optimal alertness and mental acuity.</div>
+                </div>
+
+            </div>
+
+            <div class="panel panel-default">
+              <div>
+                <h4 class="panel-title fatigue-header">
+                  <a data-toggle="collapse" ng-href="\#collapse2">If you are getting less than 7-8 hours of sleep per night: (Click Here)<span class="glyphicon glyphicon-chevron-right"></span></a>
+                </h4>
+              </div>
+              <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body">Even though your score on the ESS suggests that daytime sleepiness is not a problem for you, your mood, energy and physical health will benefit from increasing your nightly sleep toward the scientifically recommended 7-8 hours per night. Try increasing your sleep by 20 minutes, and see if some aspects of your well-being improve.</div>
+                </div>
+
+            </div>
+
+          </div>
         <p><strong>ESS scores between 11 and 24:</strong> Scores in this range suggest that you are having difficulties staying awake under conditions when most other people can stay awake.</p>
-        <ul class="glass-bg custom-bullet">
-        <li><b>If you are not getting at least 7 hours of sleep per night:</b> increase your nightly sleep amount. The closer you can get to the scientifically recommended 7-8 hours per night, the more benefit you will obtain. Can you commit to obtaining 20-30 minutes more sleep per night for a trial period of a week or so? Give it a try and see whether you feel better and perform better.</li>
-        <li><b>If you are getting at least 7 hours of sleep:</b> something may be disrupting your sleep without your awareness. Go through the Healthy Sleep Checklist again to see if you overlooked something (for example, leaving the TV on while you are trying to sleep). You can also talk to your healthcare provider.</li>
-        </ul>
+        <div class="panel-group">
+            <div class="panel panel-default">
+              <div>
+                <h4 class="panel-title fatigue-header">
+                  <a data-toggle="collapse" ng-href="\#collapse3">If you are getting at least 7 hours of sleep: (Click Here)<span class="glyphicon glyphicon-chevron-right"></span></a>
+                </h4>
+              </div>
+              <div id="collapse3" class="panel-collapse collapse">
+                <div class="panel-body">Something may be disrupting your sleep without your awareness. Go through the Healthy Sleep Checklist again to see if you overlooked something (for example, leaving the TV on while you are trying to sleep). You can also talk to your healthcare provider.</div>
+                </div>
+
+            </div>
+
+            <div class="panel panel-default">
+              <div>
+                <h4 class="panel-title fatigue-header">
+                  <a data-toggle="collapse" ng-href="\#collapse4">If you are not getting at least 7 hours of sleep per night: (Click Here)<span class="glyphicon glyphicon-chevron-right"></span></a>
+                </h4>
+              </div>
+              <div id="collapse4" class="panel-collapse collapse">
+                <div class="panel-body">Increase your nightly sleep amount. The closer you can get to the scientifically recommended 7-8 hours per night, the more benefit you will obtain. Can you commit to obtaining 20-30 minutes more sleep per night for a trial period of a week or so? Give it a try and see whether you feel better and perform better.</div>
+                </div>
+
+            </div>
+
+          </div>
+
         <a href="#amisleepy" class="fatigue-header" style="color:#fff;"><span class="glyphicon glyphicon-chevron-left"></span>Back to "Am I Sleepy?" page</a>
     </div>
 </div>

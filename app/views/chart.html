@@ -1,7 +1,12 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container"  style="overflow: auto;" ng-controller="ChartController">
-    <h4>Beatiful title here</h4>
-    <div style="width: 2000px;">
+  <h4 class="row text-center header-bg">What's My Charge?</h4>
+  <ul class="custom-bullet glass-bg">
+      <li>Click a point on the line to see your current reaction time.</li>
+      <li>Caffeine events are marked in red.</li>
+      <li>Scroll left and right.</li>
+    </ul>
+    <div style="overflow:auto;">
         <alertness-Chart title="What's My Charge" data="chartData"></alertness-Chart>
     </div>
 

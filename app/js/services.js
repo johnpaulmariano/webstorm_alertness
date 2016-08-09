@@ -531,8 +531,8 @@ myServices.factory('ResetPasswordService', ['$http', 'BASE_API_URL', '$rootScope
     }
 ]);
 
-myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStorageService', '$rootScope',
-    function($http, BASE_API_URL, localStorageService, $rootScope){
+myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStorageService', '$rootScope', 'PREDICTION_STATISTIC',
+    function($http, BASE_API_URL, localStorageService, $rootScope, PREDICTION_STATISTIC){
         var service = {};
         var storageKey = 'PredictionData';
         var localExisted = true;
@@ -553,6 +553,8 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
 
             if(!localExisted || renew){
                 console.log('renew');
+                //console.log(data);
+                data.statistic = PREDICTION_STATISTIC;
                 $http.put(BASE_API_URL + 'data/prediction',data)
                     .success(function(response){
                         var r = {

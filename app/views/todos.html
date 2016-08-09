@@ -101,7 +101,7 @@
     </div>
     <!--
     <div ng-show="exercises_and_caffeine_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="exercises_and_caffeine" id="exercises_and_caffeine" value="1" ng_model="exercises_and_caffeine_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                  <div  class="todos-text {{exercises_and_caffeine_check?'strike-though':''}}">Avoid exercise and caffeine within 2-3 hours of bedtime as these energize your body and mind and make falling asleep and staying asleep difficult.</div>
@@ -111,7 +111,7 @@
 
 
     <div ng-show="alcohol_nicotine_meals_text">
-    <label class="tasks-list-item reset-pw glass-bg">
+    <label class="tasks-list-item reset-pw glass-bg" style="height:auto;">
     			<input type="checkbox" name="alcohol_nicotine_meals" id="alcohol_nicotine_meals" value="1" ng_model="alcohol_nicotine_meals_check" class="todos-check tasks-list-cb">
                 <span class="tasks-list-mark" style="float:left; margin-top:5px;"></span>
                  <div class="todos-text {{alcohol_nicotine_meals_check?'strike-though':''}}">Avoid alcohol, nicotine and heavy meals before bedtime, as alcohol and nicotine disrupt your sleep patterns, and heavy meals can cause indigestion and discomfort.</div>
@@ -123,8 +123,8 @@
     <div class="form-actions" style="margin-top:10px;">
         <div ng-show="error" class="alert alert-danger">{{error}}</div>
         <!-- <div ng-show="message" class="alert alert-info">{{message}}</div> -->
-        <button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;" ng-show="!$root.asGuest">Save Healthy Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button>
-        <button type="submit" class="btn btn-primary btn-lg btn-block form-control"  style="padding-bottom:35px;" ng-show="$root.asGuest">Save Healthy Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button>
+        <!-- <button type="submit" class="btn btn-primary btn-lg btn-block form-control" style="margin-top:25px; padding-bottom:35px;" ng-show="!$root.asGuest">Save Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button> -->
+        <button type="submit" class="btn btn-primary btn-lg btn-block form-control"  style="padding-bottom:35px;">Save Sleep Checklist<span class="glyphicon glyphicon-floppy-save"></span></button>
     </div>
     </form>
   <a href="#checklist" class="fatigue-header" style="color:#fff; margin-bottom:10px;"><span class="glyphicon glyphicon-chevron-left"></span>Back to Checklist</a>

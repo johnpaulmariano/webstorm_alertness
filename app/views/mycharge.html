@@ -9,14 +9,15 @@
         <button type="button" class="btn btn-mycharge btn-sm col-md-2" ng-click="addDay()">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             Day</button>
-        <button type="button" class="btn btn-mycharge btn-sm col-md-2" style="color:#F2ED8F;" ng-click="reset()">Reset</button>
         <button type="button" class="btn btn-mycharge btn-sm col-md-2 mycharge-last" style="color:#F2ED8F;" ng-click="save()">Submit</button>
-        <div class="col-md-4 input-msg" ng-if="message">{{message}}</div>
+
     </div>
 </div>
 <div ng-include="'views/navbar.html'"></div>
-<div class="container" style="margin-top:60px;">
+<div class="container" style="margin-top:38px;">
     <h4 class="row text-center header-bg" style="margin-top:0; margin-bottom:0;">What's My Charge Input</h4>
+    <div class="col-md-12 input-msg" ng-if="message" style="padding-top:10px;">{{message}}</div>
+    <button type="button" class="btn btn-mycharge btn-sm col-md-2" ng-click="reset()" style="background:none; padding-top:0;"><span class="glyphicon glyphicon-exclamation-sign" style="top:3px; color:rgb(255, 178, 37);" aria-hidden="true"></span> <span style="color:rgb(255, 178, 37);">Reset</span> <span style="font-size:10px;">Click to clear all values and reset to defaults<span></span></button>
     <div id="mycharge_list" style="position: relative; top: 10px;">
         <div class="glass-bg row" ng-repeat="(idx, day) in sleeps">
             <h4 class="fatigue-header" style="padding:5px; margin-top:0px;" id="day_title_{{idx}}">
@@ -60,31 +61,31 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Day:</label>
+                    <label style="margin-bottom:5px;">Day:</label>
                     <select class="form-control" name="currentDay" ng-options="d as d.txt for d in dayDropdowns track by d.val" ng-model="currentDay" required></select>
                     <p ng-show="sleepForm.currentDay.$invalid && !sleepForm.currentDay.$pristine" class="help-block">You name is required.</p>
                 </div>
-                <div class="mycharge-start-header">Start Time</div>
+                <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">Start Time</div>
                 <div class="form-group">
-                    <label>Hour:</label>
+                    <label style="margin-bottom:5px;">Hour:</label>
                     <select class="form-control" ng-options="n as n.txt for n in dropdowns.startHours track by n.val" ng-model="dropdowns.selStartHour" required></select>
                 </div>
                 <div class="form-group">
-                    <label>Minute:</label>
+                    <label style="margin-bottom:5px;">Minute:</label>
                     <select class="form-control" ng-options="m as m.txt for m in dropdowns.startMins track by m.val" ng-model="dropdowns.selStartMin"></select>
                 </div>
-                <div class="mycharge-start-header">Sleep Duration</div>
+                <div class="mycharge-start-header"  style="margin-top:10px; color:#FFFAA7!important;">Sleep Duration</div>
                 <div class="form-group">
-                    <label>Hour:</label>
+                    <label style="margin-bottom:5px;">Hour:</label>
                     <select class="form-control" ng-options="i as i.txt for i in dropdowns.durationHours track by i.val" ng-model="dropdowns.selDurationHour"></select>
                 </div>
                 <div class="form-group">
-                    <label>Minute:</label>
+                    <label style="margin-bottom:5px;">Minute:</label>
                     <select class="form-control" ng-options="k as k.txt for k in dropdowns.durationMins track by k.val" ng-model="dropdowns.selDurationMin"></select>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" type="submit" ng-disabled="sleepForm.$invalid">Add</button>
+                <button class="btn btn-primary" type="submit"  style="margin-top:5px;" ng-disabled="sleepForm.$invalid">Add</button>
                 <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
             </div>
         </form>
@@ -100,30 +101,31 @@
             <div class="modal-body">
                 <div class="mycharge-day-input">
                     <div class="form-group">
-                        <label>Day:</label>
+                        <label style="margin-bottom:5px;">Day:</label>
                         <select class="form-control" name="currentDay" ng-options="d as d.txt for d in dayDropdowns track by d.val" ng-model="currentDay" required></select>
                     </div>
                     <div class="form-group">
-                        <label>Caffeine Source:</label>
+                        <label style="margin-bottom:5px;">Caffeine Source:</label>
                         <select class="form-control" ng-options="type as type.name for type in dropdowns.caffeineItems track by type.id" ng-model="c.caffeineSource"></select>
                     </div>
                     <div class="form-group">
-                        <label>Quantity:</label>
+                        <label style="margin-bottom:5px;">Quantity:</label>
                         <select class="form-control" ng-options="k for k in dropdowns.quantity" ng-model="c.quantity"></select>
                     </div>
+                    <div class="mycharge-start-header"  style="margin-top:10px; color:#FFFAA7!important;">Event Time</div>
                     <div class="form-group">
-                        <label>Hour:</label>
+                        <label style="margin-bottom:5px;">Hour:</label>
                         <select class="form-control" ng-options="hour as hour.txt for hour in dropdowns.startHours track by hour.val" ng-model="c.hour"></select>
                     </div>
                     <div class="form-group">
-                        <label>Minute:</label>
+                        <label style="margin-bottom:5px;">Minute:</label>
                         <select class="form-control" ng-options="min as min.txt for min in dropdowns.startMins track by min.val" ng-model="c.minute"></select>
                     </div>
 
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" type="submit" ng-disabled="formDisabled">Add</button>
+                <button class="btn btn-primary" style="margin-top:5px;" type="submit" ng-disabled="formDisabled">Add</button>
                 <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
             </div>
         </form>

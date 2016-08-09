@@ -11,13 +11,13 @@ Highcharts.createElement('link', {
 }, null, document.getElementsByTagName('head')[0]);
 
 Highcharts.theme = {
-    colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee", "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+    colors: ["#FFFFFF", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee", "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
     chart: {
         backgroundColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                [0, '#2a2a2b'],
-                [1, '#3e3e40']
+                [0, '#0e2b11'],
+                [1, '#74bc44']
             ]
         },
         style: {
@@ -39,7 +39,7 @@ Highcharts.theme = {
         }
     },
     xAxis: {
-        gridLineColor: '#707073',
+        gridLineColor: '#fbec22',
         labels: {
             style: {
                 color: '#E0E0E3'
@@ -50,13 +50,11 @@ Highcharts.theme = {
         minorGridLineColor: '#505053',
         tickColor: '#707073',
         title: {
-            style: {
-                color: '#A0A0A3'
-            }
+            text: null,
         }
     },
     yAxis: {
-        gridLineColor: '#707073',
+        gridLineColor: '#fbec22',
         labels: {
             style: {
                 color: '#E0E0E3'
@@ -68,7 +66,7 @@ Highcharts.theme = {
         tickWidth: 1,
         title: {
             style: {
-                color: '#A0A0A3'
+                color: '#ffffff'
             }
         }
     },
