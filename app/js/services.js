@@ -793,3 +793,117 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
         return service;
     }
 ]);
+
+myServices.factory('CaffeineDataService', ['$http', '$rootScope', 'localStorageService',
+    function($http, $rootScope, localStorageService){
+
+        var service = {};
+        //var asGuest = $rootScope.asGuest;
+        var storageKey = 'CaffeineData';
+        var asGuest = true;
+
+        service.getData = function(callback) {
+            if(!asGuest) {
+                $http.get(BASE_API_URL + 'data/caffeine')
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                //var localData = localStorageService.get(storageKey);
+                var localData = [
+                    {
+                        tsStart:1470060000000
+                    }
+                ];
+                callback({success: true, data: localData});
+            }
+        };
+
+        service.setData = function(data, callback) {
+            console.log('set caffeine');
+            console.log(data);
+
+            if(!asGuest) {
+                $http.put(BASE_API_URL + 'data/caffeine', data)
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                localStorageService.set(storageKey, data);
+                callback({success: true});
+            }
+        };
+
+        return service;
+    }
+]);
+
+myServices.factory('SleepDataService', ['$http', '$rootScope', 'localStorageService',
+    function($http, $rootScope, localStorageService){
+
+        var service = {};
+        //var asGuest = $rootScope.asGuest;
+        var storageKey = 'SleepData';
+        var asGuest = true;
+
+        service.getData = function(callback) {
+            if(!asGuest) {
+                $http.get(BASE_API_URL + 'data/sleep')
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                //var localData = localStorageService.get(storageKey);
+                var localData = [
+                    {
+                        tsEnd:1472122800000,
+                        tsStart:1472094000000
+                    },
+                    {
+                        tsEnd: 1470135600000,
+                        tsStart:1470106800000
+                    },
+                    {
+                        tsEnd: 1470135600000 + 24 * 60 * 60 * 1000,
+                        tsStart:1470106800000 + 24 * 60 * 60 * 1000
+                    }
+                ];
+
+                callback({success: true, data: localData});
+            }
+        };
+
+        service.setData = function(data, callback) {
+            console.log('set sleep');
+            console.log(data);
+
+            if(!asGuest) {
+                $http.put(BASE_API_URL + 'data/sleep', data)
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                localStorageService.set(storageKey, data);
+                callback({success: true});
+            }
+        };
+
+        return service;
+    }
+]);

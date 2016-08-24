@@ -263,7 +263,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
                 //animation: $scope.animationsEnabled,
                 windowTemplateUrl: './templates/modal/window.html',
                 templateUrl: 'caffeineModal.html',
-                controller: 'CaffeineModelController',
+                controller: 'CaffeineModalController',
                 backdrop: false,
                 size: 'small',
                 resolve: {

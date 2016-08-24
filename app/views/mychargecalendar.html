@@ -1,0 +1,105 @@
+<div ng-include="'views/navbar.html'"></div>
+<div class="container" style="margin-top:38px;" ng-controller="MyChargeCalendarController as vm">
+    <h4 class="row text-center header-bg" style="margin-top:0; margin-bottom:0;">What's My Charge Input</h4>
+    <div class="col-md-12 input-msg" ng-if="message" style="padding-top:10px;">{{message}}</div>
+    <h2 class="text-center">{{ calendarTitle }}</h2>
+
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <div class="btn-group">
+                <button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView">Previous</button>
+                <button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today>Today</button>
+                <button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <mwl-calendar events="events"
+          view="calendarView"
+          view-title="calendarTitle"
+          view-date="viewDate"
+          on-event-click="eventClicked(calendarEvent)"
+          on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+          cell-is-open="isCellOpen"
+          day-view-start="06:00"
+          day-view-end="22:59"
+          day-view-split="30"
+          cell-modifier="modifyCell(calendarCell)">
+    </mwl-calendar>
+
+    <!-- sleep modal -->
+    <script type="text/ng-template" id="sleepModal.html">
+        <form name="sleepForm" ng-submit="ok()" novalidate>
+            <div class="modal-header">
+                <h3 class="modal-title">{{modalTitle}}</h3>
+            </div>
+            <div class="modal-body">
+                <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">Start Time</div>
+                <div class="form-group">
+                    <label style="margin-bottom:5px;">Starts at</label>
+                    <!--
+                    <select class="form-control" ng-options="n as n.txt for n in dropdowns.startHours track by n.val" ng-model="dropdowns.selStartHour" required></select>
+                    -->
+                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.startsAt" is-open="calEvent.startOpen" close-text="Close" >
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="toggle($event, 'startOpen', calEvent)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                    <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="true"></div>
+                </div>
+
+                <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">End Time</div>
+                <div class="form-group">
+                    <label style="margin-bottom:5px;">End at</label>
+                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.endsAt" is-open="calEvent.endOpen" close-text="Close" >
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="toggle($event, 'endOpen', calEvent)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                    <div uib-timepicker ng-model="calEvent.endsAt" hour-step="1" minute-step="5" show-meridian="true"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit"  style="margin-top:5px;" ng-disabled="sleepForm.$invalid">Add</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
+    </script>
+    <!-- end of sleep modal -->
+
+    <!-- caffeine modal -->
+    <script type="text/ng-template" id="caffeineModal.html">
+        <form name="caffeineForm" ng-submit="ok()" novalidate>
+            <div class="modal-header">
+                <h3 class="modal-title">{{modalTitle}}</h3>
+            </div>
+            <div class="modal-body">
+                <div class="mycharge-day-input">
+                    <div class="form-group">
+                        <label style="margin-bottom:5px;">Caffeine Source:</label>
+                        <select class="form-control" ng-options="type as type.name for type in caffeineItems track by type.id" ng-model="c.caffeineSource"></select>
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-bottom:5px;">Quantity:</label>
+                        <select class="form-control" ng-options="k for k in quantity" ng-model="c.quantity"></select>
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-bottom:5px;">Time:</label>
+                        <div uib-timepicker ng-model="c.startsAt" hour-step="1" minute-step="15" show-meridian="true"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" style="margin-top:5px;" type="submit" ng-disabled="formDisabled">Add</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
+
+    </script>
+    <!-- end of caffeine modal -->
+</div>

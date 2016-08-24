@@ -4,13 +4,14 @@ var myApp = angular.module('AtoAlertnessApp', [
     'ngRoute',
     'ngCookies',
     'LocalStorageModule',
-    'rzModule',
-    'ngRadialGauge',
+    //'rzModule',
+    //'ngRadialGauge',
     'ui.bootstrap.modal',
     'angularSpinner',
     'atoAlertnessControllers',
     'atoAlertnessServices',
-    'atoAlertnessChartModule'
+    'atoAlertnessChartModule',
+    'atoAlertnessMyChargeCalendarModule'
 ]);
 
 //defining constants
@@ -84,17 +85,21 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/chart', {
             templateUrl: 'views/chart.html'
         })
-        .when('/gauge', {
+        /*.when('/gauge', {
             controller: 'GaugeController',
             templateUrl: 'views/gauge.html'
         })
         .when('/gauge2', {
             controller: 'Gauge2Controller',
             templateUrl: 'views/gauge2.html'
-        })
+        })*/
         .when('/mycharge', {
             controller: 'MyChargeController',
             templateUrl: 'views/mycharge.html'
+        })
+        .when('/mychargecalendar', {
+            //controller: 'MyChargeCalendarController',
+            templateUrl: 'views/mychargecalendar.html'
         })
         .when('/howmuchcaffeine', {
             templateUrl: 'views/howmuchcaffeine.html'

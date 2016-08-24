@@ -1,7 +1,7 @@
 /**
  * Created by trieutran on 7/1/16.
  */
-atoAlertnessControllers.controller('CaffeineModelController', ['$scope', '$uibModalInstance', 'caffeine', 'dropdowns', 'dayDropdowns',
+atoAlertnessControllers.controller('CaffeineModalController', ['$scope', '$uibModalInstance', 'caffeine', 'dropdowns', 'dayDropdowns',
     function($scope, $uibModalInstance, caffeine, dropdowns, dayDropdowns) {
         $scope.dropdowns = dropdowns;
         $scope.caffeine = caffeine;

@@ -11,6 +11,8 @@
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
-    "angular-local-storage": "^0.2.7"
+    "angular-local-storage": "^0.2.7",
+    "moment": "^2.14.1",
+    "angular-bootstrap-calendar": "^0.23.0"
   }
 }
