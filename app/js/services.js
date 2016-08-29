@@ -585,6 +585,73 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
 myServices.factory('CaffeineService', ['$http', 'BASE_API_URL', '$rootScope',
     function($http, BASE_API_URL, $rootScope){
         var service = {};
+        var caffeineItems = [
+            {
+                id: 1,
+                name: "STARBUCKS COFFEE VENTI (20 oz.)",
+                value: "410"
+            },
+            {
+                id: 2,
+                name: "STARBUCKS COFFEE GRANDE (16 oz.)",
+                value: "330"
+            },
+            {
+                id: 3,
+                name: "STARBUCKS COFFEE TALL (12 oz.)",
+                value: "260"
+            },
+            {
+                id: 4,
+                name: "STARBUCKS COFFEE SHORT (8 oz.)",
+                value: "175"
+            },
+            {
+                id: 5,
+                name: "5-HOUR ENERGY SHOT REGULAR STRENGTH (1.93 oz.)",
+                value: "200"
+            },
+            {
+                id: 6,
+                name: "5-HOUR ENERGY SHOT EXTRA STRENGTH (1.93 oz.)",
+                value: "230"
+            },
+            {
+                id: 7,
+                name: "COCA-COLA 12-oz. CAN",
+                value: "34"
+            },
+            {
+                id:8,
+                name: "COCA-COLA 16-oz. BOTTLE",
+                value: "45"
+            },
+            {
+                id: 9,
+                name: "COCA-COLA 20-oz. BOTTLE",
+                value: "57"
+            },
+            {
+                id: 10,
+                name: "LIPTON TEA REGULAR BLACK TEA (8 oz.)",
+                value: "55"
+            },
+            {
+                id: 11,
+                name: "LIPTON TEA NATURAL ENERGY PREMIUM BLACK TEA (8 oz.)",
+                value: "75"
+            },
+            {
+                id: 12,
+                name: "LIPTON TEA PURE GREEN TEA (8 oz.)",
+                value: "35"
+            },
+            {
+                id: 13,
+                name: "LIPTON TEA COLD BREW TEA (8 oz.)",
+                value: "10"
+            }
+        ];
 
         service.getData = function(data, callback) {
             /*$http.get(BASE_API_URL + 'blah blah')
@@ -595,77 +662,21 @@ myServices.factory('CaffeineService', ['$http', 'BASE_API_URL', '$rootScope',
                     callback({success: false, message: 'Server connection error'});
                 });*/
 
-            var caffeineItems = [
-                {
-                    id: 1,
-                    name: "STARBUCKS COFFEE VENTI (20 oz.)",
-                    value: "410"
-                },
-                {
-                    id: 2,
-                    name: "STARBUCKS COFFEE GRANDE (16 oz.)",
-                    value: "330"
-                },
-                {
-                    id: 3,
-                    name: "STARBUCKS COFFEE TALL (12 oz.)",
-                    value: "260"
-                },
-                {
-                    id: 4,
-                    name: "STARBUCKS COFFEE SHORT (8 oz.)",
-                    value: "175"
-                },
-                {
-                    id: 5,
-                    name: "5-HOUR ENERGY SHOT REGULAR STRENGTH (1.93 oz.)",
-                    value: "200"
-                },
-                {
-                    id: 6,
-                    name: "5-HOUR ENERGY SHOT EXTRA STRENGTH (1.93 oz.)",
-                    value: "230"
-                },
-                {
-                    id: 7,
-                    name: "COCA-COLA 12-oz. CAN",
-                    value: "34"
-                },
-                {
-                    id:8,
-                    name: "COCA-COLA 16-oz. BOTTLE",
-                    value: "45"
-                },
-                {
-                    id: 9,
-                    name: "COCA-COLA 20-oz. BOTTLE",
-                    value: "57"
-                },
-                {
-                    id: 10,
-                    name: "LIPTON TEA REGULAR BLACK TEA (8 oz.)",
-                    value: "55"
-                },
-                {
-                    id: 11,
-                    name: "LIPTON TEA NATURAL ENERGY PREMIUM BLACK TEA (8 oz.)",
-                    value: "75"
-                },
-                {
-                    id: 12,
-                    name: "LIPTON TEA PURE GREEN TEA (8 oz.)",
-                    value: "35"
-                },
-                {
-                    id: 13,
-                    name: "LIPTON TEA COLD BREW TEA (8 oz.)",
-                    value: "10"
-                }
 
-            ];
 
             return caffeineItems;
         };
+
+        service.getItem = function(itemID, callback){
+            for(var i = 0; i < caffeineItems.length; i++)
+            {
+                if(caffeineItems[i].id == itemID) {
+                    return caffeineItems[i];
+                }
+            }
+
+            return caffeineItems[0];
+        }
 
         return service;
     }
@@ -794,7 +805,7 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
     }
 ]);
 
-myServices.factory('CaffeineDataService', ['$http', '$rootScope', 'localStorageService',
+/*myServices.factory('CaffeineDataService', ['$http', '$rootScope', 'localStorageService',
     function($http, $rootScope, localStorageService){
 
         var service = {};
@@ -844,9 +855,9 @@ myServices.factory('CaffeineDataService', ['$http', '$rootScope', 'localStorageS
 
         return service;
     }
-]);
+]);*/
 
-myServices.factory('SleepDataService', ['$http', '$rootScope', 'localStorageService',
+/*myServices.factory('SleepDataService', ['$http', '$rootScope', 'localStorageService',
     function($http, $rootScope, localStorageService){
 
         var service = {};
@@ -878,6 +889,9 @@ myServices.factory('SleepDataService', ['$http', '$rootScope', 'localStorageServ
                     {
                         tsEnd: 1470135600000 + 24 * 60 * 60 * 1000,
                         tsStart:1470106800000 + 24 * 60 * 60 * 1000
+                    },
+                    {
+                        tsStart:1470060000000
                     }
                 ];
 
@@ -891,6 +905,88 @@ myServices.factory('SleepDataService', ['$http', '$rootScope', 'localStorageServ
 
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/sleep', data)
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                localStorageService.set(storageKey, data);
+                callback({success: true});
+            }
+        };
+
+        return service;
+    }
+]);*/
+
+
+myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageService',
+    function($http, $rootScope, localStorageService){
+
+        var service = {};
+        //var asGuest = $rootScope.asGuest;
+        var storageKey = 'MyChargeData';
+        var asGuest = true;
+
+        service.getData = function(callback) {
+            if(!asGuest) {
+                $http.get(BASE_API_URL + 'data/mycharge')
+                    .success(function(response){
+                        callback(response);
+                    })
+                    .error(function(data, status, headers, config){
+                        callback({success: false, message: 'Server connection error'});
+                    });
+            }
+            else {
+                //var localData = localStorageService.get(storageKey);
+                var localData = [
+                    {
+                        tsEnd:1472122800000,
+                        tsStart:1472094000000,
+                        dataType: 'sleep'
+                    },
+                    {
+                        tsEnd: 1470135600000,
+                        tsStart:1470106800000,
+                        dataType: 'sleep'
+                    },
+                    {
+                        tsEnd: 1470135600000 + 24 * 60 * 60 * 1000,
+                        tsStart:1470106800000 + 24 * 60 * 60 * 1000,
+                        dataType: 'sleep'
+                    },
+                    {
+                        tsStart:1470060000000,
+                        source: "STARBUCKS COFFEE VENTI (20 oz.)",
+                        sourceID: 1,
+                        amount: "410",
+                        quantity: 1,
+                        dataType: 'caffeine'
+                    },
+                    {
+                        tsStart:1470060000000 + 32 * 24 * 60 * 60 * 1000,
+                        source: "STARBUCKS COFFEE TALL (12 oz.)",
+                        sourceID: 2,
+                        amount: "260",
+                        quantity: 2,
+                        dataType: 'caffeine'
+                    }
+                ];
+
+                callback({success: true, data: localData});
+            }
+        };
+
+        service.setData = function(data, callback) {
+            console.log('set sleep');
+            console.log(data);
+
+            if(!asGuest) {
+                $http.put(BASE_API_URL + 'data/mycharge', data)
                     .success(function(response){
                         callback(response);
                     })

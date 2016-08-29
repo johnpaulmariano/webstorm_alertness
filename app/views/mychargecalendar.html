@@ -7,26 +7,25 @@
     <div class="row">
         <div class="col-md-6 text-center">
             <div class="btn-group">
-                <button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView">Previous</button>
-                <button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today>Today</button>
-                <button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView">Next</button>
+                <button class="btn btn-primary" mwl-date-modifier date="vm.viewDate" decrement="vm.calendarView">Previous</button>
+                <button class="btn btn-default" mwl-date-modifier date="vm.viewDate" set-to-today>Today</button>
+                <button class="btn btn-primary" mwl-date-modifier date="vm.viewDate" increment="vm.calendarView">Next</button>
             </div>
         </div>
     </div>
 
     <br>
 
-    <mwl-calendar events="events"
-          view="calendarView"
-          view-title="calendarTitle"
-          view-date="viewDate"
-          on-event-click="eventClicked(calendarEvent)"
-          on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
-          cell-is-open="isCellOpen"
+    <mwl-calendar events="vm.events"
+          view="vm.calendarView"
+          view-title="vm.calendarTitle"
+          view-date="vm.viewDate"
+          cell-is-open="vm.isCellOpen"
           day-view-start="06:00"
           day-view-end="22:59"
-          day-view-split="30"
-          cell-modifier="modifyCell(calendarCell)">
+          day-view-split="30",
+          on-timespan-click="vm.myFunc(calendarCell)",
+          cell-modifier="vm.modifyCell(calendarCell)" >
     </mwl-calendar>
 
     <!-- sleep modal -->
@@ -82,15 +81,15 @@
                 <div class="mycharge-day-input">
                     <div class="form-group">
                         <label style="margin-bottom:5px;">Caffeine Source:</label>
-                        <select class="form-control" ng-options="type as type.name for type in caffeineItems track by type.id" ng-model="c.caffeineSource"></select>
+                        <select class="form-control" ng-options="type as type.name for type in caffeineItems track by type.id" ng-model="caffeineSelected"></select>
                     </div>
                     <div class="form-group">
                         <label style="margin-bottom:5px;">Quantity:</label>
-                        <select class="form-control" ng-options="k for k in quantity" ng-model="c.quantity"></select>
+                        <select class="form-control" ng-options="k for k in quantity" ng-model="calEvent.quantity"></select>
                     </div>
                     <div class="form-group">
                         <label style="margin-bottom:5px;">Time:</label>
-                        <div uib-timepicker ng-model="c.startsAt" hour-step="1" minute-step="15" show-meridian="true"></div>
+                        <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="true"></div>
                     </div>
                 </div>
             </div>

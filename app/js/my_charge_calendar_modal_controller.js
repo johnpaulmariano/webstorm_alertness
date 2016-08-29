@@ -4,20 +4,34 @@
 /**
  * Created by trieutran on 7/1/16.
  */
-atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope', '$uibModalInstance', 'calEvent', 'modalTitle', 'CaffeineService',
-    function($scope, $uibModalInstance, calEvent, modalTitle, CaffeineService) {
+atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope', '$uibModalInstance', 'calEvent', 'modalTitle', 'eventType', 'CaffeineService',
+    function($scope, $uibModalInstance, calEvent, modalTitle, eventType, CaffeineService) {
 
         $scope.startOpen = false;
         $scope.endOpen = false;
         $scope.modalTitle = modalTitle;
         $scope.calEvent = calEvent;
 
-        $scope.caffeineItems = CaffeineService.getData();
-        $scope.quantity = [];
+        if(eventType == 'caffeine'){
+            $scope.caffeineItems = CaffeineService.getData();
+            $scope.quantity = [];
 
-        for(var i = 1; i <= 10; i++) {
-            $scope.quantity.push(i);
+            for(var i = 1; i <= 10; i++) {
+                $scope.quantity.push(i);
+            }
+
+            if(angular.isNumber(calEvent.sourceID)) {
+                $scope.caffeineSelected = CaffeineService.getItem(calEvent.sourceID);
+                console.log($scope.caffeineSelected);
+            }
+            else{
+                $scope.caffeineSelected = $scope.caffeineItems[0];
+            }
         }
+        else if(eventType == 'sleep') {
+
+        }
+
 
         /*$scope.dropdowns = dropdowns;
         $scope.sleeps = sleeps;

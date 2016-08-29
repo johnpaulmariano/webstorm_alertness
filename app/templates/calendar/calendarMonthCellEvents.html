@@ -1,4 +1,5 @@
 <div class="events-list" ng-show="day.events.length > 0">
+
     <a
         ng-repeat="event in day.events | orderBy:'startsAt' track by event.$id"
         href="javascript:;"
@@ -11,6 +12,10 @@
         tooltip-append-to-body="true"
         uib-tooltip-html="vm.calendarEventTitle.monthViewTooltip(event) | calendarTrustAsHtml"
         mwl-draggable="event.draggable === true"
-        drop-data="{event: event, draggedFromDate: day.date.toDate()}">
+        drop-data="{event: event, draggedFromDate: day.date.toDate()}"
+        ng-if="day.date < event.startsAt"
+        >
+
     </a>
+
 </div>
