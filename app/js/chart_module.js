@@ -48,17 +48,17 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                             }
                         },
                         reversed: true,
-                        max: 350,
-                        min: 150,
+                        max: 370,
+                        min: 230,
                         //minorGridLineColor: 'rgba(159, 160, 158, 0.5)',
                         minorTickInterval: 0.5,
-                        plotBands: [
-                            /*{
-                                from: 4,
-                                to: 5,
+                        /*plotBands: [
+                            {
+                                from: 230,
+                                to: 370,
                                 color: 'rgba(132, 185, 97, 0.3)',
-                            }*/
-                        ]
+                            }
+                        ]*/
                     },
                     tooltip: {
                         dateTimeLabelFormats: {

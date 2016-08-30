@@ -8,7 +8,10 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
     calendarConfig.templates.calendarMonthCell = './templates/calendar/calendarMonthCell.html';
     calendarConfig.templates.calendarMonthCellEvents = './templates/calendar/calendarMonthCellEvents.html';
     calendarConfig.templates.calendarMonthView = './templates/calendar/calendarMonthView.html';
-
+    calendarConfig.dateFormatter = 'moment';
+    calendarConfig.allDateFormats.moment.title.day = 'ddd D MMM';
+    calendarConfig.allDateFormats.moment.date.weekDay  = 'ddd';
+    calendarConfig.displayAllMonthEvents = true;
 })
 .controller('MyChargeCalendarController', ['$uibModal', 'moment', 'calendarConfig', 'MyChargeDataService',
     function($uibModal, moment, calendarConfig, MyChargeDataService){
@@ -33,6 +36,21 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         vm.errorDays = [];
 
         var sleepActions = [
+            {
+                label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
+                onClick: function(args) {
+                    showModal('Edit-Sleep', args.calendarEvent);
+                }
+            },
+            {
+                label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+                onClick: function(args) {
+                    showModal('Delete-Sleep', args.calendarEvent);
+                }
+            }
+        ];
+
+        var sleepDefaultActions = [
             {
                 label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
                 onClick: function(args) {
@@ -95,8 +113,8 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                                 resizable: false,
                                 incrementsBadgeTotal: false,
                                 allDay: false,
-                                actions: sleepActions
-
+                                actions: sleepActions,
+                                dataType: 'sleep'
                             }
                         );
                     }
@@ -113,7 +131,8 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                                 resizable: false,
                                 incrementsBadgeTotal: false,
                                 allDay: false,
-                                actions: caffeineActions
+                                actions: caffeineActions,
+                                dataType: 'caffeine'
                             }
                         );
                     }
@@ -121,24 +140,97 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
             }
         });
 
+        //adding default sleep events
         vm.modifyCell = function(calendarCell){
-            calendarCell.events.push(
-                {
-                    title: '',
-                    color: calendarConfig.colorTypes.alert,
-                    startsAt: moment().startOf('day').toDate(),
-                    draggable: false,
-                    resizable: false,
-                    incrementsBadgeTotal: false,
-                    allDay: false,
-                    actions: addActions,
-                    cssClass: 'fake-event-class'
+            var ok = true;
+            for(var i = 0; i < calendarCell.events.length; i++) {
+                if(calendarCell.events[i].dataType == 'sleep') {
+                    if(calendarCell.events[i].startsAt > moment(calendarCell.date._d).startOf('day').toDate()) {
+                        ok = false;
+                        break;
+                    }
                 }
-            );
+            }
+
+            if(ok) {
+                calendarCell.events.push(
+                    {
+                        title: 'Default Sleep',
+                        color: calendarConfig.colorTypes.success,
+                        startsAt: moment(calendarCell.date._d).add(23, 'hours').toDate(),
+                        endsAt: moment(calendarCell.date._d).add(1, 'days').add(7, 'hours').toDate(),
+                        draggable: false,
+                        resizable: false,
+                        incrementsBadgeTotal: false,
+                        allDay: true,
+                        actions: sleepDefaultActions,
+                        dataType: 'sleep'
+                    }
+                );
+            }
+
         };
 
         console.log(vm.events);
 
+        vm.fakeEventID = null;
+        vm.fakeEventDate = null;
+
+        //adding a fake event for containing two buttons
+        vm.myOnTimespanClick = function(day){
+            console.log(day.getTime());
+            console.log(vm.isCellOpen);
+            console.log(vm.fakeEventDate);
+            if(!vm.isCellOpen) {
+                vm.toggleFakeEvent(day, 'add');
+                vm.fakeEventDate = day;
+                vm.isCellOpen = true;
+            }
+            else {
+                if(vm.fakeEventDate.getTime() == day.getTime()) {
+                    vm.toggleFakeEvent(day, 'remove');
+                    vm.isCellOpen = false;
+                    console.log('bye');
+                }
+                else {
+                    vm.toggleFakeEvent(vm.fakeEventDate, 'remove');
+                    vm.toggleFakeEvent(day, 'add');
+                    vm.fakeEventDate = day;
+                    vm.isCellOpen = true;
+                }
+            }
+
+
+        }
+
+        vm.toggleFakeEvent = function(day, act) {
+            if(act == 'add'){
+                vm.events.push(
+                    {
+                        title: '',
+                        color: calendarConfig.colorTypes.alert,
+                        startsAt: moment(day).add(1, 'days').subtract(1, 'seconds').toDate(),
+                        draggable: false,
+                        resizable: false,
+                        incrementsBadgeTotal: false,
+                        allDay: true,
+                        actions: addActions,
+                        cssClass: 'fake-event-class'
+                    }
+                );
+
+                vm.fakeEventID = vm.events.length - 1;
+            }
+            else if(act == 'remove'){  //remove the fake event
+                vm.events.splice(vm.fakeEventID, 1);
+            }
+        }
+
+        /*$scope.$watch('vm.isCellOpen', function(newValue, oldValue){
+            console.log(newValue);
+            console.log(oldValue);
+            console.log(vm.calendarDate);
+        });*/
         /*
 
         vm.eventEdited = function(event) {
@@ -165,17 +257,21 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                     backdrop: false,
                     size: 'small',
                     resolve: {
-                        modalTitle: function(){
-                            return 'Edit Sleep';
-                        },
                         calEvent: function(){
-                            console.log(event);
+                            //console.log(event);
                             return event;
                         },
                         eventType : function(){
                             return 'sleep';
+                        },
+                        action: function() {
+                            return action;
                         }
                     }
+                });
+
+                modalInstance.opened.then(function(){
+
                 });
             }
             else if(action == 'Edit-Coffee' || action == 'Add-Coffee') {
@@ -187,15 +283,15 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                     backdrop: false,
                     size: 'small',
                     resolve: {
-                        modalTitle: function(){
-                            return 'Edit Caffeine';
-                        },
                         calEvent: function(){
                             console.log(event);
                             return event;
                         },
                         eventType : function(){
                             return 'caffeine';
+                        },
+                        action: function() {
+                            return action;
                         }
                     }
                 });

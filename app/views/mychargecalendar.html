@@ -4,6 +4,8 @@
     <div class="col-md-12 input-msg" ng-if="message" style="padding-top:10px;">{{message}}</div>
     <h2 class="text-center">{{ calendarTitle }}</h2>
 
+    <h1 class="text-center">{{ vm.viewTitle }}</h1>
+
     <div class="row">
         <div class="col-md-6 text-center">
             <div class="btn-group">
@@ -16,16 +18,23 @@
 
     <br>
 
+    <h4 class="row text-center fatigue-header"><a href="#chart" style="color:#FFF;">Show chart</a></h4>
+
     <mwl-calendar events="vm.events"
           view="vm.calendarView"
-          view-title="vm.calendarTitle"
+          view-title="vm.viewTitle"
           view-date="vm.viewDate"
           cell-is-open="vm.isCellOpen"
           day-view-start="06:00"
           day-view-end="22:59"
-          day-view-split="30",
-          on-timespan-click="vm.myFunc(calendarCell)",
-          cell-modifier="vm.modifyCell(calendarCell)" >
+          day-view-split="30"
+          on-timespan-click="vm.myOnTimespanClick(calendarDate)"
+          cell-modifier="vm.modifyCell(calendarCell)"
+    >
+        <!--
+        on-timespan-click="vm.myOnTimespanClick(calendarDate)"
+          cell-modifier="vm.modifyCell(calendarCell)"
+        -->
     </mwl-calendar>
 
     <!-- sleep modal -->
@@ -37,34 +46,31 @@
             <div class="modal-body">
                 <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">Start Time</div>
                 <div class="form-group">
-                    <label style="margin-bottom:5px;">Starts at</label>
+                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.startsAt" close-text="Close" >
                     <!--
-                    <select class="form-control" ng-options="n as n.txt for n in dropdowns.startHours track by n.val" ng-model="dropdowns.selStartHour" required></select>
-                    -->
-                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.startsAt" is-open="calEvent.startOpen" close-text="Close" >
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="toggle($event, 'startOpen', calEvent)">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </button>
                     </span>
-                    <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="true"></div>
+                    -->
+                    <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="false"></div>
                 </div>
 
                 <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">End Time</div>
                 <div class="form-group">
-                    <label style="margin-bottom:5px;">End at</label>
-                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.endsAt" is-open="calEvent.endOpen" close-text="Close" >
+                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.endsAt" is-open="endOpen" close-text="Close" >
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="toggle($event, 'endOpen', calEvent)">
+                        <button type="button" class="btn btn-default" ng-click="toggle($event, 'endOpen')">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </button>
                     </span>
-                    <div uib-timepicker ng-model="calEvent.endsAt" hour-step="1" minute-step="5" show-meridian="true"></div>
+                    <div uib-timepicker ng-model="calEvent.endsAt" hour-step="1" minute-step="15" show-meridian="false"></div>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" type="submit"  style="margin-top:5px;" ng-disabled="sleepForm.$invalid">Add</button>
+                <button class="btn btn-primary" type="submit"  style="margin-top:5px;" ng-disabled="sleepForm.$invalid">Save</button>
                 <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
             </div>
         </form>
@@ -85,11 +91,11 @@
                     </div>
                     <div class="form-group">
                         <label style="margin-bottom:5px;">Quantity:</label>
-                        <select class="form-control" ng-options="k for k in quantity" ng-model="calEvent.quantity"></select>
+                        <select class="form-control" ng-options="k for k in quantity" ng-model="quantitySelected"></select>
                     </div>
                     <div class="form-group">
                         <label style="margin-bottom:5px;">Time:</label>
-                        <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="true"></div>
+                        <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="false"></div>
                     </div>
                 </div>
             </div>

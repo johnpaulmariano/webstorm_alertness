@@ -5,7 +5,7 @@
             <li
                     ng-repeat="event in vm.events | orderBy:'startsAt' track by event.$id"
                     ng-class="event.cssClass"
-                    ng-if="vm.cell.date < event.startsAt">
+                    ng-if="vm.cell.date <= event.startsAt">
                 <span class="pull-left event" ng-style="{backgroundColor: event.color.primary}"></span>
                 &nbsp;
                 <span ng-bind-html="isMonthView ? vm.calendarEventTitle.monthView(event) : vm.calendarEventTitle.yearView(event) | calendarTrustAsHtml"></span>
