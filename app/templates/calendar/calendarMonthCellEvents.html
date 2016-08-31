@@ -13,7 +13,7 @@
         uib-tooltip-html="vm.calendarEventTitle.monthViewTooltip(event) | calendarTrustAsHtml"
         mwl-draggable="event.draggable === true"
         drop-data="{event: event, draggedFromDate: day.date.toDate()}"
-        ng-if="day.date < event.startsAt"
+        ng-if="day.date <= event.startsAt"
         >
 
     </a>

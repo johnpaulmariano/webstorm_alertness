@@ -4,32 +4,41 @@
 /**
  * Created by trieutran on 7/1/16.
  */
-atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope', '$uibModalInstance', 'calEvent', 'action', 'eventType', 'CaffeineService',
-    function($scope, $uibModalInstance, calEvent, action, eventType, CaffeineService) {
+atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope', '$uibModalInstance', 'calEvent', 'action',
+    'eventType', 'events', 'calendarConfig', 'actionButtons', 'CaffeineService', 'MyChargeDataService',
+    function($scope, $uibModalInstance, calEvent, action, eventType, events, calendarConfig, actionButtons,
+             CaffeineService, MyChargeDataService) {
 
         $scope.endOpen = false;
+        //$scope.events = events;
+        $scope.eventsChangedState = false;
+        $scope.editMode = false;
 
         switch (action) {
             case 'Edit-Sleep':
                 $scope.modalTitle = 'Edit Sleep';
+                $scope.editMode = true;
                 break;
 
             case 'Add-Sleep':
                 $scope.modalTitle = 'Add Sleep';
+                calEvent.dataType = 'sleep';
+                calEvent.startsAt = moment(calEvent.startsAt).startOf('day').toDate();
                 break;
 
             case 'Edit-Coffee':
                 $scope.modalTitle = 'Edit Caffeine Drink';
+                $scope.editMode = true;
                 break;
 
             case 'Add-Coffee':
                 $scope.modalTitle = 'Add Caffeine Drink';
+                calEvent.dataType = 'caffeine';
+                calEvent.startsAt = moment(calEvent.startsAt).startOf('day').toDate();
                 break;
         }
 
         $scope.calEvent = calEvent;
-
-        console.log($scope.calEvent);
 
         if(eventType == 'caffeine'){
             $scope.caffeineItems = CaffeineService.getData();
@@ -43,7 +52,6 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
             if(angular.isNumber(calEvent.sourceID)) {
                 $scope.caffeineSelected = CaffeineService.getItem(calEvent.sourceID);
-                console.log($scope.caffeineSelected);
             }
             else{
                 $scope.caffeineSelected = $scope.caffeineItems[0];
@@ -55,47 +63,10 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
             $scope.oldStartsAt = calEvent.startsAt;
         }
-        else if(eventType == 'sleep') {
-            ///$scope.calEvent.duration = moment.duration(calEvent.endsAt - calEvent.startsAt);
-            console.log($scope.calEvent);
-
+        else if(eventType == 'sleep' || eventType == 'defaultSleep') {
             $scope.oldStartsAt = calEvent.startsAt;
             $scope.oldEndsAt = calEvent.endsAt;
-            //angular.copy(calEvent.endsAt, $scope.endsAt);
-            //$scope.endsAt = calEvent.endsAt;
         }
-
-
-        /*$scope.dropdowns = dropdowns;
-        $scope.sleeps = sleeps;
-        $scope.errorDays = errorDays;
-        $scope.dayDropdowns = dayDropdowns;
-        $scope.sleepDays = sleepDays;
-        $scope.currentDay = {
-            txt: $scope.sleepDays[$scope.sleepDays.length - 1].toDateString(),
-            val: $scope.sleepDays.length - 1
-        };
-
-        $scope.ok = function () {
-
-            //add to sleeps array
-            var startTime = dropdowns.selStartHour.val * 60 + dropdowns.selStartMin.val;
-            var durationTime = dropdowns.selDurationHour.val * 60 + dropdowns.selDurationMin.val;
-            var endTime = startTime + durationTime;
-            $scope.errorDays = [];
-            $scope.sleeps[$scope.currentDay.val].push(
-                {
-                    startHour: dropdowns.selStartHour.val,
-                    startMinute: dropdowns.selStartMin.val,
-                    durationHour: dropdowns.selDurationHour.val,
-                    durationMinute: dropdowns.selDurationMin.val,
-                    startTime: startTime,
-                    endTime: endTime,
-                    durationTime: durationTime
-                }
-            );
-            $uibModalInstance.close("Sleep Saved");
-        };*/
 
         $scope.cancel = function () {
 
@@ -111,8 +82,6 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
         };
 
         $scope.toggle = function($event, field){
-            console.log('hello');
-            console.log($event);
             $event.preventDefault();
             $event.stopPropagation(); // This is the magic
 
@@ -121,7 +90,69 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
         $scope.ok = function(){
             console.log('it is ok');
+            if(calEvent.dataType == 'defaultSleep') {
+                $scope.vm.events.push(
+                    {
+                        title: 'Sleep',
+                        color: calendarConfig.colorTypes.warning,
+                        startsAt: calEvent.startsAt,
+                        endsAt: calEvent.endsAt,
+                        draggable: false,
+                        resizable: false,
+                        incrementsBadgeTotal: false,
+                        allDay: false,
+                        actions: actionButtons,
+                        dataType: 'sleep'
+                    }
+                );
 
+                $scope.eventsChangedState = true;
+            }
+            else if(calEvent.dataType == 'sleep') {
+                console.log('sleep ');
+
+                if(!$scope.editMode) {
+                    $scope.vm.events.push(
+                        {
+                            title: 'Sleep',
+                            color: calendarConfig.colorTypes.warning,
+                            startsAt: calEvent.startsAt,
+                            endsAt: calEvent.endsAt,
+                            draggable: false,
+                            resizable: false,
+                            incrementsBadgeTotal: false,
+                            allDay: false,
+                            actions: actionButtons,
+                            dataType: 'sleep'
+                        }
+                    );
+                }
+                $scope.eventsChangedState = true;
+            }
+            else if(calEvent.dataType == 'caffeine') {
+                if(!$scope.editMode) {
+                    //var cloneEvent = angular.copy($scope.calEvent);
+                    var cloneEvent = {};
+                    cloneEvent.startsAt = $scope.calEvent.startsAt;
+                    cloneEvent.draggable = false;
+                    cloneEvent.resizable = false;
+                    cloneEvent.incrementsBadgeTotal = false;
+                    cloneEvent.allDay = false;
+                    cloneEvent.title = 'Caffeine';
+                    cloneEvent.color = calendarConfig.colorTypes.info;
+                    cloneEvent.sourceID = $scope.caffeineSelected.id;
+                    cloneEvent.source = $scope.caffeineSelected.itemName;
+                    cloneEvent.amount = parseInt($scope.caffeineSelected.value) * $scope.quantitySelected;
+                    cloneEvent.quantity = $scope.quantitySelected;
+                    cloneEvent.actions = actionButtons;
+                    cloneEvent.dataType = 'caffeine';
+                    console.log(cloneEvent);
+                    $scope.vm.events.push(cloneEvent);
+                }
+
+
+                $scope.eventsChangedState = true;
+            }
 
             $uibModalInstance.close("Event Saved");
         }
@@ -131,5 +162,59 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
             return ok;
         }
+
+        $scope.$watch('eventsChangedState', function(newVal, oldVal){
+            if(newVal == false) {
+                console.log('not save');
+            }
+            else if(newVal == true) {
+                console.log('save now');
+                var data = [];
+                console.log($scope.vm.events);
+
+                for(var i = 0; i < $scope.vm.events.length; i++) {
+                    var singleEvent = null;
+                    if($scope.vm.events[i].cssClass != 'fake-event-class') {
+
+                        if($scope.vm.events[i].dataType == 'sleep') {
+                            singleEvent = {
+                                tsEnd: $scope.vm.events[i].endsAt.getTime(),
+                                tsStart: $scope.vm.events[i].startsAt.getTime(),
+                                dataType: 'sleep'
+                            }
+                        }
+                        else if($scope.vm.events[i].dataType == 'caffeine') {
+                            singleEvent = {
+                                tsStart: $scope.vm.events[i].startsAt.getTime(),
+                                dataType: 'caffeine',
+                                sourceID: $scope.vm.events[i].sourceID,
+                                amount: $scope.vm.events[i].amount,
+                                quantity: $scope.vm.events[i].quantity,
+                                source: CaffeineService.getItem($scope.vm.events[i].sourceID).itemName
+                            }
+                        }
+                    }
+                    console.log('single event');
+                    console.log(singleEvent);
+                    if(singleEvent != null) {
+                        data.push(singleEvent);
+                    }
+
+
+                }
+
+                MyChargeDataService.setData(data, function(response){
+                    if(response.success) {
+                        console.log('saved');
+                    }
+                });
+
+                MyChargeDataService.transformData(data, function(response){
+                    if(response.success) {
+                        console.log('transform success');
+                    }
+                });
+            }
+        });
     }
 ]);

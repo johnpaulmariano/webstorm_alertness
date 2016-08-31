@@ -7,7 +7,7 @@ atoAlertnessControllers.controller('MyChargeController', ['$window', '$rootScope
         $scope.sleeps = [];
         $scope.caffeine = [];
         $scope.message = "";
-        $scope.numberOfDays = 14;
+        $scope.numberOfDays = 7;
         $scope.sleepDays = [];
         $scope.defaultStartSleepHour = 23;
         $scope.defaultStartSleepMinute = 0;

@@ -847,7 +847,7 @@ background-color: rgba(255, 255, 255, 0.14);
 }
 .glyphicon.glyphicon-remove {
   top:4px;
-
+  padding-left: 10px;
   padding-right: 5px;
 
   color: #F2ED8F;
@@ -1092,4 +1092,98 @@ div > div.col-xs-4 {
 }
 .width-fix {
   width: 90%!important;
+}
+span[data-cal-date] {
+opacity: 1!important;
+
+}
+.cal-month-box, .cal-month-box [class*=cal-cell] {
+  border: none!important;
+  min-height: 80px!important;
+}
+.cal-month-day {
+  background-color: rgba(255, 255, 255, 0.14);
+box-shadow: 1px 2px rgba(0, 0, 0, 0.22);
+height: 75px!important;
+}
+.events-list {
+  bottom: 5px!important;
+  left: 2px!important;
+}
+.cal-day-weekend span[data-cal-date] {
+  color: #f0eebe!important;
+}
+span[data-cal-date] {
+  margin-top: 0!important;
+  margin-right: 5px!important;
+    font-size: 1.2em!important;
+}
+.cal-row-fluid {
+  border: none!important;
+}
+.event {
+  border: none!important;
+  box-shadow: none!important;
+}
+.cal-day-today {
+  background-color: #72b943!important;
+  color: #faf6a4!important;
+  font-weight: bold!important;
+  margin-right: 12px!important;
+
+}
+.fake-event-class {
+text-align: center;
+}
+.cal-row-fluid:hover {
+  background-color: rgba(255, 255, 255, 0.14)!important;
+box-shadow: 1px 2px rgba(0, 0, 0, 0.22)!important;
+
+}
+[class*=cal-cell]:hover {
+  background-color: #143515!important;
+}
+div.cal-slide-content.cal-event-list > ul > li {
+  background-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 1px 2px rgba(0, 0, 0, 0.22);
+  padding: 5px;
+}
+.cal-slide-content {
+  background: none!important;
+  padding:10px!important;
+  padding-top: 20px!important;
+}
+.cal-day-tick {
+  border: 1px solid #569334!important;
+  border-top: 0!important;
+  background-color: #345135!important;
+  margin-right: -16px!important;
+}
+i.glyphicon.glyphicon-chevron-up {
+    top: 2px!important;
+    right: 1px!important;
+}
+div.cal-slide-content.cal-event-list > ul > li > a > i.glyphicon {
+  font-size: 20px!important;
+  top: 2px!important;
+  float: right!important;
+}
+div.cal-slide-content.cal-event-list > ul > li.fake-event-class > span {
+display: none;
+}
+.fake-event-class > a > div.btn.btn-primary {
+min-width: 100px;
+}
+a.event-item-action {
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 0!important;
+  margin-left: 5px;
+}
+li > span.pull-left.event {
+  margin-top: 6px!important;
+  margin-right: 10px;
+}
+.btn-mcc {
+  padding: 6px 8px!important;
 }

@@ -49,7 +49,8 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         },
                         reversed: true,
                         max: 370,
-                        min: 230,
+                        //min: 230,
+                        min: 150,
                         //minorGridLineColor: 'rgba(159, 160, 158, 0.5)',
                         minorTickInterval: 0.5,
                         /*plotBands: [
@@ -99,13 +100,24 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         }
     };
 })
-.controller('ChartController', ['$window', '$rootScope', '$scope', '$location', 'DataPredictionService', 'MyChargeService','usSpinnerService', 'PREDICTION_DATA_EXPIRATION',
-    function($window, $rootScope, $scope, $location, DataPredictionService, MyChargeService, usSpinnerService, PREDICTION_DATA_EXPIRATION) {
+.controller('ChartController', ['$window', '$rootScope', '$scope', '$location', 'DataPredictionService', 'MyChargeDataService',
+    'usSpinnerService', 'PREDICTION_DATA_EXPIRATION', 'moment',
+    function($window, $rootScope, $scope, $location, DataPredictionService, MyChargeDataService, usSpinnerService,
+             PREDICTION_DATA_EXPIRATION, moment) {
         $scope.isExpired = false;
         $scope.expiredIn = PREDICTION_DATA_EXPIRATION;
         $scope.chartData = {};
-
+        $scope.startDate = moment().startOf('day').subtract(6, 'days').toDate();
+        $scope.startOpen = false;
         //$rootScope.renewPrediction = false;
+
+        $scope.toggle = function($event, field) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            //event[field] = !event[field];
+            $scope[field] = !$scope[field];
+        };
 
         $scope.transformData = function(r) {
             var chartData = {};
@@ -115,7 +127,9 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                 //r = $scope.filterData(r);
 
                 var ts = new Date(r.time);
-                var begTime = Date.UTC(ts.getFullYear(), ts.getMonth(), ts.getDate() - r.numDays, 0, 0, 0, 0);
+                console.log(ts);
+                var begTime = Date.UTC(ts.getFullYear(), ts.getMonth(), ts.getDate(), 0, 0, 0, 0);
+                //var begTime = ts;
                 var coffeShift = 0;
 
                 if($scope.requestData.sleepStartTime >= 24){
@@ -125,7 +139,8 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                 else {
                     chartData.begTS = begTime + $scope.requestData.sleepStartTime * 60 * 60 * 1000;
                 }
-
+                //chartData.begTS = begTime;
+                //chartData.begTS = ts.getTime();
 
                 //calculate sleep periods
                 var sleepPeriods = [];
@@ -170,7 +185,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                         color: 'rgba(230,8,18,0.7)',
                         dashStyle: 'dash',
                         label: {
-                            text: "Caffeine Event",
+                            text: $scope.requestData.caffeineItems[i],
                             style: {
                                 color: '#FFFFFF',
                                 fontSize:'14px',
@@ -214,7 +229,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         $scope.requestData = {};
         $scope.lastTimeStamp = 0;
 
-        MyChargeService.getData(function(d){
+        MyChargeDataService.getTransformedData(function(d){
             //padding 3 days for predictions
             var paddingThreeDays = function(sleepWake){
                 //extracting the last sleep
@@ -223,15 +238,17 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
 
                 return sleepWake;
             };
+            console.log(d);
 
-            if(d){
-                $scope.requestData = d.data;
-                $scope.lastTimeStamp = d.timestamp;
+            if(d.data.data.sleepWakeSchedule.length > 0){
+                console.log('> 0 here');
+                $scope.requestData = d.data.data;
+                $scope.lastTimeStamp = d.data.timestamp;
                 //$scope.requestData.sleepWakeSchedule = paddingThreeDays($scope.requestData.sleepWakeSchedule);
             }
             else {
                 //default data to send to the prediction API
-                var defaultSleepWake = [8.0,16,8.0, 16, 8.0, 16, 8, 16, 8, 16,8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8];
+                var defaultSleepWake = [8.0,16,8.0, 16, 8.0, 16, 8, 16, 8, 16,8, 16, 8];
                 //var defaultSleepWake = [8,16,8,16,8,24,6,18,6,18,6,18,6,18,6,10,8,16,8,16,8];
                 //defaultSleepWake = paddingThreeDays(defaultSleepWake);
                 $scope.requestData = {
@@ -239,12 +256,14 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
                     sleepWakeSchedule:defaultSleepWake,
                     caffeineDoses:[],
                     caffeineTimes:[],
+                    caffeineItems: [],
                     //caffeineDoses: [400, 400, 400, 400, 400],
                     //caffeineTimes: [90,119,143,167,191],
-                    numDays: 14
+                    numDays: 7
                 };
-                var d = new Date();
-                $scope.lastTimeStamp = d.getTime();
+
+                $scope.lastTimeStamp = moment().subtract(7, 'days').toDate().getTime();
+                console.log($scope.lastTimeStamp);
             }
         });
 
@@ -253,7 +272,7 @@ atoAlertnessChartModule.directive('alertnessChart', function(){
         var GetPredictionData = function() {
             DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction, $scope.lastTimeStamp,
                 function(response){
-                    //console.log(response);
+                    console.log(response);
                     if(response.success == true) {
                         $scope.showSpinner = false;
                         $rootScope.renewPrediction = false; // turn off the renew prediction request from MyCharge inputs

@@ -7,7 +7,7 @@
                     ng-class="event.cssClass"
                     ng-if="vm.cell.date <= event.startsAt">
                 <span class="pull-left event" ng-style="{backgroundColor: event.color.primary}"></span>
-                &nbsp;
+
                 <span ng-bind-html="isMonthView ? vm.calendarEventTitle.monthView(event) : vm.calendarEventTitle.yearView(event) | calendarTrustAsHtml"></span>
                 <a
                         href="javascript:;"

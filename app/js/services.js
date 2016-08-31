@@ -538,7 +538,8 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
         var localExisted = true;
 
         service.getData = function(data, renew, timestamp, callback) {
-
+            renew = true;
+            console.log(data);
             if(!renew) {
                 console.log('not renew');
                 var localData = localStorageService.get(storageKey);
@@ -588,67 +589,67 @@ myServices.factory('CaffeineService', ['$http', 'BASE_API_URL', '$rootScope',
         var caffeineItems = [
             {
                 id: 1,
-                name: "STARBUCKS COFFEE VENTI (20 oz.)",
+                itemName: "STARBUCKS COFFEE VENTI (20 oz.)",
                 value: "410"
             },
             {
                 id: 2,
-                name: "STARBUCKS COFFEE GRANDE (16 oz.)",
+                itemName: "STARBUCKS COFFEE GRANDE (16 oz.)",
                 value: "330"
             },
             {
                 id: 3,
-                name: "STARBUCKS COFFEE TALL (12 oz.)",
+                itemName: "STARBUCKS COFFEE TALL (12 oz.)",
                 value: "260"
             },
             {
                 id: 4,
-                name: "STARBUCKS COFFEE SHORT (8 oz.)",
+                itemName: "STARBUCKS COFFEE SHORT (8 oz.)",
                 value: "175"
             },
             {
                 id: 5,
-                name: "5-HOUR ENERGY SHOT REGULAR STRENGTH (1.93 oz.)",
+                itemName: "5-HOUR ENERGY SHOT REGULAR STRENGTH (1.93 oz.)",
                 value: "200"
             },
             {
                 id: 6,
-                name: "5-HOUR ENERGY SHOT EXTRA STRENGTH (1.93 oz.)",
+                itemName: "5-HOUR ENERGY SHOT EXTRA STRENGTH (1.93 oz.)",
                 value: "230"
             },
             {
                 id: 7,
-                name: "COCA-COLA 12-oz. CAN",
+                itemName: "COCA-COLA 12-oz. CAN",
                 value: "34"
             },
             {
                 id:8,
-                name: "COCA-COLA 16-oz. BOTTLE",
+                itemName: "COCA-COLA 16-oz. BOTTLE",
                 value: "45"
             },
             {
                 id: 9,
-                name: "COCA-COLA 20-oz. BOTTLE",
+                itemName: "COCA-COLA 20-oz. BOTTLE",
                 value: "57"
             },
             {
                 id: 10,
-                name: "LIPTON TEA REGULAR BLACK TEA (8 oz.)",
+                itemName: "LIPTON TEA REGULAR BLACK TEA (8 oz.)",
                 value: "55"
             },
             {
                 id: 11,
-                name: "LIPTON TEA NATURAL ENERGY PREMIUM BLACK TEA (8 oz.)",
+                itemName: "LIPTON TEA NATURAL ENERGY PREMIUM BLACK TEA (8 oz.)",
                 value: "75"
             },
             {
                 id: 12,
-                name: "LIPTON TEA PURE GREEN TEA (8 oz.)",
+                itemName: "LIPTON TEA PURE GREEN TEA (8 oz.)",
                 value: "35"
             },
             {
                 id: 13,
-                name: "LIPTON TEA COLD BREW TEA (8 oz.)",
+                itemName: "LIPTON TEA COLD BREW TEA (8 oz.)",
                 value: "10"
             }
         ];
@@ -923,12 +924,13 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
 ]);*/
 
 
-myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageService',
-    function($http, $rootScope, localStorageService){
+myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageService', 'moment', '$filter',
+    function($http, $rootScope, localStorageService, moment, $filter){
 
         var service = {};
         //var asGuest = $rootScope.asGuest;
-        var storageKey = 'MyChargeData';
+        var storageKey = 'MyChargeDataCalendar';
+        var storageKey2 = 'MyChargeSubmissionData';
         var asGuest = true;
 
         service.getData = function(callback) {
@@ -942,9 +944,14 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                     });
             }
             else {
-                //var localData = localStorageService.get(storageKey);
-                var localData = [
+                var localData = localStorageService.get(storageKey);
+                if(localData == null) {
+                    localData = [];
+                }
+
+                /*var localData = [
                     {
+                        //tsEnd:1472122800000 + 2 * 24 * 60 * 60 * 1000,
                         tsEnd:1472122800000,
                         tsStart:1472094000000,
                         dataType: 'sleep'
@@ -975,7 +982,7 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                         quantity: 2,
                         dataType: 'caffeine'
                     }
-                ];
+                ];*/
 
                 callback({success: true, data: localData});
             }
@@ -999,7 +1006,151 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                 callback({success: true});
             }
         };
+        service.getTransformedData = function(callback) {
+            var localData = localStorageService.get(storageKey2);
+            if(localData == null) {
+                localData = [];
+            }
+            callback({success: true, data: localData});
+        };
 
+        service.transformData = function(data, callback) {
+            console.log('transform data');
+            console.log(data);
+
+            //make a fake start date
+            var startDate = moment().startOf('day').subtract(7, "days").toDate();
+            //make a fake end date
+            var endDate = moment().startOf('day').toDate();
+
+            console.log(startDate.getTime());
+
+            data.sort(function(a, b){
+                return a.tsStart - b.tsStart;
+            });
+
+            console.log(data);
+            var newData = [];
+
+            //filter events later than start date
+            for(var i = 0; i < data.length; i++) {
+                if(data[i].tsStart >= startDate) {
+                    var dObj = data[i];
+                    newData.push(data[i]);
+                }
+            }
+
+            console.log(newData);
+
+            //splitting data into sleep and caffeine array
+            var sleepData = [];
+            var coffeeData = [];
+            for(var n = 0; n < newData.length; n++) {
+                if(newData[n].dataType == "sleep") {
+                    sleepData.push(newData[n]);
+                }
+                else if(newData[n].dataType == "caffeine") {
+                    coffeeData.push(newData[n]);
+                }
+            }
+
+            //padding sleep data
+            for(var j = 0; j <= 7; j++){
+                var start =  moment(startDate).startOf('day').add(j, 'days').toDate().getTime();
+                var end = moment(startDate).startOf('day').add(j + 1, 'days').toDate().getTime();
+
+                console.log(start);
+                console.log(end);
+
+                var found = false;
+                for(var k = 0; k < sleepData.length; k++) {
+                    if(sleepData[k].tsStart >= start && sleepData[k].tsStart <= end && sleepData[k].dataType == 'sleep') {
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                    var paddingSleep = {
+                        tsStart: moment(start).add(23, 'hours').toDate().getTime(),
+                        tsEnd: moment(start).add(1, 'days').add(7, 'hours').toDate().getTime(),
+                        dataType: 'sleep'
+                    };
+
+                    console.log(paddingSleep);
+                    sleepData.push(paddingSleep);
+                }
+            }
+
+            sleepData.sort(function(a, b){
+                return a.tsStart - b.tsStart;
+            });
+
+            //transform into array
+            var sleepWakeSchedule = [];
+            var sleepStartTime = 0;
+            var milInHour = 60 * 60 * 1000;
+            var startTime = startDate.getTime();
+            console.log(startTime);
+            for(var cn = 0; cn < sleepData.length; cn++) {
+                sleepData[cn].start = (sleepData[cn].tsStart - startTime)/milInHour;
+                sleepData[cn].end = (sleepData[cn].tsEnd - startTime)/milInHour;
+
+                if(cn == 0) {
+                    sleepStartTime = sleepData[cn].start;
+                    sleepWakeSchedule.push(sleepData[cn].end - sleepData[cn].start);
+                }
+                else {
+                    if(cn > 1) {
+                        sleepWakeSchedule.push(sleepData[cn].end - sleepData[cn].start);
+                    }
+
+
+                    if(cn < sleepData.length - 1) {
+                        var nextStart  = (sleepData[cn + 1].tsStart - startTime)/milInHour;
+                        sleepWakeSchedule.push(nextStart - sleepData[cn].end);
+                    }
+                }
+            }
+            console.log(sleepWakeSchedule);
+            console.log(sleepData);
+
+            //coffee data
+            var caffeineDoses = [];
+            var caffeineTimes = [];
+            var caffeineItems = [];
+            for(var cc = 0; cc < coffeeData.length; cc++) {
+                console.log(coffeeData[cc]);
+                var coffeeStart = (coffeeData[cc].tsStart - startTime)/milInHour;
+                caffeineTimes.push(coffeeStart);
+                caffeineDoses.push(coffeeData[cc].amount);
+                caffeineItems.push(coffeeData[cc].source);
+            }
+
+            var outputData = {
+                data: {
+                    sleepStartTime: sleepStartTime,
+                    sleepWakeSchedule: sleepWakeSchedule,
+                    caffeineDoses: caffeineDoses,
+                    caffeineTimes: caffeineTimes,
+                    caffeineItems: caffeineItems,
+                    "numDays": 7
+                },
+                timestamp: startDate
+            };
+            /*
+             "data": {
+             "sleepStartTime": 23,
+             "sleepWakeSchedule": [8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8],
+             "caffeineDoses": [400, 820],
+             "caffeineTimes": [82, 128],
+             "numDays": 7
+             },
+            * */
+            console.log(outputData);
+
+            localStorageService.set(storageKey2, outputData);
+            callback({success: true});
+        }
         return service;
     }
 ]);
