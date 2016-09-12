@@ -16,10 +16,14 @@ var myApp = angular.module('AtoAlertnessApp', [
 
 //defining constants
 myApp.value('DEBUG_MODE', false);
-myApp.value('PREDICTION_DATA_EXPIRATION', 3 * 24 * 60 * 60 * 1000 );// 3 days
+//myApp.value('PREDICTION_DATA_EXPIRATION', 3 * 24 * 60 * 60 * 1000 );// 3 days
 //myApp.value('PREDICTION_DATA_EXPIRATION', 1 * 60 * 1000 );
 myApp.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertness/svc/');
 myApp.value("PREDICTION_STATISTIC", 1); //  1 - Mean RT, 2 - Mean Speed, 3 - Lapses
+myApp.value("DEFAULT_PREDICTION_DAYS", 8);
+myApp.value("DEFAULT_SLEEP_START", 23);
+myApp.value("DEFAULT_SLEEP_DURATION", 8);
+myApp.value("DEFAULT_SLEEP_END", 7);
 
 myApp.config(function (localStorageServiceProvider) {
     localStorageServiceProvider
@@ -145,6 +149,7 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
         $rootScope.csrfToken = $cookieStore.get('X-CSRF-TOKEN');
         $rootScope.location = $location.path();
         $rootScope.asGuest = $cookieStore.get("asGuestCookies");
+        $rootScope.DataPredictiondate = 0;
 
         if($rootScope.csrfToken) {
             $http.defaults.headers.common['X-CSRF-TOKEN'] = $rootScope.csrfToken;

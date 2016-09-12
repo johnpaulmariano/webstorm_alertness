@@ -1,13 +1,13 @@
 <div ng-include="'views/navbar.html'"></div>
-<div class="container" style="margin-top:38px; padding-left:5px; padding-right:5px;" ng-controller="MyChargeCalendarController as vm">
+<div class="container" style="margin-top:5px; padding-left:5px; padding-right:5px;" ng-controller="MyChargeCalendarController as vm">
     <h4 class="row text-center header-bg" style="margin-top:0; margin-bottom:0;">What's My Charge Input</h4>
     <div class="col-md-12 input-msg" ng-if="message" style="padding-top:10px;">{{message}}</div>
     <h2 class="text-center" style="margin-top:0;">{{ calendarTitle }}</h2>
 
-    <h1 class="text-center" style="margin-bottom:0;">{{ vm.viewTitle }}</h1>
+    <h1 class="text-center" style="margin-bottom:0; margin-top:5px;">{{ vm.viewTitle }}</h1>
 
     <div class="row">
-        <div class="col-md-6 text-center">
+        <div class="col-md-6 text-center" style="margin: 0 auto;">
             <div class="btn-group">
                 <button class="btn btn-primary btn-mcc" mwl-date-modifier date="vm.viewDate" decrement="vm.calendarView">Prev. Month</button>
                 <button class="btn btn-default btn btn-primary btn-mcc" mwl-date-modifier date="vm.viewDate" set-to-today>Today</button>
@@ -15,8 +15,6 @@
             </div>
         </div>
     </div>
-
-    <br>
 
     <h4 class="row text-center fatigue-header"><a href="#chart" style="color:#FFF;">Show chart</a></h4>
 
@@ -36,7 +34,14 @@
           cell-modifier="vm.modifyCell(calendarCell)"
         -->
     </mwl-calendar>
+    <div class="row legend-row">
+      <div class="col-md-12 text-left">
+        <div><div class="d-e-circle">&nbsp;</div> = Default Sleep Event</div>
+        <div><div class="c-s-circle">&nbsp;</div> = Custom Sleep Event</div>
+        <div><div class="c-c-circle">&nbsp;</div> = Custom Caffeine Event</div>
 
+      </div>
+    </div>
     <!-- sleep modal -->
     <script type="text/ng-template" id="sleepModal.html">
         <form name="sleepForm" ng-submit="ok()" novalidate>
@@ -44,30 +49,33 @@
                 <h3 class="modal-title">{{modalTitle}}</h3>
             </div>
             <div class="modal-body">
+                <div class="modal-message alert alert-danger" ng-if="errorMessage">{{errorMessage}}</div>
                 <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">Start Time</div>
                 <div class="form-group">
-                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.startsAt" close-text="Close" >
-                    <!--
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="toggle($event, 'startOpen', calEvent)">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </button>
-                    </span>
-                    -->
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon2"  style="padding:0 8px;" ng-click="toggle($event, 'startOpen')">
+                            <i class="glyphicon glyphicon-calendar cal-fix"></i>
+                        </span>
+                        <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy"  ng-model="calEvent.startsAt" is-open="startOpen" close-text="Close" style="pointer-events:none;" >
+                    </div>
                     <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="false"></div>
                 </div>
-
-                <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">End Time</div>
-                <div class="form-group">
-                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="calEvent.endsAt" is-open="endOpen" close-text="Close" >
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="toggle($event, 'endOpen')">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </button>
+                <!--
+                <div class="mycharge-start-header" style="color:#FFFAA7!important;">Select End Date/Time</div>
+                <div class="row">
+                  <div class="input-group" ng-click="toggle($event, 'endOpen')">
+                    <span class="input-group-addon" id="basic-addon1"  style="padding:0 8px;">
+                        <i class="glyphicon glyphicon-calendar cal-fix"></i>
                     </span>
+                    <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy"  ng-model="calEvent.endsAt" is-open="endOpen" close-text="Close" style="pointer-events:none;" >
+                  </div>
                     <div uib-timepicker ng-model="calEvent.endsAt" hour-step="1" minute-step="15" show-meridian="false"></div>
                 </div>
-
+                -->
+                <div class="mycharge-start-header" style="color:#FFFAA7!important;">Select Sleep Duration</div>
+                <div class="row">
+                    <select class="form-control" ng-options="duration.txt for duration in sleepDurations track by duration.ts" ng-model="durationSelected"></select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="submit"  style="margin-top:5px;" ng-disabled="sleepForm.$invalid">Save</button>
@@ -84,17 +92,18 @@
                 <h3 class="modal-title">{{modalTitle}}</h3>
             </div>
             <div class="modal-body">
+                <div class="modal-message alert alert-danger" ng-if="errorMessage">{{errorMessage}}</div>
                 <div class="mycharge-day-input">
                     <div class="form-group">
                         <label style="margin-bottom:5px;">Caffeine Source:</label>
                         <select class="form-control" ng-options="type as type.itemName for type in caffeineItems track by type.id" ng-model="caffeineSelected"></select>
                     </div>
                     <div class="form-group">
-                        <label style="margin-bottom:5px;">Quantity:</label>
+                        <label style="margin-bottom:5px;margin-top:15px;">Quantity:</label>
                         <select class="form-control" ng-options="k for k in quantity" ng-model="quantitySelected"></select>
                     </div>
                     <div class="form-group">
-                        <label style="margin-bottom:5px;">Time:</label>
+                        <label style="margin-bottom:5px;margin-top:15px;">Time:</label>
                         <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="false"></div>
                     </div>
                 </div>
@@ -107,4 +116,5 @@
 
     </script>
     <!-- end of caffeine modal -->
+
 </div>

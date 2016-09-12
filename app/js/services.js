@@ -539,7 +539,7 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
 
         service.getData = function(data, renew, timestamp, callback) {
             renew = true;
-            console.log(data);
+
             if(!renew) {
                 console.log('not renew');
                 var localData = localStorageService.get(storageKey);
@@ -568,9 +568,13 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
                         if(response.success == "true") {
                             r.success = true;
                             localStorageService.set(storageKey, r);
+                            callback(r);
+                        }
+                        else {
+                            callback({success: false, message: 'Error: ' + response.message});
                         }
 
-                        callback(r);
+
                     })
                     .error(function(data, status, headers, config){
                         callback({success: false, message: 'Server connection error'});
@@ -739,7 +743,7 @@ myServices.factory('MeqService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
 
         service.setData = function(data, callback) {
             console.log('set meq');
-            console.log(data);
+            //console.log(data);
 
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/meq', data)
@@ -784,7 +788,7 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
 
         service.setData = function(data, callback) {
             console.log('set ess');
-            console.log(data);
+            //console.log(data);
 
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/ess', data)
@@ -806,126 +810,10 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
     }
 ]);
 
-/*myServices.factory('CaffeineDataService', ['$http', '$rootScope', 'localStorageService',
-    function($http, $rootScope, localStorageService){
-
-        var service = {};
-        //var asGuest = $rootScope.asGuest;
-        var storageKey = 'CaffeineData';
-        var asGuest = true;
-
-        service.getData = function(callback) {
-            if(!asGuest) {
-                $http.get(BASE_API_URL + 'data/caffeine')
-                    .success(function(response){
-                        callback(response);
-                    })
-                    .error(function(data, status, headers, config){
-                        callback({success: false, message: 'Server connection error'});
-                    });
-            }
-            else {
-                //var localData = localStorageService.get(storageKey);
-                var localData = [
-                    {
-                        tsStart:1470060000000
-                    }
-                ];
-                callback({success: true, data: localData});
-            }
-        };
-
-        service.setData = function(data, callback) {
-            console.log('set caffeine');
-            console.log(data);
-
-            if(!asGuest) {
-                $http.put(BASE_API_URL + 'data/caffeine', data)
-                    .success(function(response){
-                        callback(response);
-                    })
-                    .error(function(data, status, headers, config){
-                        callback({success: false, message: 'Server connection error'});
-                    });
-            }
-            else {
-                localStorageService.set(storageKey, data);
-                callback({success: true});
-            }
-        };
-
-        return service;
-    }
-]);*/
-
-/*myServices.factory('SleepDataService', ['$http', '$rootScope', 'localStorageService',
-    function($http, $rootScope, localStorageService){
-
-        var service = {};
-        //var asGuest = $rootScope.asGuest;
-        var storageKey = 'SleepData';
-        var asGuest = true;
-
-        service.getData = function(callback) {
-            if(!asGuest) {
-                $http.get(BASE_API_URL + 'data/sleep')
-                    .success(function(response){
-                        callback(response);
-                    })
-                    .error(function(data, status, headers, config){
-                        callback({success: false, message: 'Server connection error'});
-                    });
-            }
-            else {
-                //var localData = localStorageService.get(storageKey);
-                var localData = [
-                    {
-                        tsEnd:1472122800000,
-                        tsStart:1472094000000
-                    },
-                    {
-                        tsEnd: 1470135600000,
-                        tsStart:1470106800000
-                    },
-                    {
-                        tsEnd: 1470135600000 + 24 * 60 * 60 * 1000,
-                        tsStart:1470106800000 + 24 * 60 * 60 * 1000
-                    },
-                    {
-                        tsStart:1470060000000
-                    }
-                ];
-
-                callback({success: true, data: localData});
-            }
-        };
-
-        service.setData = function(data, callback) {
-            console.log('set sleep');
-            console.log(data);
-
-            if(!asGuest) {
-                $http.put(BASE_API_URL + 'data/sleep', data)
-                    .success(function(response){
-                        callback(response);
-                    })
-                    .error(function(data, status, headers, config){
-                        callback({success: false, message: 'Server connection error'});
-                    });
-            }
-            else {
-                localStorageService.set(storageKey, data);
-                callback({success: true});
-            }
-        };
-
-        return service;
-    }
-]);*/
-
-
-myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageService', 'moment', '$filter',
-    function($http, $rootScope, localStorageService, moment, $filter){
+myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageService', 'moment',
+    'DEFAULT_PREDICTION_DAYS', 'DEFAULT_SLEEP_START', 'DEFAULT_SLEEP_END', 'DEFAULT_SLEEP_DURATION',
+    function($http, $rootScope, localStorageService, moment, DEFAULT_PREDICTION_DAYS, DEFAULT_SLEEP_START,
+             DEFAULT_SLEEP_END, DEFAULT_SLEEP_DURATION){
 
         var service = {};
         //var asGuest = $rootScope.asGuest;
@@ -948,42 +836,6 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                 if(localData == null) {
                     localData = [];
                 }
-
-                /*var localData = [
-                    {
-                        //tsEnd:1472122800000 + 2 * 24 * 60 * 60 * 1000,
-                        tsEnd:1472122800000,
-                        tsStart:1472094000000,
-                        dataType: 'sleep'
-                    },
-                    {
-                        tsEnd: 1470135600000,
-                        tsStart:1470106800000,
-                        dataType: 'sleep'
-                    },
-                    {
-                        tsEnd: 1470135600000 + 24 * 60 * 60 * 1000,
-                        tsStart:1470106800000 + 24 * 60 * 60 * 1000,
-                        dataType: 'sleep'
-                    },
-                    {
-                        tsStart:1470060000000,
-                        source: "STARBUCKS COFFEE VENTI (20 oz.)",
-                        sourceID: 1,
-                        amount: "410",
-                        quantity: 1,
-                        dataType: 'caffeine'
-                    },
-                    {
-                        tsStart:1470060000000 + 32 * 24 * 60 * 60 * 1000,
-                        source: "STARBUCKS COFFEE TALL (12 oz.)",
-                        sourceID: 2,
-                        amount: "260",
-                        quantity: 2,
-                        dataType: 'caffeine'
-                    }
-                ];*/
-
                 callback({success: true, data: localData});
             }
         };
@@ -1006,91 +858,115 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                 callback({success: true});
             }
         };
-        service.getTransformedData = function(callback) {
-            var localData = localStorageService.get(storageKey2);
-            if(localData == null) {
-                localData = [];
-            }
-            callback({success: true, data: localData});
-        };
 
-        service.transformData = function(data, callback) {
-            console.log('transform data');
-            console.log(data);
+        service.prepareSubmissionData = function(startDate, endDate, callback) {
+            var eventData = true;
 
-            //make a fake start date
-            var startDate = moment().startOf('day').subtract(7, "days").toDate();
-            //make a fake end date
-            var endDate = moment().startOf('day').toDate();
+            service.getData(function(response){
+                if(response.success == true) {
+                    eventData = response.data;
+                }
+            });
 
-            console.log(startDate.getTime());
 
-            data.sort(function(a, b){
+            //filter the data
+            console.log('begin ----   prepare subsmission data ---');
+            console.log('prepare data');
+            console.log(startDate);
+            console.log(endDate);
+            console.log(eventData);
+
+            eventData.sort(function(a, b){
                 return a.tsStart - b.tsStart;
             });
 
-            console.log(data);
-            var newData = [];
-
-            //filter events later than start date
-            for(var i = 0; i < data.length; i++) {
-                if(data[i].tsStart >= startDate) {
-                    var dObj = data[i];
-                    newData.push(data[i]);
-                }
-            }
-
-            console.log(newData);
-
-            //splitting data into sleep and caffeine array
             var sleepData = [];
             var coffeeData = [];
-            for(var n = 0; n < newData.length; n++) {
-                if(newData[n].dataType == "sleep") {
-                    sleepData.push(newData[n]);
-                }
-                else if(newData[n].dataType == "caffeine") {
-                    coffeeData.push(newData[n]);
+
+            //filter events started later than start date and earlier than end date
+            for(var i = 0; i < eventData.length; i++) {
+                if(eventData[i].tsStart >= startDate.getTime() && eventData[i].tsStart <= endDate.getTime()) {
+                    var dObj = eventData[i];
+                    if(eventData[i].dataType == 'sleep'){
+                        sleepData.push(dObj);
+                    }
+                    else if(eventData[i].dataType == 'caffeine'){
+                        coffeeData.push(dObj);
+                    }
                 }
             }
 
-            //padding sleep data
-            for(var j = 0; j <= 7; j++){
-                var start =  moment(startDate).startOf('day').add(j, 'days').toDate().getTime();
-                var end = moment(startDate).startOf('day').add(j + 1, 'days').toDate().getTime();
+            //filling default sleep events
+            /*condition - no overlapse to default sleep start and end
+                + start < default start  && end > default end
+                + default start < start < default end
+                + default start < end < default end
 
-                console.log(start);
-                console.log(end);
-
+            */
+            for(var j = 0; j <= DEFAULT_PREDICTION_DAYS; j++) {
+                var zeroHour = startDate.getTime() + j * 24 * 60 * 60 * 1000;
                 var found = false;
-                for(var k = 0; k < sleepData.length; k++) {
-                    if(sleepData[k].tsStart >= start && sleepData[k].tsStart <= end && sleepData[k].dataType == 'sleep') {
+                console.log('-----------------');
+                //console.log(moment(zeroHour).toDate());
+                var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000;
+                var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
+
+                console.log(startSleepHour);
+                console.log(nextDaySleepEnd);
+
+                for(var i = 0; i < sleepData.length; i++) {
+                    if ((sleepData[i].tsStart < startSleepHour && sleepData[i].tsEnd > nextDaySleepEnd)
+                        || (sleepData[i].tsStart > startSleepHour && sleepData[i].tsStart < nextDaySleepEnd)
+                        || (sleepData[i].tsEnd > startSleepHour && sleepData[i].tsEnd < nextDaySleepEnd)) {
                         found = true;
                         break;
                     }
                 }
+
                 if(!found){
+                    console.log('push in array');
                     var paddingSleep = {
-                        tsStart: moment(start).add(23, 'hours').toDate().getTime(),
-                        tsEnd: moment(start).add(1, 'days').add(7, 'hours').toDate().getTime(),
+                        //tsStart: moment(start).add(DEFAULT_SLEEP_START, 'hours').toDate().getTime(),
+                        //tsEnd: moment(start).add(1, 'days').add(DEFAULT_SLEEP_END, 'hours').toDate().getTime(),
+                        //startsAt: startSleepHour.toDate(),
+                        //endsAt: nextDaySleepEnd.toDate(),
+                        tsStart: startSleepHour,
+                        tsEnd: nextDaySleepEnd,
                         dataType: 'sleep'
                     };
 
-                    console.log(paddingSleep);
                     sleepData.push(paddingSleep);
                 }
+
+                console.log('zzz------------');
+
             }
 
             sleepData.sort(function(a, b){
                 return a.tsStart - b.tsStart;
             });
+            console.log('sleep data after sort');
+            console.log(sleepData);
 
-            //transform into array
+            var startTime = startDate.getTime();
+            var milInHour = 60 * 60 * 1000;
+
+            //processing coffee time
+            var caffeineDoses = [];
+            var caffeineTimes = [];
+            var caffeineItems = [];
+            for(var cc = 0; cc < coffeeData.length; cc++) {
+                //console.log(coffeeData[cc]);
+                var coffeeStart = (coffeeData[cc].tsStart - startTime - 24 * 60 * 60 * 1000)/milInHour;
+                caffeineTimes.push(coffeeStart);
+                caffeineDoses.push(coffeeData[cc].amount);
+                caffeineItems.push(coffeeData[cc].source);
+            }
+
+            //transform sleep data and coffee data into array
             var sleepWakeSchedule = [];
             var sleepStartTime = 0;
-            var milInHour = 60 * 60 * 1000;
-            var startTime = startDate.getTime();
-            console.log(startTime);
+
             for(var cn = 0; cn < sleepData.length; cn++) {
                 sleepData[cn].start = (sleepData[cn].tsStart - startTime)/milInHour;
                 sleepData[cn].end = (sleepData[cn].tsEnd - startTime)/milInHour;
@@ -1104,28 +980,15 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                         sleepWakeSchedule.push(sleepData[cn].end - sleepData[cn].start);
                     }
 
-
                     if(cn < sleepData.length - 1) {
                         var nextStart  = (sleepData[cn + 1].tsStart - startTime)/milInHour;
                         sleepWakeSchedule.push(nextStart - sleepData[cn].end);
                     }
                 }
             }
-            console.log(sleepWakeSchedule);
+
+            console.log('sleep data ');
             console.log(sleepData);
-
-            //coffee data
-            var caffeineDoses = [];
-            var caffeineTimes = [];
-            var caffeineItems = [];
-            for(var cc = 0; cc < coffeeData.length; cc++) {
-                console.log(coffeeData[cc]);
-                var coffeeStart = (coffeeData[cc].tsStart - startTime)/milInHour;
-                caffeineTimes.push(coffeeStart);
-                caffeineDoses.push(coffeeData[cc].amount);
-                caffeineItems.push(coffeeData[cc].source);
-            }
-
             var outputData = {
                 data: {
                     sleepStartTime: sleepStartTime,
@@ -1133,24 +996,17 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                     caffeineDoses: caffeineDoses,
                     caffeineTimes: caffeineTimes,
                     caffeineItems: caffeineItems,
-                    "numDays": 7
+                    //numDays: DEFAULT_PREDICTION_DAYS + 1
                 },
                 timestamp: startDate
             };
-            /*
-             "data": {
-             "sleepStartTime": 23,
-             "sleepWakeSchedule": [8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8, 16, 8],
-             "caffeineDoses": [400, 820],
-             "caffeineTimes": [82, 128],
-             "numDays": 7
-             },
-            * */
+
             console.log(outputData);
 
-            localStorageService.set(storageKey2, outputData);
-            callback({success: true});
-        }
+            callback({success: true, data: outputData});
+
+        };
+
         return service;
     }
 ]);

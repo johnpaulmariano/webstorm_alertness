@@ -16,8 +16,8 @@ Highcharts.theme = {
         backgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                [0, '#0e2b11'],
-                [1, '#74bc44']
+                [0, '#3b6b28'],
+                [1, '#3b6b28']
             ]
         },
         style: {
@@ -56,9 +56,7 @@ Highcharts.theme = {
     yAxis: {
         gridLineColor: '#fbec22',
         labels: {
-            style: {
-                color: '#E0E0E3'
-            }
+            enabled:false
         },
         lineColor: '#707073',
         minorGridLineColor: '#505053',

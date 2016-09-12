@@ -905,11 +905,11 @@ padding: 0;
   font-size: 10px;
 }
 .modal-content {
-  border:1px solid #F2ED8F;
+  border:1px solid #46653b;
   background-color: rgba(6,31,14,0.9);
 }
 .modal-header {
-  border-bottom:1px solid #F2ED8F;
+  border-bottom:1px solid #46653b;
 }
 .mycharge-last {
   margin-left: 40px;
@@ -1099,7 +1099,7 @@ opacity: 1!important;
 }
 .cal-month-box, .cal-month-box [class*=cal-cell] {
   border: none!important;
-  min-height: 80px!important;
+  min-height: 60px!important;
 }
 .cal-month-day {
   background-color: rgba(255, 255, 255, 0.14);
@@ -1144,23 +1144,26 @@ box-shadow: 1px 2px rgba(0, 0, 0, 0.22)!important;
   background-color: #143515!important;
 }
 div.cal-slide-content.cal-event-list > ul > li {
-  background-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 1px 2px rgba(0, 0, 0, 0.22);
-  padding: 5px;
+  /* background-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 1px 1px rgb(184, 188, 113); */
+      padding: 5px;
 }
 .cal-slide-content {
   background: none!important;
   padding:10px!important;
   padding-top: 20px!important;
+  box-shadow: none!important;
+  padding-bottom: 0px!important;
 }
 .cal-day-tick {
-  border: 1px solid #569334!important;
-  border-top: 0!important;
-  background-color: #345135!important;
+  bottom:-25px!important;
+  border: none!important;
+  background: none!important;
+  border-radius: none!important;
   margin-right: -16px!important;
 }
 i.glyphicon.glyphicon-chevron-up {
-    top: 2px!important;
+    top: 0!important;
     right: 1px!important;
 }
 div.cal-slide-content.cal-event-list > ul > li > a > i.glyphicon {
@@ -1173,17 +1176,245 @@ display: none;
 }
 .fake-event-class > a > div.btn.btn-primary {
 min-width: 100px;
+margin-top: 0;
+margin-bottom:0;
+}
+div.cal-slide-content.cal-event-list > ul > li.fake-event-class {
+  background: none;
+  bottom: 5px;
+  width: 100%;
+  position: absolute;
 }
 a.event-item-action {
   margin-left: 15px;
-  margin-right: 15px;
   padding: 0!important;
   margin-left: 5px;
 }
 li > span.pull-left.event {
   margin-top: 6px!important;
   margin-right: 10px;
+  margin-left: 5px;
 }
 .btn-mcc {
   padding: 6px 8px!important;
+}
+.pull-left.event.fake-event-class {
+  display: none;
+}
+.highcharts-tracker {
+    direction: ltr!important;
+}
+.cal-slide-content ul.unstyled {
+
+  position: relative;
+padding-bottom: 50px;
+}
+div.cal-slide-content.cal-event-list > ul > li {
+  background-color: rgba(255, 255, 255, 0.14);
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+form > div > div.form-group > span.input-group-btn > button.btn.btn-default {
+  margin-top:34px;
+  width: 50px;
+height: 50px;
+    margin-bottom: 5px;
+}
+form > div > div.form-group > span.input-group-btn > button.btn.btn-default > i {
+  top:2px;
+  font-size: 33px;
+      left: -3px;
+}
+td.uib-increment.hours > a.btn.btn-link > span, td.uib-increment.minutes > a.btn.btn-link > span {
+  top:5px;
+  font-size: 30px;
+  color: #69ab3d!important;
+}
+td.uib-decrement.hours > a.btn.btn-link > span, td.uib-decrement.minutes > a.btn.btn-link > span {
+  top:0px;
+  font-size: 30px;
+  color: #69ab3d!important;
+}
+tr > td > .btn-default, tr > th > .btn-default {
+  border: none;
+  background-color: #183916;
+  color: white;
+}
+tr > th > button > strong {
+  position: relative;
+  top: 8px;
+  color: rgb(255, 250, 167);
+}
+body > div.modal.fade.in > div > div > div > form > div.modal-body > div > div.ng-pristine.ng-untouched.ng-valid.ng-empty.ng-valid-date-disabled > ul > li > div > div > div > table > tbody > tr > td.text-center.h6 {
+  display:none;
+}
+ul.uib-datepicker-popup.dropdown-menu {
+  background-color: #183916;
+  border: 1px solid white;
+}
+small {
+  color: #183916;
+}
+tr.uib-weeks >td.text-center.h6 {
+  color: #183916;
+}
+tr > th > button.btn.btn-default.btn-sm.pull-right.uib-right, tr > th > button.btn.btn-default.btn-sm.pull-left.uib-left {
+  background: none;
+  color: white;
+}
+table.uib-timepicker {
+margin: 0 auto;
+}
+.uib-time input {
+    width: 100px;
+}
+div.modal-body > div.form-group > span.input-group-btn  {
+  margin: 0 auto;
+  text-align: center;
+}
+input.form-control.ng-pristine.ng-valid.ng-not-empty.ng-valid-date,input.form-control.ng-pristine.ng-valid.ng-empty.ng-valid-date, input.form-control.ng-valid.ng-valid-date.ng-not-empty.ng-dirty.ng-touched {
+  pointer-events: none;
+  color: #d0d0d0;
+  border-bottom-right-radius: 4px!important;
+    border-top-right-radius: 4px!important;
+}
+@media (max-width:980px)
+{
+.fixed-left-img-chart {
+  position: absolute;
+  z-index: 1000;
+  left: -1px;;
+}
+}
+@media (min-width:980px)
+{
+.fixed-left-img-chart {
+  position: relative;
+  z-index: 1000;
+  left: -1px;
+}
+}
+div > div.container > div.form-group > input.form-control.ng-pristine.ng-untouched.ng-valid.ng-not-empty.ng-valid-date, div > div.container > div.form-group > input.form-control.ng-touched.ng-valid.ng-not-empty.ng-valid-date {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div > div.container > div.form-group > span > button > i.glyphicon.glyphicon-calendar {
+top: 2px;
+font-size: 33px;
+left: 0;
+}
+
+div > div.container > div.form-group > span > button.btn.btn-default {
+  margin-top: 10px;
+}
+div > div.container > div.form-group > span, .center-calendar {
+margin: 0 auto;
+text-align: center;
+}
+.radius-fix {
+  border-top-left-radius: 5px!important;
+  border-bottom-left-radius: 5px!important;
+}
+div.modal-body > div > div > div > ul.uib-datepicker-popup.dropdown-menu{
+    z-index: 1100;
+    top: 45px!important;
+    left: 30px!important;
+  }
+.cal-fix {
+  top: 1px;
+  font-size: 24px;
+  left: 1px;
+}
+.cal-fix-button {
+  padding: 0;
+}
+.c-s-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 8px;
+  background-color: #e3bc08;
+  float: left;
+  top: 5px;
+  margin-right: 5px;
+  position: relative;
+}
+.c-c-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 8px;
+  background-color: #1e90ff;
+  float: left;
+  top: 5px;
+  margin-right: 5px;
+  position: relative;
+}
+.d-e-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 8px;
+  background-color: #006400;
+  float: left;
+  top: 5px;
+  margin-right: 5px;
+  position: relative;
+}
+.legend-row {
+  margin: 5px;
+}
+.center-form-sd {
+  margin: 0 auto;
+text-align: center;
+}
+button.btn.btn-sm.btn-info.uib-datepicker-current {
+background-color:#72b943;
+}
+
+button.btn.btn-sm.btn-success.pull-right.uib-close{
+    background: linear-gradient(#74BC44, rgba(112, 183, 66, 0.55));
+}
+
+div.center-form-sd > div > div > ul {
+  left: -50px!important;
+  top: 43px!important;
+  z-index: 1100;
+}
+.question-button {
+  background: none!important;;
+  border: none!important;
+}
+.glyphicon-question-sign {
+  font-size: 18px;
+  color: #6eb340!important;
+  top: 0;
+}
+.uib-datepicker-popup.dropdown-menu {
+  z-index: 1100;
+}
+#basic-addon1 > div > ul.uib-datepicker-popup.dropdown-menu {
+  left: 0!important;
+  top:45px!important;
+
+}
+tspan {
+  font-size: 16px;
+  color: #000;
+}
+
+#rotate-div {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+
+}
+.rotate-block {
+  display: block;
+width: 400px;
+position: relative;
+left: -365px;
+}
+
+.glyphicon-arrow-left, .glyphicon-arrow-right {
+  top:2px;
 }

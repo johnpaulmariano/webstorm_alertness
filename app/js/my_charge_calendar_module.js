@@ -12,29 +12,26 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
     calendarConfig.allDateFormats.moment.title.day = 'ddd D MMM';
     calendarConfig.allDateFormats.moment.date.weekDay  = 'ddd';
     calendarConfig.displayAllMonthEvents = true;
+    calendarConfig.colorTypes.info = {
+        primary: '#ed3c18',
+        secondary: '#d1e8ff'
+    };
 })
-.controller('MyChargeCalendarController', ['$scope', '$uibModal', 'moment', 'calendarConfig',
-    'MyChargeDataService', function($scope, $uibModal, moment, calendarConfig, MyChargeDataService){
+.controller('MyChargeCalendarController', ['$scope', '$uibModal', 'moment', 'calendarConfig', 'MyChargeDataService',
+    'DEFAULT_PREDICTION_DAYS', 'DEFAULT_SLEEP_START', 'DEFAULT_SLEEP_DURATION', 'DEFAULT_SLEEP_END',
+    function($scope, $uibModal, moment, calendarConfig, MyChargeDataService, DEFAULT_PREDICTION_DAYS,
+             DEFAULT_SLEEP_START, DEFAULT_SLEEP_DURATION, DEFAULT_SLEEP_END){
         var vm = this;
 
-        //These variables MUST be set as a minimum for the calendar to work
         vm.calendarView = 'month';
         vm.viewDate = new Date();
         vm.isCellOpen = false;
-        vm.startOpen = false;
-        vm.endOpen = false;
+        //vm.startOpen = false;
+        //vm.endOpen = false;
         vm.eventsChangedState = false;
 
-        vm.defaultStartSleep = 23;
-        vm.defaultSleepDuration = 8;
-
-        vm.sleeps = [];
-        vm.caffeine = [];
-        vm.message = "";
-        vm.numberOfDays = 14;
-        vm.sleepDays = [];
-
-        vm.errorDays = [];
+        //vm.defaultStartSleep = DEFAULT_SLEEP_START;
+       // vm.defaultSleepDuration = DEFAULT_SLEEP_DURATION;
 
         var sleepActions = [
             {
@@ -52,12 +49,12 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         ];
 
         var sleepDefaultActions = [
-            {
+            /*{
                 label: '<i class=\'glyphicon glyphicon-remove\'></i>',
                 onClick: function(args) {
                     deleteEvent('Delete-Sleep', args.calendarEvent);
                 }
-            },
+            },*/
             {
                 label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
                 onClick: function(args) {
@@ -107,8 +104,11 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                             {
                                 title: 'Sleep',
                                 color: calendarConfig.colorTypes.warning,
-                                startsAt: moment(myChargeEvents[i].tsStart).toDate(),
-                                endsAt: moment(myChargeEvents[i].tsEnd).toDate(),
+                                startsAt: moment.utc(myChargeEvents[i].tsStart).toDate(),
+                                endsAt: moment.utc(myChargeEvents[i].tsEnd).toDate(),
+                                //duration: myChargeEvents[i].tsEnd - myChargeEvents[i].tsStart,
+                                //startAt: s,
+                                //endsAt: e,
                                 draggable: false,
                                 resizable: false,
                                 incrementsBadgeTotal: false,
@@ -143,9 +143,43 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         //adding default sleep events
         vm.modifyCell = function(calendarCell){
             var ok = true;
-            for(var i = 0; i < calendarCell.events.length; i++) {
-                if(calendarCell.events[i].dataType == 'sleep') {
-                    if(calendarCell.events[i].startsAt > moment(calendarCell.date._d).startOf('day').toDate()) {
+            //console.log(calendarCell.date._d);
+            //console.log('****');
+            var zeroHour = moment(calendarCell.date._d).startOf('day').toDate().getTime();
+            /*var lastNightSleepStart = moment(zeroHour).subtract(1, 'days').add(DEFAULT_SLEEP_START, 'hours').toDate();
+            var wakeupHour = moment(zeroHour).add(DEFAULT_SLEEP_END, 'hours').toDate();
+            var startSleepHour = moment(zeroHour).startOf('day').add(DEFAULT_SLEEP_START, 'hours').toDate();
+            var nextDaySleepEnd = moment(startSleepHour).add(DEFAULT_SLEEP_DURATION, 'hours').toDate();*/
+            //var lastNightSleepStart = zeroHour + (-24 + DEFAULT_SLEEP_START) * 60 * 60 * 1000;
+            //var wakeupHour = zeroHour + DEFAULT_SLEEP_END * 60 * 60 * 1000;
+            var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000 - 1;
+            var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
+            /*console.log('zz------------zzz');
+            console.log(moment(zeroHour).toDate());
+            console.log(startSleepHour);
+            console.log(nextDaySleepEnd);*/
+
+
+            for(var i = 0; i < vm.events.length; i++) {
+                if(vm.events[i].dataType == 'sleep') {
+                    /*console.log(vm.events[i]);
+                    console.log('start at');
+                    console.log(vm.events[i].startsAt.getTime());
+                    console.log('end at');
+                    console.log(vm.events[i].endsAt.getTime());*/
+                    if((vm.events[i].endsAt.getTime() > startSleepHour && vm.events[i].endsAt.getTime() < nextDaySleepEnd)
+                        || (vm.events[i].startsAt.getTime() < nextDaySleepEnd && vm.events[i].endsAt.getTime() > nextDaySleepEnd)
+                        ) {
+                        /*console.log('found');
+                        console.log(vm.events[i]);
+                        console.log('start at');
+                        console.log(vm.events[i].startsAt.getTime());
+                        console.log('end at');
+                        console.log(vm.events[i].endsAt.getTime());
+
+                        console.log('date');
+                        console.log(calendarCell.date._d);
+                        console.log('-------');*/
                         ok = false;
                         break;
                     }
@@ -153,12 +187,14 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
             }
 
             if(ok) {
+                //console.log('ok here');
                 calendarCell.events.push(
                     {
                         title: 'Default Sleep',
                         color: calendarConfig.colorTypes.success,
-                        startsAt: moment(calendarCell.date._d).add(vm.defaultStartSleep, 'hours').toDate(),
-                        endsAt: moment(calendarCell.date._d).add(vm.defaultStartSleep + vm.defaultSleepDuration, 'hours').toDate(),
+                        startsAt: moment(startSleepHour + 1).toDate(),
+                        endsAt: moment(nextDaySleepEnd + 1).toDate(),
+                        //duration: nextDaySleepEnd - startSleepHour,
                         draggable: false,
                         resizable: false,
                         incrementsBadgeTotal: false,
@@ -167,6 +203,7 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                         dataType: 'defaultSleep'
                     }
                 );
+                //console.log(calendarCell);
             }
         };
 
@@ -203,6 +240,7 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                         title: '',
                         color: calendarConfig.colorTypes.alert,
                         startsAt: moment(day).add(1, 'days').subtract(1, 'seconds').toDate(),
+                        //duration: 0,
                         draggable: false,
                         resizable: false,
                         incrementsBadgeTotal: false,
@@ -228,7 +266,7 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
 
 
         showModal = function(action, event){
-            console.log(action);
+            //console.log(action);
             if(action == 'Edit-Sleep' || action == 'Add-Sleep') {
                 var modalInstance = $uibModal.open({
                     //animation: vm.animationsEnabled,
@@ -243,7 +281,7 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                             return event;
                         },
                         eventType : function(){
-                            return 'caffeine';
+                            return 'sleep';
                         },
                         action: function() {
                             return action;
@@ -252,7 +290,7 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                             return $scope.vm.events;
                         },
                         actionButtons: function() {
-                            return caffeineActions;
+                            return sleepActions;
                         },
                         calendarConfig: function() {
                             return calendarConfig;
@@ -295,42 +333,47 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
 
             modalInstance.result.then(function (msg) {
                     vm.message = msg;
-                    console.log('closed');
+                    //console.log('closed');
                 }, function(){
-                    console.log('dismiss');
+                    //console.log('dismiss');
                 }
             );
         };
 
-        vm.toggle = function($event, field, event) {
+        /*vm.toggle = function($event, field, event) {
             $event.preventDefault();
             $event.stopPropagation();
             $scope[field] = !$scope[field];
-        };
+        };*/
 
-        deleteEvent = function(action, event) {
-            vm.events.splice(event.$id, 1);
+        deleteEvent = function(action, calEvent) {
+            for(var i = 0; i < vm.events.length; i++) {
+                if(i == calEvent.$id) {
+                    vm.events.splice(i, 1);
+                }
+            }
+            //vm.events.splice(event.$id, 1);
 
             //do save events
             var data = [];
-            for(var i = 0; i < $scope.vm.events.length; i++) {
+            for(var i = 0; i < vm.events.length; i++) {
                 var singleEvent = null;
-                if($scope.vm.events[i].cssClass != 'fake-event-class') {
-                    if($scope.vm.events[i].dataType == 'sleep') {
+                if(vm.events[i].cssClass != 'fake-event-class') {
+                    if(vm.events[i].dataType == 'sleep') {
                         singleEvent = {
-                            tsEnd: $scope.vm.events[i].endsAt.getTime(),
-                            tsStart: $scope.vm.events[i].startsAt.getTime(),
+                            tsEnd: vm.events[i].endsAt.getTime(),
+                            tsStart: vm.events[i].startsAt.getTime(),
                             dataType: 'sleep'
                         }
                     }
-                    else if($scope.vm.events[i].dataType == 'caffeine') {
+                    else if(vm.events[i].dataType == 'caffeine') {
                         singleEvent = {
-                            tsStart: $scope.vm.events[i].startsAt.getTime(),
+                            tsStart: vm.events[i].startsAt.getTime(),
                             dataType: 'caffeine',
-                            sourceID: $scope.vm.events[i].sourceID,
-                            amount: $scope.vm.events[i].amount,
-                            quantity: $scope.vm.events[i].quantity,
-                            source: $scope.vm.events[i].name
+                            sourceID: vm.events[i].sourceID,
+                            amount: vm.events[i].amount,
+                            quantity: vm.events[i].quantity,
+                            source: vm.events[i].name
                         }
                     }
                 }
@@ -346,13 +389,13 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                 }
             });
 
-            MyChargeDataService.transformData(data, function(response){
+            /*MyChargeDataService.transformData(null, null, data, function(response){
                 if(response.success) {
                     console.log('transform success');
                 }
-            });
+            });*/
         }
 
-        console.log($scope);
+        //console.log($scope);
     }
 ]);

@@ -1,24 +1,20 @@
 <div ng-include="'views/navbar.html'"></div>
 <div class="container"  style="overflow: auto;" ng-controller="ChartController">
-    <h4 class="row text-center header-bg">What's My Charge?</h4>
-    <ul class="custom-bullet glass-bg">
-      <li>Click a point on the line to see your current reaction time.</li>
-      <li>Caffeine events are marked in red.</li>
-      <li>Scroll left and right.</li>
-    </ul>
-    <div class="form-group">Start date:
-        <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy" ng-model="startDate" is-open="startOpen" close-text="Close" >
-        <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="toggle($event, 'startOpen')">
-                <i class="glyphicon glyphicon-calendar"></i>
-            </button>
-        </span>
-        <div class='btn btn-primary'>Apply</div>
-    </div>
-    <div style="overflow:auto;">
-        <alertness-Chart title="What's My Charge" data="chartData"></alertness-Chart>
-    </div>
+    <h4 class="row text-center header-bg" style="padding:0;">What's My Charge? <button type="button" class="btn btn-default question-button" ng-click="openModal()"><span class="glyphicon glyphicon-question-sign"></span></button></h4>
 
+    <div class="form-group center-form-sd">Set date:
+      <div class="row">
+        <div class="input-group col-xs-8" style="margin-top:10px; margin-bottom: 10px; float: left; padding-right:5px;">
+            <span class="input-group-addon" id="basic-addon1" style="padding:0; background:none; border:none;">
+                <span class="glyphicon glyphicon-calendar cal-fix" style="padding:5px; background-color:#FFF; float:left; top:0!important; left:inherit!important;border-bottom-left-radius: 4px; border-top-left-radius: 4px;" ng-click="toggle($event, 'endOpen')" ></span>
+                <input type="text" class="form-control" style="max-width: 81%;" uib-datepicker-popup="dd MMMM yyyy" ng-model="endDate" is-open="endOpen" close-text="Close" >
+            </span>
+        </div>
+          <div class="btn btn-primary radius-fix col-xs-4" style="padding:6px;" style ng-click="applyStartDate()">Apply</div>
+        </div>
+
+
+    </div>
     <h4 class="row text-center fatigue-header">
         <a href="#mychargecalendar" style="color:#FFF;">Change Sleep Schedule
             <br>
@@ -26,5 +22,30 @@
             <br>
             Add Caffeine Event</a>
     </h4>
+    <div>
+      <!--  <div style="position:absolute;">
+            <img src="images/pin-left.png" class="fixed-left-img-chart"></div> -->
+        <div style="overflow:auto; direction: rtl;">
+            <alertness-Chart title="What's My Charge" data="chartData"></alertness-Chart>
+        </div>
+    </div>
+
+
+            <div><p style="text-align:center;"><i>Powered by BHSAI</i></p></div>
     <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" spinner-on="showSpinner"></span>
+
+
+    <script type="text/ng-template" id="myChargeInfoModal.html">
+            <div class="glass-bg">
+              <ul class="custom-bullet" style="padding-left: 10px;">
+                  <li>Click a point on the line to see your current reaction time.</li>
+                  <li>Caffeine events are marked in red.</li>
+                  <li>Scroll left and right.</li>
+              </ul>
+              <div style="margin:0 auto; text-align:right;">
+            <button class="btn btn-warning" type="button" ng-click="close()">Close</button>
+          </div>
+          </div>
+
+    </script>
 </div>
