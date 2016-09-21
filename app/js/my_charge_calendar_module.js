@@ -49,12 +49,12 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         ];
 
         var sleepDefaultActions = [
-            /*{
+            {
                 label: '<i class=\'glyphicon glyphicon-remove\'></i>',
                 onClick: function(args) {
                     deleteEvent('Delete-Sleep', args.calendarEvent);
                 }
-            },*/
+            },
             {
                 label: '<i class=\'glyphicon glyphicon-pencil\'></i>',
                 onClick: function(args) {
@@ -100,9 +100,14 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
 
                 for(var i = 0; i < myChargeEvents.length; i++){
                     if(myChargeEvents[i].dataType == 'sleep'){
+                        var title = 'Sleep';
+
+                        if(myChargeEvents[i].tsStart == myChargeEvents[i].tsEnd) {
+                            title = 'Zero Sleep';
+                        }
                         vm.events.push(
                             {
-                                title: 'Sleep',
+                                title: title,
                                 color: calendarConfig.colorTypes.warning,
                                 startsAt: moment.utc(myChargeEvents[i].tsStart).toDate(),
                                 endsAt: moment.utc(myChargeEvents[i].tsEnd).toDate(),
@@ -154,8 +159,8 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
             //var wakeupHour = zeroHour + DEFAULT_SLEEP_END * 60 * 60 * 1000;
             var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000 - 1;
             var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
-            /*console.log('zz------------zzz');
-            console.log(moment(zeroHour).toDate());
+            //console.log('zz------------zzz');
+            /*console.log(moment(zeroHour).toDate());
             console.log(startSleepHour);
             console.log(nextDaySleepEnd);*/
 
@@ -347,14 +352,34 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         };*/
 
         deleteEvent = function(action, calEvent) {
-            for(var i = 0; i < vm.events.length; i++) {
-                if(i == calEvent.$id) {
-                    vm.events.splice(i, 1);
+            console.log(calEvent);
+
+            //for default sleep event deletion: it would be create a new sleep event with the start sleep time equals to end sleep time
+            if(calEvent.dataType == "defaultSleep") {
+                console.log(vm.events);
+                var newSleep = angular.copy(calEvent);
+                console.log(newSleep);
+                var startTime = newSleep.startsAt.getTime() + 1;
+                newSleep.title = 'Zero Sleep';
+                newSleep.color = calendarConfig.colorTypes.warning;
+                newSleep.startsAt = moment(startTime).toDate();
+                newSleep.endsAt = moment(startTime).toDate();
+                newSleep.actions = sleepActions;
+                newSleep.dataType = 'sleep';
+                vm.events.push(newSleep);
+
+                console.log(vm.events);
+            }
+            else {  //for other types, it would be slice the event out of the events array
+
+                for (var i = 0; i < vm.events.length; i++) {
+                    if (i == calEvent.$id) {
+                        vm.events.splice(i, 1);
+                    }
                 }
             }
-            //vm.events.splice(event.$id, 1);
 
-            //do save events
+            //save events
             var data = [];
             for(var i = 0; i < vm.events.length; i++) {
                 var singleEvent = null;
@@ -388,14 +413,16 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                     console.log('saved');
                 }
             });
-
-            /*MyChargeDataService.transformData(null, null, data, function(response){
-                if(response.success) {
-                    console.log('transform success');
-                }
-            });*/
         }
 
-        //console.log($scope);
+        vm.reset= function() {
+            console.log('reset data');
+            vm.events = [];
+            MyChargeDataService.setData([], function(response){
+                if(response.success) {
+                    console.log('data erased');
+                }
+            });
+        };
     }
 ]);

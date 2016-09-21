@@ -71,9 +71,9 @@ atoAlertnessChartModule.directive('alertnessChart', ['moment', function(){
                         minorTickInterval: 0.5,
                         plotBands: [
                             {
-                                from: 230,
-                                to: 370,
-                                color: 'rgba(248, 255, 92, 0.5)',
+                                from: 200,
+                                to: 270,
+                                color: 'rgba(248, 255, 92, 0.1)',
                             }
                         ]
                     },
@@ -165,20 +165,9 @@ atoAlertnessChartModule.directive('alertnessChart', ['moment', function(){
             var chartData = {};
             if(r.data.length > 0) {
                 var ts = $scope.startDate;
-                var begTime = moment.utc($scope.startDate).startOf('day').add(1, 'days').toDate().getTime();
-                //var begTime = Date.UTC(ts.getFullYear(), ts.getMonth(), ts.getDate(), 0, 0, 0, 0);
-                //var begTime = $scope.startDate.getTime();
-                /*console.log('ts');
-                console.log(ts);
-                console.log('beg time');
-                console.log($scope.startDate);
-                console.log(begTime);*/
-                //var begTime =
-                //var begTime = moment(r.time).toDate().getTime();
-                var coffeShift = 0;
+                var begTime = moment.utc($scope.startDate).startOf('day').add(0, 'days').toDate().getTime();
 
                 chartData.begTS = begTime + ($scope.requestData.sleepStartTime) * 60 * 60 * 1000;
-                //console.log('beg ts');
 
                 //calculate sleep periods
                 var sleepPeriods = [];
@@ -259,10 +248,10 @@ atoAlertnessChartModule.directive('alertnessChart', ['moment', function(){
 
                 for(var m = 0; m < DEFAULT_PREDICTION_DAYS + 4; m++) {
                     var mTicks = {
-                        color: '#D3D3D3',
+                        color: '#FFFAA7',
                         dashStyle: 'solid',
                         value: begTime + m * 24 * 60 * 60 * 1000,
-                        width: 1.5,
+                        width: 2,
                         height: 4,
                         zIndex: 1
                     };

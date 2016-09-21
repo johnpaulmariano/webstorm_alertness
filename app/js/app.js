@@ -89,6 +89,9 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/chart', {
             templateUrl: 'views/chart.html'
         })
+        .when('/chart-intro', {
+            templateUrl: 'views/chart-intro.html'
+        })
         /*.when('/gauge', {
             controller: 'GaugeController',
             templateUrl: 'views/gauge.html'

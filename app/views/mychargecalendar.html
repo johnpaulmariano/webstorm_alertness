@@ -16,7 +16,14 @@
         </div>
     </div>
 
-    <h4 class="row text-center fatigue-header"><a href="#chart" style="color:#FFF;">Show chart</a></h4>
+    <div class="row">
+        <div class="col-md-6 text-center" style="margin: 0 auto;">
+            <div class="btn-group">
+                <button class="btn btn-default btn btn-primary" ng-click="vm.reset()">Reset</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="row text-center fatigue-header"><a href="#chart" style="color:#FFF; font-size: 16px;">Return to Response Time Graph</a></h4>
 
     <mwl-calendar events="vm.events"
           view="vm.calendarView"
@@ -53,10 +60,11 @@
                 <div class="mycharge-start-header" style="margin-top:10px; color:#FFFAA7!important;">Start Time</div>
                 <div class="form-group">
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2"  style="padding:0 8px;" ng-click="toggle($event, 'startOpen')">
-                            <i class="glyphicon glyphicon-calendar cal-fix"></i>
+                        <span class="input-group-addon" id="basic-addon2"  style="padding:0; background:none; border:none;">
+                            <span class="glyphicon glyphicon-calendar cal-fix mobile-cal-fix" style="padding:5px; background-color:#FFF; float:left; top:0!important; padding-right:85%; left:inherit!important;border-bottom-left-radius: 4px; border-top-left-radius: 4px;" ng-click="toggle($event, 'startOpen')"></span>
+
+                        <input type="text" class="form-control mobile-input-fix" uib-datepicker-popup="dd MMMM yyyy"  ng-model="calEvent.startsAt" is-open="startOpen" close-text="Close" style="pointer-events:none; position:absolute; left:35px;" >
                         </span>
-                        <input type="text" class="form-control" uib-datepicker-popup="dd MMMM yyyy"  ng-model="calEvent.startsAt" is-open="startOpen" close-text="Close" style="pointer-events:none;" >
                     </div>
                     <div uib-timepicker ng-model="calEvent.startsAt" hour-step="1" minute-step="15" show-meridian="false"></div>
                 </div>

@@ -64,14 +64,10 @@ myServices.factory('AuthenticationService',
 
 
         };
-        /*waiting for CSSI to enable email capturing */
+
         service.Register = function(username, password, email, callback) {
-        //service.Register = function(username, password, callback) {
             $http.put(BASE_API_URL + 'user/create', {username: username, password: password, email: email})
-            //$http.put(BASE_API_URL + 'user/create', {username: username, password: password})
                 .success(function (response) {
-                    //console.log('create user');
-                    //console.log(response);
                     callback(response);
                 })
                 .error(function(data, status, headers, config){
@@ -204,7 +200,6 @@ myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataSe
         var asGuest = $rootScope.asGuest;
         var storageKey = "Chronotype";
 
-        //var localData = localStorageService.get(storageKey);
         service.getLocalData = function(username, callback) {
             var localData = localStorageService.get(storageKey);
             if(localData) {
@@ -235,7 +230,6 @@ myServices.factory('ProfileDataService',  ['$http', 'BASE_API_URL', 'GuestDataSe
             }
             else {
                 var data = GuestDataService.getCookie('profile');
-                console.log(data);
                 callback({result : "success", data: data});
             }
         };
@@ -573,8 +567,6 @@ myServices.factory('DataPredictionService', ['$http', 'BASE_API_URL', 'localStor
                         else {
                             callback({success: false, message: 'Error: ' + response.message});
                         }
-
-
                     })
                     .error(function(data, status, headers, config){
                         callback({success: false, message: 'Server connection error'});
@@ -667,8 +659,6 @@ myServices.factory('CaffeineService', ['$http', 'BASE_API_URL', '$rootScope',
                     callback({success: false, message: 'Server connection error'});
                 });*/
 
-
-
             return caffeineItems;
         };
 
@@ -711,18 +701,6 @@ myServices.factory('MeqService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
     function($http, BASE_API_URL, $rootScope, localStorageService){
         var service = {};
         var storageKey = 'MEQData';
-
-        /*service.getData = function(callback) {
-            var localData = localStorageService.get(storageKey);
-            callback(localData);
-        };
-
-        service.setData = function(data, callback) {
-            console.log('set meq');
-            console.log(data);
-            localStorageService.set(storageKey, data);
-            callback({success: true});
-        };*/
         var asGuest = $rootScope.asGuest;
 
         service.getData = function(callback) {
@@ -742,9 +720,6 @@ myServices.factory('MeqService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
         };
 
         service.setData = function(data, callback) {
-            console.log('set meq');
-            //console.log(data);
-
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/meq', data)
                     .success(function(response){
@@ -787,9 +762,6 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
         };
 
         service.setData = function(data, callback) {
-            console.log('set ess');
-            //console.log(data);
-
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/ess', data)
                     .success(function(response){
@@ -818,7 +790,6 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
         var service = {};
         //var asGuest = $rootScope.asGuest;
         var storageKey = 'MyChargeDataCalendar';
-        var storageKey2 = 'MyChargeSubmissionData';
         var asGuest = true;
 
         service.getData = function(callback) {
@@ -841,9 +812,6 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
         };
 
         service.setData = function(data, callback) {
-            console.log('set sleep');
-            console.log(data);
-
             if(!asGuest) {
                 $http.put(BASE_API_URL + 'data/mycharge', data)
                     .success(function(response){
@@ -868,14 +836,6 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                 }
             });
 
-
-            //filter the data
-            console.log('begin ----   prepare subsmission data ---');
-            console.log('prepare data');
-            console.log(startDate);
-            console.log(endDate);
-            console.log(eventData);
-
             eventData.sort(function(a, b){
                 return a.tsStart - b.tsStart;
             });
@@ -897,24 +857,18 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
             }
 
             //filling default sleep events
-            /*condition - no overlapse to default sleep start and end
-                + start < default start  && end > default end
-                + default start < start < default end
-                + default start < end < default end
-
-            */
             for(var j = 0; j <= DEFAULT_PREDICTION_DAYS; j++) {
                 var zeroHour = startDate.getTime() + j * 24 * 60 * 60 * 1000;
                 var found = false;
-                console.log('-----------------');
-                //console.log(moment(zeroHour).toDate());
                 var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000;
                 var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
 
-                console.log(startSleepHour);
-                console.log(nextDaySleepEnd);
-
                 for(var i = 0; i < sleepData.length; i++) {
+                    /*condition - no overlapse to default sleep start and end
+                     + start < default start  && end > default end
+                     + default start < start < default end
+                     + default start < end < default end
+                     */
                     if ((sleepData[i].tsStart < startSleepHour && sleepData[i].tsEnd > nextDaySleepEnd)
                         || (sleepData[i].tsStart > startSleepHour && sleepData[i].tsStart < nextDaySleepEnd)
                         || (sleepData[i].tsEnd > startSleepHour && sleepData[i].tsEnd < nextDaySleepEnd)) {
@@ -924,12 +878,8 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
                 }
 
                 if(!found){
-                    console.log('push in array');
+                    //console.log('push in array');
                     var paddingSleep = {
-                        //tsStart: moment(start).add(DEFAULT_SLEEP_START, 'hours').toDate().getTime(),
-                        //tsEnd: moment(start).add(1, 'days').add(DEFAULT_SLEEP_END, 'hours').toDate().getTime(),
-                        //startsAt: startSleepHour.toDate(),
-                        //endsAt: nextDaySleepEnd.toDate(),
                         tsStart: startSleepHour,
                         tsEnd: nextDaySleepEnd,
                         dataType: 'sleep'
@@ -937,19 +887,16 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
 
                     sleepData.push(paddingSleep);
                 }
-
-                console.log('zzz------------');
-
             }
 
             sleepData.sort(function(a, b){
                 return a.tsStart - b.tsStart;
             });
-            console.log('sleep data after sort');
+
             console.log(sleepData);
 
             var startTime = startDate.getTime();
-            var milInHour = 60 * 60 * 1000;
+            var milInHour = 60 * 60 * 1000; //milliseconds in an hour
 
             //processing coffee time
             var caffeineDoses = [];
@@ -957,38 +904,69 @@ myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageS
             var caffeineItems = [];
             for(var cc = 0; cc < coffeeData.length; cc++) {
                 //console.log(coffeeData[cc]);
-                var coffeeStart = (coffeeData[cc].tsStart - startTime - 24 * 60 * 60 * 1000)/milInHour;
+                var coffeeStart = (coffeeData[cc].tsStart - startTime)/milInHour;
                 caffeineTimes.push(coffeeStart);
                 caffeineDoses.push(coffeeData[cc].amount);
                 caffeineItems.push(coffeeData[cc].source);
             }
 
-            //transform sleep data and coffee data into array
+            //transform sleep data into array
             var sleepWakeSchedule = [];
             var sleepStartTime = 0;
 
+            /*var newData = [];
+            for(var i = 0; i < sleepData.length; i++) {
+                if(i == 0) {
+                    newData.push(sleepData[i]);
+                }
+                else if(sleepData[i].tsEnd != sleepData[i].tsStart) {
+                    newData.push(sleepData[i]);
+                }
+            }
+
+            console.log(newData);
+            //sleepData = newData;
+            */
             for(var cn = 0; cn < sleepData.length; cn++) {
                 sleepData[cn].start = (sleepData[cn].tsStart - startTime)/milInHour;
                 sleepData[cn].end = (sleepData[cn].tsEnd - startTime)/milInHour;
+                if(sleepData[cn].tsEnd == sleepData[cn].tsStart) { // zero sleep, therefore look for the next sleep start
+                    if(cn == 0) {
+                        sleepStartTime = (sleepData[cn].tsStart - startTime)/milInHour;
+                        sleepWakeSchedule.push((sleepData[cn].tsEnd - sleepData[cn].tsStart)/milInHour);
 
-                if(cn == 0) {
-                    sleepStartTime = sleepData[cn].start;
-                    sleepWakeSchedule.push(sleepData[cn].end - sleepData[cn].start);
+                    }
+                    else {
+                        var wakeTime = ((sleepData[cn].tsStart - sleepData[cn-1].tsEnd) + (sleepData[cn+1].tsStart - sleepData[cn].tsEnd))/milInHour;
+                        /*console.log('no sleep');
+                        console.log((sleepData[cn].tsStart - sleepData[cn-1].tsEnd)/milInHour);
+                        console.log((sleepData[cn+1].tsStart - sleepData[cn].tsEnd)/milInHour);*/
+                        sleepWakeSchedule.push(wakeTime);
+
+                        //push sleep period
+                        sleepWakeSchedule.push((sleepData[cn+1].tsEnd - sleepData[cn+1].tsStart)/milInHour);
+                        cn ++;
+                    }
                 }
                 else {
-                    if(cn > 1) {
-                        sleepWakeSchedule.push(sleepData[cn].end - sleepData[cn].start);
+                    if(cn == 0) {
+                        sleepStartTime = (sleepData[cn].tsStart - startTime)/milInHour;
+                        sleepWakeSchedule.push((sleepData[cn].tsEnd - sleepData[cn].tsStart)/milInHour);
+                    }
+                    else {
+
+                        //push awake period
+                        sleepWakeSchedule.push((sleepData[cn].tsStart - sleepData[cn-1].tsEnd)/milInHour);
+                        //push sleep period
+                        sleepWakeSchedule.push((sleepData[cn].tsEnd - sleepData[cn].tsStart)/milInHour);
                     }
 
-                    if(cn < sleepData.length - 1) {
-                        var nextStart  = (sleepData[cn + 1].tsStart - startTime)/milInHour;
-                        sleepWakeSchedule.push(nextStart - sleepData[cn].end);
-                    }
                 }
             }
 
             console.log('sleep data ');
             console.log(sleepData);
+
             var outputData = {
                 data: {
                     sleepStartTime: sleepStartTime,
