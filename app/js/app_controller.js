@@ -1,6 +1,9 @@
+/*
+*   @file
+*   a main controller for the app
+*   storing shared variables between controllers
+*/
 'use strict';
-/* Controllers */
-
 var atoAlertnessControllers = angular.module('atoAlertnessControllers', []);
 
 atoAlertnessControllers.controller('ApplicationController', ['$scope', '$rootScope', '$location', 'AuthenticationService', 'RememberMeService', 'localStorageService',

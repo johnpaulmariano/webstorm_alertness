@@ -1,5 +1,13 @@
 /**
  * Created by trieutran on 7/5/16.
+ * @file
+ * This is a module for creating response time chart based on user's input of sleeping times and
+ * caffeine drinks.  It is "Highcharts" library to generate the chart.
+ *
+ * The module consists of two main parts
+ * - Directive: to transform html dom element into a chart
+ *
+ * - Controller:
  */
 var atoAlertnessChartModule = angular.module('atoAlertnessChartModule', []);
 
@@ -73,7 +81,7 @@ atoAlertnessChartModule.directive('alertnessChart', ['moment', function(){
                             {
                                 from: 200,
                                 to: 270,
-                                color: 'rgba(248, 255, 92, 0.1)',
+                                color: 'rgba(138, 236, 71, .5)'
                             }
                         ]
                     },

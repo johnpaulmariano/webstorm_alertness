@@ -1,5 +1,8 @@
 /**
  * Created by trieutran on 7/1/16.
+ * @file
+ * a controller for a caffeine drink modal which pops up when user add a caffeine drink event
+ * Note: It is deprecated, and has been replaced by my_charge_calendar_modal_controller
  */
 atoAlertnessControllers.controller('CaffeineModalController', ['$scope', '$uibModalInstance', 'caffeine', 'dropdowns', 'dayDropdowns',
     function($scope, $uibModalInstance, caffeine, dropdowns, dayDropdowns) {

@@ -6,27 +6,21 @@
  */
 atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope', '$uibModalInstance', 'calEvent', 'action',
     'eventType', 'events', 'calendarConfig', 'actionButtons', 'CaffeineService', 'MyChargeDataService', 'DEFAULT_SLEEP_END',
+    'DEFAULT_SLEEP_START', 'DEFAULT_SLEEP_DURATION',
     function($scope, $uibModalInstance, calEvent, action, eventType, events, calendarConfig, actionButtons,
-             CaffeineService, MyChargeDataService, DEFAULT_SLEEP_END) {
+             CaffeineService, MyChargeDataService, DEFAULT_SLEEP_END, DEFAULT_SLEEP_START, DEFAULT_SLEEP_DURATION) {
 
         $scope.endOpen = false;
         $scope.startOpen = false;
-        //$scope.events = events;
         $scope.eventsChangedState = false;
         $scope.editMode = false;
         $scope.errorMessage = null;
         $scope.quantitySelected = 0;
 
-        //making sleep duration dropdown
-        /*var twoDigitsFormat = function(digit) {
-            if(digit < 10) {
-                return "0" + digit;
-            }
-            else {
-                return digit;
-            }
-        };*/
-
+        /**
+        * create a object for duartion dropdown menu
+        * @param {number} sel - The selected (or default selected) option in the dropdown menu
+        */
         var makeSleepDuration = function(sel) {
             var durations = [];
             var selectedObj = {
@@ -39,7 +33,7 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                     var ts = i * 60 * 60 * 1000 + j * 15 * 60 * 1000;
                     var ele = {
                         ts: ts,
-                        txt: i + ' hr(s) ' + j * 15 + ' min(s)'
+                        txt: i + ' hr ' + j * 15 + ' min'
                     };
 
                     if(ts == sel) {
@@ -60,8 +54,6 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
         var durationObj = makeSleepDuration(calEvent.endsAt - calEvent.startsAt);
         $scope.sleepDurations = durationObj.durations;
         $scope.durationSelected = durationObj.selected;
-
-        console.log(calEvent);
 
         switch (action) {
             case 'Edit-Sleep':
@@ -134,25 +126,27 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
             $uibModalInstance.dismiss('cancel');
         };
 
-        $scope.toggle = function($event, field){
-            //console.log('toggle calendar');
-            //console.log(field);
+        /**
+         *  set and unset flag
+         *  @param $event - $event javascript object
+         *  @param field - name of the flag
+         */
 
+        $scope.toggle = function($event, field){
             $event.preventDefault();
             $event.stopPropagation();
             $scope[field] = !$scope[field];
 
         };
 
+        /**
+         *  ok button click event handler
+         *  depending on the dataType of an event, a validation function will be called
+         *  and if data is valid, the scope level flag $scope.eventsChangedState is set to true
+         *
+         */
         $scope.ok = function(){
-            console.log('it is ok function');
-            console.log(calEvent);
-
             if(calEvent.dataType == 'defaultSleep') {
-                //calEvent.duration = $scope.durationSelected.ts;
-                //var validation = $scope.validateSleep();
-                //console.log(validation);
-                //console.log(moment(calEvent.startsAt));
                 var validation = $scope.validateSleep(calEvent);
                 if(validation.ok) {
                     var sleepObj = {
@@ -166,8 +160,8 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                         actions: actionButtons,
                         dataType: 'sleep'
                     };
-                    sleepObj.title = (sleepObj.startsAt != sleepObj.endsAt) ? 'Sleep' : 'Zero Sleep ';
-
+                    sleepObj.title = (sleepObj.startsAt.getTime() != sleepObj.endsAt.getTime()) ? 'Sleep' : 'Zero Sleep';
+                    sleepObj.cssClass= (sleepObj.startsAt.getTime() != sleepObj.endsAt.getTime()) ? 'has-sleep' : 'zero-sleep';;
                     $scope.vm.events.push(sleepObj);
                     $scope.eventsChangedState = true;
                 }
@@ -176,17 +170,14 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
             }
             else if(calEvent.dataType == 'sleep') {
-                //console.log('sleep ');
-                //calEvent.duration = $scope.durationSelected.ts;
                 var validation = $scope.validateSleep(calEvent);
-                console.log(validation);
 
                 if(validation.ok) {
                     if($scope.editMode) {
-                        //remove old event
-                        //$scope.vm.events.splice(calEvent.$id, 1);
                         calEvent.endsAt = moment(calEvent.startsAt).add($scope.durationSelected.ts, 'ms').toDate();
-                        calEvent.title = (calEvent.startsAt != calEvent.endsAt) ? 'Sleep' : 'Zero Sleep ';
+                        calEvent.title = (calEvent.startsAt.getTime() != calEvent.endsAt.getTime()) ? 'Sleep' : 'Zero Sleep';
+                        calEvent.cssClass = (calEvent.startsAt.getTime() != calEvent.endsAt.getTime()) ? 'has-sleep' : 'zero-sleep';
+                        //console.log(calEvent);
                     }
                     else {
                         var sleepObj = {
@@ -200,7 +191,8 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                             actions: actionButtons,
                             dataType: 'sleep'
                         };
-                        sleepObj.title = (sleepObj.startsAt != sleepObj.endsAt) ? 'Sleep' : 'Zero Sleep ';
+                        sleepObj.title = (sleepObj.startsAt.getTime() != sleepObj.endsAt.getTime()) ? 'Sleep' : 'Zero Sleep';
+                        sleepObj.cssClass = (sleepObj.startsAt.getTime() != sleepObj.endsAt.getTime()) ? 'has-sleep' : 'zero-sleep';
 
                         $scope.vm.events.push(sleepObj);
                     }
@@ -212,12 +204,10 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                     //display message somewhere
                     $scope.errorMessage = validation.message;
                 }
-
             }
             else if(calEvent.dataType == 'caffeine') {
                 var validation = $scope.validateCaffeine(calEvent);
-                console.log('coffee here');
-                console.log(validation);
+
                 if(validation.ok) {
                     if($scope.editMode) {
                         //remove old event
@@ -251,7 +241,16 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
             }
         }
 
+        /**
+         * validating a caffeine drink event
+         * @param {object} cEvent - a calendar event
+         * validation rules:
+         *  - "quantity" must be selected and not 0
+         *  - the start time of the caffeine event can neither overlap with existing sleep events
+         *    nor overlap with a default sleep event
+        * */
         $scope.validateCaffeine = function(cEvent) {
+            console.log('validate caffeine');
             if(!angular.isNumber($scope.quantitySelected)){
                 return {
                     message: "Please select Quantity",
@@ -265,17 +264,76 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                 };
             }
             else {
+                var output = {
+                    ok: true
+                };
+
+                var zeroHour = moment(cEvent.startsAt).startOf('day').toDate().getTime();
+                var lastDaySleepEnd = zeroHour + DEFAULT_SLEEP_END * 60 * 60 * 1000;
+                var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000;
+                var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
+                var endOfDay = zeroHour + 24 * 60 * 60 * 1000;
+
+                /*console.log(cEvent);
+                console.log(moment(zeroHour).toDate());
+                console.log(moment(startSleepHour).toDate());
+                console.log(moment(lastDaySleepEnd).toDate());
+                console.log(moment(nextDaySleepEnd).toDate());
+                console.log(moment(endOfDay).toDate());*/
+
+                //get an array of sleep events within time range of the caffeine event occurs only
+                var sleepEvents = [];
                 for(var i = 0; i < $scope.vm.events.length; i++) {
-                    if(cEvent.startAt >= sleepEvt.startsAt && cEvent.startsAt <= sleepEvt.endsAt) {
-                        output.message = "Conflict between caffeine drink time and sleep time";
-                        output.ok = false;
-                        break;
+                    if($scope.vm.events[i].dataType == 'sleep'
+                        && (($scope.vm.events[i].startsAt.getTime() <= zeroHour && $scope.vm.events[i].endsAt.getTime() >= zeroHour)
+                        || ($scope.vm.events[i].startsAt.getTime() <= endOfDay && $scope.vm.events[i].endsAt.getTime() >= endOfDay))) {
+                        sleepEvents.push($scope.vm.events[i]);
                     }
                 }
+
+                //console.log(sleepEvents);
+
+                //if it is no sleep event within the time range, validate the caffeine against the default sleep time
+                if(sleepEvents.length == 0) {
+                    if((cEvent.startsAt.getTime() > zeroHour && cEvent.startsAt.getTime() < lastDaySleepEnd)
+                    || (cEvent.startsAt.getTime() > startSleepHour && cEvent.startsAt.getTime() < endOfDay)){
+                        output.message = " Conflict with an existing default sleep event";
+                        output.ok = false;
+                    }
+                }
+                else {
+                    for(var j = 0; j < sleepEvents.length; j++) {
+                        if(cEvent.startsAt.getTime() > sleepEvents[j].startsAt.getTime() && cEvent.startsAt.getTime() < sleepEvents[j].endsAt.getTime()) {
+                            output.message = "Conflict with an existing sleep event";
+                            output.ok = false;
+                            break;
+                        }
+                    }
+
+                    //run another checking with previous day sleep event
+                    if(output.ok) {
+                        if((cEvent.startsAt.getTime() > zeroHour && cEvent.startsAt.getTime() < lastDaySleepEnd)
+                            || (cEvent.startsAt.getTime() > startSleepHour && cEvent.startsAt.getTime() < endOfDay)){
+                            output.message = " Conflict with an existing default sleep event";
+                            output.ok = false;
+                        }
+                    }
+                }
+
+                return output;
             }
 
 
         };
+
+        /**
+         * validating a sleep event
+         * @param {object} cEvent - a calendar event
+         * validation rules:
+         *  - not overlaps with any other sleep events, ie.
+         *      + start time must not in any sleep event's ending and start time
+         *      + end time must not in any sleep event start and end time
+         * */
 
         $scope.validateSleep = function(cEvent){
             console.log('validate sleep');
@@ -287,30 +345,45 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
             cEvent.endsAt = moment(cEvent.startsAt).add($scope.durationSelected.ts, 'ms').toDate();
 
-            //- not overlapse with any other sleep events
-            //    + start time must not in any sleep event's ending and start time
-               // + end time must not in any sleep event start and end time
             for(var i = 0; i < $scope.vm.events.length; i++) {
                 var sleepEvt = $scope.vm.events[i];
                 if(sleepEvt.$id != cEvent.$id) {
                     if((cEvent.startAt >= sleepEvt.startsAt && cEvent.startsAt <= sleepEvt.endsAt)
                     || (cEvent.endsAt >= sleepEvt.startsAt && cEvent.endsAt <= sleepEvt.endsAt)) {
-                        output.message = "Conflict in sleep event time";
+                        output.message = "Conflict with an existing sleep event";
                         output.ok = false;
                         break;
                     }
-
-                    /*if(cEvent.endsAt >= sleepEvt.startsAt && cEvent.endsAt <= sleepEvt.endsAt) {
-                        output.message = "Conflict in sleep event end time";
-                        output.ok = false;
-                        break;
-                    }*/
                 }
             }
 
+            //validate against caffeine vents
+            if(output.ok) {
+                var zeroHour = moment(cEvent.startsAt).startOf('day').toDate().getTime();
+                var lastDaySleepEnd = zeroHour + DEFAULT_SLEEP_END * 60 * 60 * 1000;
+                var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000;
+                var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
+                var endOfDay = zeroHour + 24 * 60 * 60 * 1000;
+
+                //get an array of caffeine events within time range of the sleep event occurs only
+                /*var caffeineEvents = [];
+                for(var i = 0; i < $scope.vm.events.length; i++) {
+                    if($scope.vm.events[i].dataType == 'caffeine'
+                        && (($scope.vm.events[i].startsAt.getTime() <= zeroHour && $scope.vm.events[i].endsAt.getTime() >= zeroHour)
+                        || ($scope.vm.events[i].startsAt.getTime() <= endOfDay && $scope.vm.events[i].endsAt.getTime() >= endOfDay))) {
+
+                            caffeineEvents.push($scope.vm.events[i]);
+                    }
+                }*/
+            }
             return output;
         }
 
+        /**
+        *   A watcher function to monitor the state of $scope.eventsChangedState
+         *   Event data will be saved if the state set to true
+         *   Note: all events' timestamps will be added 1 millisecond
+        */
         $scope.$watch('eventsChangedState', function(newVal, oldVal){
             if(newVal == false) {
                 console.log('not save');
@@ -318,7 +391,6 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
             else if(newVal == true) {
                 console.log('save now');
                 var data = [];
-                console.log($scope.vm.events);
 
                 for(var i = 0; i < $scope.vm.events.length; i++) {
                     var singleEvent = null;
@@ -353,13 +425,10 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                             }
                         }
                     }
-                    //console.log('single event');
-                    //console.log(singleEvent);
+
                     if(singleEvent != null) {
                         data.push(singleEvent);
                     }
-
-
                 }
 
                 MyChargeDataService.setData(data, function(response){
@@ -367,12 +436,6 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                         console.log('saved');
                     }
                 });
-
-                /*MyChargeDataService.transformData(null, null, data, function(response){
-                    if(response.success) {
-                        console.log('transform success');
-                    }
-                });*/
             }
         });
     }

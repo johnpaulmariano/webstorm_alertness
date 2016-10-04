@@ -1,10 +1,14 @@
+/**
+ * @file
+ * This is the main routing table of the app
+ * * */
 'use strict';
 
 var myApp = angular.module('AtoAlertnessApp', [
     'ngRoute',
     'ngCookies',
     'LocalStorageModule',
-    //'rzModule',
+    //'rzModule',       // required library for gauge
     //'ngRadialGauge',
     'ui.bootstrap.modal',
     'angularSpinner',
@@ -16,8 +20,6 @@ var myApp = angular.module('AtoAlertnessApp', [
 
 //defining constants
 myApp.value('DEBUG_MODE', false);
-//myApp.value('PREDICTION_DATA_EXPIRATION', 3 * 24 * 60 * 60 * 1000 );// 3 days
-//myApp.value('PREDICTION_DATA_EXPIRATION', 1 * 60 * 1000 );
 myApp.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertness/svc/');
 myApp.value("PREDICTION_STATISTIC", 1); //  1 - Mean RT, 2 - Mean Speed, 3 - Lapses
 myApp.value("DEFAULT_PREDICTION_DAYS", 8);
@@ -105,7 +107,6 @@ myApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'views/mycharge.html'
         })
         .when('/mychargecalendar', {
-            //controller: 'MyChargeCalendarController',
             templateUrl: 'views/mychargecalendar.html'
         })
         .when('/howmuchcaffeine', {
@@ -131,7 +132,6 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/professionalhelp', {
             templateUrl: 'views/professionalhelp.html',
         })
-
         /*.when('/ess-results', {
             templateUrl: 'views/ess-results.html'
         })*/
@@ -142,6 +142,10 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         .when('/test', {
             templateUrl: 'views/test.html',
             controller: 'TestController'
+        })
+        .when('/testCalendar', {
+            templateUrl: 'views/testCalendar.html',
+            controller: 'TestCalendarController'
         })
         .otherwise({ redirectTo: '/login' });
 }]);
@@ -154,6 +158,10 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
         $rootScope.asGuest = $cookieStore.get("asGuestCookies");
         $rootScope.DataPredictiondate = 0;
 
+        /*
+        *   Checking whether CSRF token existing, if not then get the token from the web service
+        *   then save the token in browser's cookies
+        * */
         if($rootScope.csrfToken) {
             $http.defaults.headers.common['X-CSRF-TOKEN'] = $rootScope.csrfToken;
         }
@@ -170,9 +178,12 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
 
         $rootScope.isAuthenticated = false;
 
+        /*
+        *   Event handler for either page reloaded or path changed
+        *  @param {event} $LocationChangeStart
+        *  @param {function} - event handler
+        * */
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            //console.log('on change fired');
-            //console.log($location.path());
             // keep user logged in after page refresh
             $rootScope.globals = $cookieStore.get('globals') || {};
             $rootScope.csrfToken = $cookieStore.get('X-CSRF-TOKEN');
@@ -206,7 +217,7 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
             }
 
             if ($location.path() == '/login') { //check if in login page and rememberMe is set
-                //temporary disable remember me check
+                //temporary disable "remember me" check
                 /*if($rootScope.rememberMe) {
                  var rememberCookie = angular.fromJson($rootScope.rememberMe);
                  $http.defaults.headers.common['Authorization'] = 'Basic ' + rememberCookie.token;
@@ -248,6 +259,11 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
             }
         });
 
+        /*
+        *   Watcher for "logout", if user logged out, get a new CSRF token from the web service
+        *   @param {string} - variable name
+        *   @param  {function}
+        * */
         $rootScope.$watch('logout', function(newValue, oldValue){
             if(newValue == true) {
                 TokenService.getToken(function(response){
@@ -260,6 +276,7 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
                 });
             }
         });
+
         //guarantee page move to top when loaded
         $rootScope.$on('$routeChangeSuccess', function(evt, absNewUrl, absOldUrl){
             //$window.scrollTo(0,0);    //scroll to top of page after each route change
@@ -267,10 +284,12 @@ myApp.run(['$rootScope', '$location', '$window', '$cookieStore', '$http', 'Token
         });
     }]);
 
+/**
+ *  serializing an object to  x-www-form-urlencoded
+ */
+
 myApp.config(['$httpProvider',
     function($httpProvider){
-        //$httpProvider.defaults.useXDomain = true;
-        //delete $httpProvider.defaults.headers.common['X-Requested-With'];
         // Use x-www-form-urlencoded Content-Type
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
         /**

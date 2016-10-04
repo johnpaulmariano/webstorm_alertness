@@ -17,21 +17,16 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         secondary: '#d1e8ff'
     };
 })
-.controller('MyChargeCalendarController', ['$scope', '$uibModal', 'moment', 'calendarConfig', 'MyChargeDataService',
+.controller('MyChargeCalendarController', ['$rootScope', '$scope', '$uibModal', 'moment', 'calendarConfig', 'MyChargeDataService',
     'DEFAULT_PREDICTION_DAYS', 'DEFAULT_SLEEP_START', 'DEFAULT_SLEEP_DURATION', 'DEFAULT_SLEEP_END',
-    function($scope, $uibModal, moment, calendarConfig, MyChargeDataService, DEFAULT_PREDICTION_DAYS,
+    function($rootScope, $scope, $uibModal, moment, calendarConfig, MyChargeDataService, DEFAULT_PREDICTION_DAYS,
              DEFAULT_SLEEP_START, DEFAULT_SLEEP_DURATION, DEFAULT_SLEEP_END){
         var vm = this;
 
         vm.calendarView = 'month';
         vm.viewDate = new Date();
         vm.isCellOpen = false;
-        //vm.startOpen = false;
-        //vm.endOpen = false;
         vm.eventsChangedState = false;
-
-        //vm.defaultStartSleep = DEFAULT_SLEEP_START;
-       // vm.defaultSleepDuration = DEFAULT_SLEEP_DURATION;
 
         var sleepActions = [
             {
@@ -101,9 +96,12 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                 for(var i = 0; i < myChargeEvents.length; i++){
                     if(myChargeEvents[i].dataType == 'sleep'){
                         var title = 'Sleep';
+                        var cssClass = 'has-sleep';
 
                         if(myChargeEvents[i].tsStart == myChargeEvents[i].tsEnd) {
                             title = 'Zero Sleep';
+                            cssClass = 'zero-sleep';
+                            //console.log(moment(myChargeEvents[i].tsStart).toDate());
                         }
                         vm.events.push(
                             {
@@ -111,15 +109,13 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                                 color: calendarConfig.colorTypes.warning,
                                 startsAt: moment.utc(myChargeEvents[i].tsStart).toDate(),
                                 endsAt: moment.utc(myChargeEvents[i].tsEnd).toDate(),
-                                //duration: myChargeEvents[i].tsEnd - myChargeEvents[i].tsStart,
-                                //startAt: s,
-                                //endsAt: e,
                                 draggable: false,
                                 resizable: false,
                                 incrementsBadgeTotal: false,
                                 allDay: false,
                                 actions: sleepActions,
-                                dataType: 'sleep'
+                                dataType: 'sleep',
+                                cssClass: cssClass
                             }
                         );
                     }
@@ -145,46 +141,42 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
             }
         });
 
+        /**
+         *  This function is called when the calendar is being rendered
+         *  @param {object} - a calendar cell object
+         *  If there is no sleep event overlap the day, a default sleep event is created
+         *  and push into the events property of the calendar cell object
+         */
+
         //adding default sleep events
+
         vm.modifyCell = function(calendarCell){
+
+            if($rootScope.DataPredictiondate != 0) {
+                var endDate = $rootScope.DataPredictiondate;
+            }
+            else {
+                var endDate = moment().startOf('day').toDate();
+            }
+
+            var startDate = moment(endDate).subtract(DEFAULT_PREDICTION_DAYS, 'days').toDate();
+
+            //highlight the prediction date range, default range is from the current date back to DEFAULT_PREDICTION_DAYS
+            // in the past
+            if(calendarCell.date._d >= startDate && calendarCell.date._d <= endDate) {
+                calendarCell.cssClass = 'highlight-calendar-cell';
+            }
+
             var ok = true;
-            //console.log(calendarCell.date._d);
-            //console.log('****');
             var zeroHour = moment(calendarCell.date._d).startOf('day').toDate().getTime();
-            /*var lastNightSleepStart = moment(zeroHour).subtract(1, 'days').add(DEFAULT_SLEEP_START, 'hours').toDate();
-            var wakeupHour = moment(zeroHour).add(DEFAULT_SLEEP_END, 'hours').toDate();
-            var startSleepHour = moment(zeroHour).startOf('day').add(DEFAULT_SLEEP_START, 'hours').toDate();
-            var nextDaySleepEnd = moment(startSleepHour).add(DEFAULT_SLEEP_DURATION, 'hours').toDate();*/
-            //var lastNightSleepStart = zeroHour + (-24 + DEFAULT_SLEEP_START) * 60 * 60 * 1000;
-            //var wakeupHour = zeroHour + DEFAULT_SLEEP_END * 60 * 60 * 1000;
             var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000 - 1;
             var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
-            //console.log('zz------------zzz');
-            /*console.log(moment(zeroHour).toDate());
-            console.log(startSleepHour);
-            console.log(nextDaySleepEnd);*/
-
 
             for(var i = 0; i < vm.events.length; i++) {
                 if(vm.events[i].dataType == 'sleep') {
-                    /*console.log(vm.events[i]);
-                    console.log('start at');
-                    console.log(vm.events[i].startsAt.getTime());
-                    console.log('end at');
-                    console.log(vm.events[i].endsAt.getTime());*/
                     if((vm.events[i].endsAt.getTime() > startSleepHour && vm.events[i].endsAt.getTime() < nextDaySleepEnd)
-                        || (vm.events[i].startsAt.getTime() < nextDaySleepEnd && vm.events[i].endsAt.getTime() > nextDaySleepEnd)
-                        ) {
-                        /*console.log('found');
-                        console.log(vm.events[i]);
-                        console.log('start at');
-                        console.log(vm.events[i].startsAt.getTime());
-                        console.log('end at');
-                        console.log(vm.events[i].endsAt.getTime());
+                        || (vm.events[i].startsAt.getTime() < nextDaySleepEnd && vm.events[i].endsAt.getTime() > nextDaySleepEnd)) {
 
-                        console.log('date');
-                        console.log(calendarCell.date._d);
-                        console.log('-------');*/
                         ok = false;
                         break;
                     }
@@ -192,33 +184,36 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
             }
 
             if(ok) {
-                //console.log('ok here');
                 calendarCell.events.push(
                     {
                         title: 'Default Sleep',
                         color: calendarConfig.colorTypes.success,
                         startsAt: moment(startSleepHour + 1).toDate(),
                         endsAt: moment(nextDaySleepEnd + 1).toDate(),
-                        //duration: nextDaySleepEnd - startSleepHour,
                         draggable: false,
                         resizable: false,
                         incrementsBadgeTotal: false,
                         allDay: true,
                         actions: sleepDefaultActions,
-                        dataType: 'defaultSleep'
+                        dataType: 'defaultSleep',
+                        cssClass: 'default-sleep'
                     }
                 );
-                //console.log(calendarCell);
             }
         };
 
         vm.fakeEventID = null;
         vm.fakeEventDate = null;
-        //adding a fake event for containing two buttons
+
+        /**
+         * Add a fake event for containing two buttons
+         * @param {object} day - a day object of the calendar
+         * Two buttons are "Add Sleep" and "Add Caffeine"
+         * when a button is clicked, it triggers toggleFakeEvent function
+         */
+
+        //
         vm.myOnTimespanClick = function(day){
-            console.log(day.getTime());
-            console.log(vm.isCellOpen);
-            console.log(vm.fakeEventDate);
             if(!vm.isCellOpen) {
                 vm.toggleFakeEvent(day, 'add');
                 vm.fakeEventDate = day;
@@ -244,8 +239,7 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                     {
                         title: '',
                         color: calendarConfig.colorTypes.alert,
-                        startsAt: moment(day).add(1, 'days').subtract(1, 'seconds').toDate(),
-                        //duration: 0,
+                        startsAt: moment(day).add(1, 'days').subtract(1, 'milliseconds').toDate(),
                         draggable: false,
                         resizable: false,
                         incrementsBadgeTotal: false,
@@ -261,14 +255,6 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                 vm.events.splice(vm.fakeEventID, 1);
             }
         }
-
-        /*$scope.$watch('vm.events', function(newValue, oldValue){
-            console.log('change events');
-            console.log(newValue);
-            console.log(oldValue);
-            //console.log(vm.calendarDate);
-        });*/
-
 
         showModal = function(action, event){
             //console.log(action);
@@ -345,20 +331,10 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
             );
         };
 
-        /*vm.toggle = function($event, field, event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $scope[field] = !$scope[field];
-        };*/
-
         deleteEvent = function(action, calEvent) {
-            console.log(calEvent);
-
             //for default sleep event deletion: it would be create a new sleep event with the start sleep time equals to end sleep time
             if(calEvent.dataType == "defaultSleep") {
-                console.log(vm.events);
                 var newSleep = angular.copy(calEvent);
-                console.log(newSleep);
                 var startTime = newSleep.startsAt.getTime() + 1;
                 newSleep.title = 'Zero Sleep';
                 newSleep.color = calendarConfig.colorTypes.warning;
@@ -367,8 +343,6 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                 newSleep.actions = sleepActions;
                 newSleep.dataType = 'sleep';
                 vm.events.push(newSleep);
-
-                console.log(vm.events);
             }
             else {  //for other types, it would be slice the event out of the events array
 
@@ -416,13 +390,15 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         }
 
         vm.reset= function() {
-            console.log('reset data');
-            vm.events = [];
-            MyChargeDataService.setData([], function(response){
-                if(response.success) {
-                    console.log('data erased');
-                }
-            });
+            if(window.confirm('Are you sure you want to reset all data to default?')) {
+                vm.events = [];
+                MyChargeDataService.setData([], function(response){
+                    if(response.success) {
+                        console.log('data erased');
+                    }
+                });
+            }
+
         };
     }
 ]);

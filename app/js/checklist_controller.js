@@ -10,10 +10,6 @@ atoAlertnessControllers.controller('ChecklistController', ['$scope', '$rootScope
             {text: 'Need Improvement', value: 1},
         ];
 
-        /*var questions = ['bedroom_temperature', 'bedroom_darkness', 'bedroom_quietness', 'bed_comfort', 'pets_in_bedroom',
-         'regulate_bedtimes', 'relax_nighttime_routine', 'fall_back_to_sleep', 'coordinate_family_members', 'electronic_devices',
-         'exercises_and_caffeine', 'alcohol_nicotine_meals'];*/
-
         var questions = ['plan_sleeptime', 'room_temperature', 'bedroom_darkness', 'room_quiet', 'bedroom_only',
             'regulate_waketimes', 'stop_caffeine', 'exercise_routine', 'no_alcohol', 'get_out_bed'];
 

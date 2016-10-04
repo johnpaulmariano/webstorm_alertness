@@ -7,8 +7,10 @@
                     ng-class="event.cssClass"
                     ng-if="vm.cell.date <= event.startsAt">
                 <span class="pull-left event" ng-style="{backgroundColor: event.color.primary}"></span>
-
+                <!--
                 <span ng-bind-html="isMonthView ? vm.calendarEventTitle.monthView(event) : vm.calendarEventTitle.yearView(event) | calendarTrustAsHtml"></span>
+                -->
+                <span ng-bind-html="vm.calendarEventTitle.weekView(event) | calendarTrustAsHtml"></span>
                 <a
                         href="javascript:;"
                         class="event-item-action"
@@ -21,16 +23,6 @@
             </li>
 
         </ul>
-        <!--
-        <div id="sleepButtons">
-            <button type="button" class="btn btn-mycharge btn-sm col-md-2" id="addSleepBtn" ng-click="console.log('sleep click');">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Sleep
-            </button>
-            <button type="button" class="btn btn-mycharge btn-sm col-md-2" id="addCaffeineBtn">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Caffeine
-            </button>
-        </div>
-        -->
     </div>
 
 </div>

@@ -782,9 +782,9 @@ myServices.factory('EssService', ['$http', 'BASE_API_URL', '$rootScope', 'localS
     }
 ]);
 
-myServices.factory('MyChargeDataService', ['$http', '$rootScope', 'localStorageService', 'moment',
+myServices.factory('MyChargeDataService', ['$http', 'BASE_API_URL', '$rootScope', 'localStorageService', 'moment',
     'DEFAULT_PREDICTION_DAYS', 'DEFAULT_SLEEP_START', 'DEFAULT_SLEEP_END', 'DEFAULT_SLEEP_DURATION',
-    function($http, $rootScope, localStorageService, moment, DEFAULT_PREDICTION_DAYS, DEFAULT_SLEEP_START,
+    function($http, BASE_API_URL, $rootScope, localStorageService, moment, DEFAULT_PREDICTION_DAYS, DEFAULT_SLEEP_START,
              DEFAULT_SLEEP_END, DEFAULT_SLEEP_DURATION){
 
         var service = {};
