@@ -9,3 +9,4 @@ inspection/
 *.xml
 app/fonts/*
 app/images/*
+bower_components/
