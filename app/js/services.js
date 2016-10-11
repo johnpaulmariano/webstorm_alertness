@@ -788,9 +788,9 @@ myServices.factory('MyChargeDataService', ['$http', 'BASE_API_URL', '$rootScope'
              DEFAULT_SLEEP_END, DEFAULT_SLEEP_DURATION){
 
         var service = {};
-        //var asGuest = $rootScope.asGuest;
+        var asGuest = $rootScope.asGuest;
         var storageKey = 'MyChargeDataCalendar';
-        var asGuest = true;
+        //var asGuest = true;
 
         service.getData = function(callback) {
             if(!asGuest) {
@@ -807,7 +807,7 @@ myServices.factory('MyChargeDataService', ['$http', 'BASE_API_URL', '$rootScope'
                 if(localData == null) {
                     localData = [];
                 }
-                callback({success: true, data: localData});
+                callback({success: "true", data: localData});
             }
         };
 
@@ -828,10 +828,11 @@ myServices.factory('MyChargeDataService', ['$http', 'BASE_API_URL', '$rootScope'
         };
 
         service.prepareSubmissionData = function(startDate, endDate, callback) {
-            var eventData = true;
+            var eventData = [];
 
             service.getData(function(response){
-                if(response.success == true) {
+                console.log(response);
+                if(response.success == "true") {
                     eventData = response.data;
                 }
             });
@@ -864,7 +865,7 @@ myServices.factory('MyChargeDataService', ['$http', 'BASE_API_URL', '$rootScope'
                 var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
 
                 for(var i = 0; i < sleepData.length; i++) {
-                    /*condition - no overlapse to default sleep start and end
+                    /*condition - no overlap to default sleep start and end
                      + start < default start  && end > default end
                      + default start < start < default end
                      + default start < end < default end
@@ -914,19 +915,6 @@ myServices.factory('MyChargeDataService', ['$http', 'BASE_API_URL', '$rootScope'
             var sleepWakeSchedule = [];
             var sleepStartTime = 0;
 
-            /*var newData = [];
-            for(var i = 0; i < sleepData.length; i++) {
-                if(i == 0) {
-                    newData.push(sleepData[i]);
-                }
-                else if(sleepData[i].tsEnd != sleepData[i].tsStart) {
-                    newData.push(sleepData[i]);
-                }
-            }
-
-            console.log(newData);
-            //sleepData = newData;
-            */
             for(var cn = 0; cn < sleepData.length; cn++) {
                 sleepData[cn].start = (sleepData[cn].tsStart - startTime)/milInHour;
                 sleepData[cn].end = (sleepData[cn].tsEnd - startTime)/milInHour;

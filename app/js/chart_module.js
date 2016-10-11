@@ -297,7 +297,7 @@ atoAlertnessChartModule.directive('alertnessChart', ['moment', function(){
             DataPredictionService.getData($scope.requestData, $rootScope.renewPrediction, $scope.lastTimeStamp,
                 function(response){
                     console.log(response);
-                    if(response.success == true) {
+                    if(response.success == true || response.success == "true") {
                         $scope.showSpinner = false;
                         $rootScope.renewPrediction = false; // turn off the renew prediction request from MyCharge inputs
 

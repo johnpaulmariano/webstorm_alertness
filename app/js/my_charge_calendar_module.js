@@ -90,9 +90,9 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
         vm.events = [];
 
         MyChargeDataService.getData(function(response){
-            if(response.success == true) {
+            if(response.success == "true") {
                 var myChargeEvents = response.data;
-
+                console.log(response.data);
                 for(var i = 0; i < myChargeEvents.length; i++){
                     if(myChargeEvents[i].dataType == 'sleep'){
                         var title = 'Sleep';
@@ -342,6 +342,7 @@ atoAlertnessMyChargeCalendarModule.config(function(calendarConfig) {
                 newSleep.endsAt = moment(startTime).toDate();
                 newSleep.actions = sleepActions;
                 newSleep.dataType = 'sleep';
+                newSleep.cssClass = 'zero-sleep';
                 vm.events.push(newSleep);
             }
             else {  //for other types, it would be slice the event out of the events array

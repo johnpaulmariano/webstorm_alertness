@@ -209,27 +209,26 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                 var validation = $scope.validateCaffeine(calEvent);
 
                 if(validation.ok) {
-                    if($scope.editMode) {
+                    if(!$scope.editMode) {
                         //remove old event
-                        $scope.vm.events.splice(calEvent.$id, 1);
+                        //$scope.vm.events.splice(calEvent.$id, 1);
+                        var cloneEvent = {};
+                        cloneEvent.startsAt = $scope.calEvent.startsAt;
+                        cloneEvent.draggable = false;
+                        cloneEvent.resizable = false;
+                        cloneEvent.incrementsBadgeTotal = false;
+                        cloneEvent.allDay = false;
+                        cloneEvent.title = 'Caffeine';
+                        cloneEvent.color = calendarConfig.colorTypes.info;
+                        cloneEvent.sourceID = $scope.caffeineSelected.id;
+                        cloneEvent.source = $scope.caffeineSelected.itemName;
+                        cloneEvent.amount = parseInt($scope.caffeineSelected.value) * $scope.quantitySelected;
+                        cloneEvent.quantity = $scope.quantitySelected;
+                        cloneEvent.actions = actionButtons;
+                        cloneEvent.dataType = 'caffeine';
+                        //console.log(cloneEvent);
+                        $scope.vm.events.push(cloneEvent);
                     }
-
-                    var cloneEvent = {};
-                    cloneEvent.startsAt = $scope.calEvent.startsAt;
-                    cloneEvent.draggable = false;
-                    cloneEvent.resizable = false;
-                    cloneEvent.incrementsBadgeTotal = false;
-                    cloneEvent.allDay = false;
-                    cloneEvent.title = 'Caffeine';
-                    cloneEvent.color = calendarConfig.colorTypes.info;
-                    cloneEvent.sourceID = $scope.caffeineSelected.id;
-                    cloneEvent.source = $scope.caffeineSelected.itemName;
-                    cloneEvent.amount = parseInt($scope.caffeineSelected.value) * $scope.quantitySelected;
-                    cloneEvent.quantity = $scope.quantitySelected;
-                    cloneEvent.actions = actionButtons;
-                    cloneEvent.dataType = 'caffeine';
-                    //console.log(cloneEvent);
-                    $scope.vm.events.push(cloneEvent);
 
                     $scope.eventsChangedState = true;
                     $uibModalInstance.close("Event Closed");
@@ -270,6 +269,7 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
                 var zeroHour = moment(cEvent.startsAt).startOf('day').toDate().getTime();
                 var lastDaySleepEnd = zeroHour + DEFAULT_SLEEP_END * 60 * 60 * 1000;
+                var lastDaySleepStart = lastDaySleepEnd - DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
                 var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000;
                 var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
                 var endOfDay = zeroHour + 24 * 60 * 60 * 1000;
@@ -295,7 +295,7 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
                 //if it is no sleep event within the time range, validate the caffeine against the default sleep time
                 if(sleepEvents.length == 0) {
-                    if((cEvent.startsAt.getTime() > zeroHour && cEvent.startsAt.getTime() < lastDaySleepEnd)
+                    if((cEvent.startsAt.getTime() > lastDaySleepStart && cEvent.startsAt.getTime() < lastDaySleepEnd)
                     || (cEvent.startsAt.getTime() > startSleepHour && cEvent.startsAt.getTime() < endOfDay)){
                         output.message = " Conflict with an existing default sleep event";
                         output.ok = false;
@@ -359,22 +359,15 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
 
             //validate against caffeine vents
             if(output.ok) {
-                var zeroHour = moment(cEvent.startsAt).startOf('day').toDate().getTime();
-                var lastDaySleepEnd = zeroHour + DEFAULT_SLEEP_END * 60 * 60 * 1000;
-                var startSleepHour = zeroHour + DEFAULT_SLEEP_START * 60 * 60 * 1000;
-                var nextDaySleepEnd = startSleepHour + DEFAULT_SLEEP_DURATION * 60 * 60 * 1000;
-                var endOfDay = zeroHour + 24 * 60 * 60 * 1000;
-
-                //get an array of caffeine events within time range of the sleep event occurs only
-                /*var caffeineEvents = [];
+                var caffeineEvents = [];
                 for(var i = 0; i < $scope.vm.events.length; i++) {
                     if($scope.vm.events[i].dataType == 'caffeine'
-                        && (($scope.vm.events[i].startsAt.getTime() <= zeroHour && $scope.vm.events[i].endsAt.getTime() >= zeroHour)
-                        || ($scope.vm.events[i].startsAt.getTime() <= endOfDay && $scope.vm.events[i].endsAt.getTime() >= endOfDay))) {
-
-                            caffeineEvents.push($scope.vm.events[i]);
+                        && ($scope.vm.events[i].startsAt >= cEvent.startsAt  && $scope.vm.events[i].startsAt <= cEvent.endsAt)) {
+                        output.message = "Conflict with an existing caffeine event";
+                        output.ok = false;
+                        break;
                     }
-                }*/
+                }
             }
             return output;
         }

@@ -20,7 +20,7 @@ var myApp = angular.module('AtoAlertnessApp', [
 
 //defining constants
 myApp.value('DEBUG_MODE', false);
-myApp.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertness/svc/');
+myApp.value("BASE_API_URL", 'https://atsaptest.cssiinc.com/alertnessdev/svc/');
 myApp.value("PREDICTION_STATISTIC", 1); //  1 - Mean RT, 2 - Mean Speed, 3 - Lapses
 myApp.value("DEFAULT_PREDICTION_DAYS", 8);
 myApp.value("DEFAULT_SLEEP_START", 23);
