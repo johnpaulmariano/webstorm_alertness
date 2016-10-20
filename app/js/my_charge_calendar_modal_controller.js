@@ -16,7 +16,11 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
         $scope.editMode = false;
         $scope.errorMessage = null;
         $scope.quantitySelected = 0;
-
+         //@jp
+        var initialCalendar = {};
+        var initialDuration = {};
+        var initialHour = 0;
+        var initialMins = 0;
         /**
         * create a object for duartion dropdown menu
         * @param {number} sel - The selected (or default selected) option in the dropdown menu
@@ -351,6 +355,8 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                     if((cEvent.startAt >= sleepEvt.startsAt && cEvent.startsAt <= sleepEvt.endsAt)
                     || (cEvent.endsAt >= sleepEvt.startsAt && cEvent.endsAt <= sleepEvt.endsAt)) {
                         output.message = "Conflict with an existing sleep event";
+                         calEvent.startsAt = moment(initialCalendar).startOf('day').add(initialHour, 'hours').toDate();
+                        $scope.durationSelected = initialDuration;
                         output.ok = false;
                         break;
                     }
@@ -377,9 +383,14 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
          *   Event data will be saved if the state set to true
          *   Note: all events' timestamps will be added 1 millisecond
         */
+       
         $scope.$watch('eventsChangedState', function(newVal, oldVal){
             if(newVal == false) {
                 console.log('not save');
+                initialDuration = $scope.durationSelected;
+                initialCalendar = calEvent.startsAt;
+                initialHour = parseInt($scope.oldStartsAt.toString().slice(15,18), 10);
+                initialMins = parseInt($scope.oldStartsAt.toString().slice(19,21), 10);
             }
             else if(newVal == true) {
                 console.log('save now');
@@ -420,7 +431,10 @@ atoAlertnessControllers.controller('MyChargeCalendarModalController', ['$scope',
                     }
 
                     if(singleEvent != null) {
-                        data.push(singleEvent);
+                        //@jp
+                        if ($scope.validateSleep(cEvent).ok){
+                            data.push(singleEvent);
+                        } 
                     }
                 }
 
